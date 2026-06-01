@@ -9,3 +9,6 @@ nonexistent-path/
 examples/*/build/
 examples/*/.marbas/
 test/fixtures/**/.page-versions/
+
+# Private backlog (not committed to public OSS repo)
+backlog/
