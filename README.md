@@ -42,6 +42,12 @@ Requires **Node.js 18** or later.
 npm install -g @crafted.solutions/marbas-site
 ```
 
+Until the package is published to npm, install directly from GitHub:
+
+```bash
+npm install -g github:Crafted-Solutions/marbas-site
+```
+
 Or use it without installing:
 
 ```bash
