@@ -7,6 +7,7 @@ import { readProjectConfig } from '../project/config.js';
 import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolveThemeFile } from '../theme/resolver.js';
+import { readSiteSettings } from '../site-settings/io.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -79,7 +80,8 @@ export async function build({ projectPath, environment = 'development', libRoot,
     fs.writeFileSync(customCssDest, '');
   }
 
-  const themeId = config?.theme?.id;
+  const siteSettings = readSiteSettings(absProject, config);
+  const themeId = siteSettings?.theme?.id;
   if (themeId) {
     try {
       const themeSrcPath = resolveThemeFile({ projectPath: absProject, themeId, libRoot: absLib });
