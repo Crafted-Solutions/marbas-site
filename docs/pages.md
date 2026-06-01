@@ -23,6 +23,7 @@ All fields are optional unless marked **required**.
 | `layout` | string | `content_1col.njk` | Page layout template. See [Layouts](#layouts). |
 | `title` | string | — | Page title. Used in the `<title>` tag and navigation unless overridden. **Required** for meaningful output. |
 | `pageLanguage` | string | `de` | BCP 47 language code for this page (`de`, `en`, `fr`, …). |
+| `templateEngineOverride` | string | — | Must be set to `njk,md` on every page that uses components. Without this, Nunjucks shortcodes inside the layout will not execute. |
 | `permalink` | string | derived from file path | Override the output URL. Example: `/custom-path/`. |
 
 ### SEO

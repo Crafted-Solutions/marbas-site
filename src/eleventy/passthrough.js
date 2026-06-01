@@ -19,7 +19,7 @@ export function addLibAssetsPassthrough(eleventyConfig, { libRoot = DEFAULT_LIB_
     [path.join(libRoot, '_assets/css/base.full.css')]:     '_assets/css/base.full.css',
     [path.join(libRoot, '_assets/css/base.full.min.css')]: '_assets/css/base.full.min.css',
     [path.join(libRoot, '_assets/js/_lib')]:               '_assets/js/_lib',
-    [path.join(libRoot, '_assets/images/examples')]:       '_assets/images/examples'
+    [path.join(libRoot, '_assets/images')]:                '_assets/images'
   });
 }
 

@@ -1,31 +1,15 @@
 ---
-layout: base
-title: Datenschutzerklärung
+layout: content_1col.njk
+title: Datenschutz
 pageLanguage: de
+templateEngineOverride: njk,md
 topNavigation: false
-navigation:
-  key: datenschutz
-  title: Datenschutz
-  order: 11
 robotsNoIndex: true
-Placeholder_Main: []
+Placeholder_Hero: []
+Placeholder_Main:
+  - componentType: TextMedia
+    id: datenschutz-text
+    title: Datenschutzerklärung
+    text: "<p>Bitte Datenschutzhinweise für dieses Projekt ergänzen.</p>"
+    imagePosition: none
 ---
-
-## Datenschutzerklärung
-
-**Verantwortlicher**
-
-Ihr Name / Firmenname  
-Straße und Hausnummer  
-PLZ Ort  
-E-Mail: info@example.com
-
-**Allgemeine Hinweise**
-
-Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
-
-**Datenerfassung auf dieser Website**
-
-Die Datenverarbeitung auf dieser Website erfolgt durch den Websitebetreiber. Dessen Kontaktdaten können Sie dem Impressum dieser Website entnehmen.
-
-Ersetzen Sie diesen Text durch Ihre vollständige Datenschutzerklärung.

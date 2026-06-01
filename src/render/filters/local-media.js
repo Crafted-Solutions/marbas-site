@@ -1,8 +1,19 @@
 // lib/filters/local-media.js
 // Process local media files with eleventy-img
 
+import fs from "fs";
+import path from "path";
 import Image from "@11ty/eleventy-img";
 import { createFallbackImageHtml, shouldBypassEleventyImageProcessing } from "../image-processing.js";
+import { getLibRoot } from "../../eject/index.js";
+
+function resolveImageSrc(src) {
+  const projectPath = `.${src}`;
+  if (fs.existsSync(projectPath)) return projectPath;
+  const libPath = path.join(getLibRoot(), src);
+  if (fs.existsSync(libPath)) return libPath;
+  return projectPath;
+}
 
 /**
  * Configure local media filters for Eleventy
@@ -62,8 +73,8 @@ export function configureLocalMediaFilters(eleventyConfig, publishFolder = "") {
         };
 
         try {
-            // Process the local image file
-            const metadata = await Image(`.${imageData.src}`, imageOptions);
+            // Process the local image file — check project first, then lib assets
+            const metadata = await Image(resolveImageSrc(imageData.src), imageOptions);
 
             const imageAttributes = {
                 alt: imageData.alt || "",

@@ -1,9 +1,11 @@
 ---
-layout: base
-title: Willkommen
+layout: content_1col.njk
+title: Startseite
 pageLanguage: de
+templateEngineOverride: njk,md
 topNavigation: true
-tags: [menu]
+tags:
+  - menu
 navigation:
   key: home
   title: Home
@@ -14,53 +16,60 @@ eleventyNavigation:
   order: 1
 Placeholder_Hero:
   - componentType: Hero
-    id: hero-1
-    title: "Willkommen"
-    text: "Ihre neue Website ist bereit. Passen Sie Inhalte, Komponenten und Theme ganz nach Ihren Wünschen an."
+    id: hero-start
+    title: Willkommen
+    text: "<p>Das ist Ihre neue Website. Passen Sie Inhalte, Komponenten und Theme nach Ihren Wünschen an.</p>"
     image:
-      src: "/_assets/images/examples/hero.svg"
-      alt: "Hero Bild"
-      width: "1200"
-      height: "600"
+      src: /_assets/images/starter-hero.jpg
+      alt: Willkommensbild
     flushNav: false
     invertTextColor: false
     showContentBox: true
 Placeholder_Main:
   - componentType: TextMedia
     id: intro-1
-    title: "Über dieses Projekt"
-    text: "Dies ist ein Starter-Projekt mit Marbas. Sie finden hier vorgefertigte Seiten und Komponenten als Ausgangspunkt für Ihre Website."
-    imagePosition: "right"
-    imageSize: "medium"
+    title: Über dieses Projekt
+    text: "Dies ist ein Starter-Projekt mit Marbas. Hier finden Sie vorgefertigte Seiten und Komponenten als Ausgangspunkt für Ihre Website."
+    imagePosition: right
     image:
-      src: "/_assets/images/examples/editorial-1.svg"
-      alt: "Illustration"
-      width: "600"
-      height: "400"
+      src: /_assets/images/starter-feature-left.jpg
+      alt: Feature-Bild
   - componentType: Cards
-    id: cards-1
-    headline: "Unsere Leistungen"
+    id: leistungen
+    headline: Unsere Leistungen
     columns: 3
     cards:
-      - headline: "Leistung 1"
-        body: "Beschreiben Sie hier Ihre erste Leistung oder Ihr erstes Angebot."
+      - headline: Leistung 1
+        body: Beschreiben Sie hier Ihre erste Leistung oder Ihr erstes Angebot.
+        image:
+          src: /_assets/images/starter-card-content.svg
+          alt: Leistung 1
         link: "#"
-        linkText: "Mehr erfahren"
-      - headline: "Leistung 2"
-        body: "Beschreiben Sie hier Ihre zweite Leistung oder Ihr zweites Angebot."
+        linkText: Mehr erfahren
+        linkAsCta: false
+      - headline: Leistung 2
+        body: Beschreiben Sie hier Ihre zweite Leistung oder Ihr zweites Angebot.
+        image:
+          src: /_assets/images/starter-card-content.svg
+          alt: Leistung 2
         link: "#"
-        linkText: "Mehr erfahren"
-      - headline: "Leistung 3"
-        body: "Beschreiben Sie hier Ihre dritte Leistung oder Ihr drittes Angebot."
+        linkText: Mehr erfahren
+        linkAsCta: false
+      - headline: Leistung 3
+        body: Beschreiben Sie hier Ihre dritte Leistung oder Ihr drittes Angebot.
+        image:
+          src: /_assets/images/starter-card-content.svg
+          alt: Leistung 3
         link: "#"
-        linkText: "Mehr erfahren"
+        linkText: Mehr erfahren
+        linkAsCta: false
   - componentType: Banner
-    id: banner-1
-    title: "Bereit loszulegen?"
-    text: "Kontaktieren Sie uns oder erfahren Sie mehr über unser Angebot."
+    id: cta-banner
+    title: Bereit loszulegen?
+    text: Kontaktieren Sie uns oder erfahren Sie mehr über unser Angebot.
     image:
-      src: "/_assets/images/examples/banner.svg"
-      alt: "Banner"
-      width: "1200"
-      height: "400"
+      src: /_assets/images/starter-feature-right.jpg
+      alt: Banner-Bild
+    link: "#"
+    linkAriaLabel: Zum Kontakt
 ---
