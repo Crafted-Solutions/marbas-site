@@ -71,6 +71,14 @@ export async function build({ projectPath, environment = 'development', libRoot,
     throw new Error(`Webpack failed with exit code ${webpackResult.status}`);
   }
 
+  // Ensure custom.bundle.css always exists — webpack only emits it when CSS sources
+  // are present. An empty file prevents 404s when no project CSS has been authored yet.
+  const customCssDest = path.join(outputPath, '_assets', 'css', 'custom.bundle.css');
+  if (!fs.existsSync(customCssDest)) {
+    fs.mkdirSync(path.dirname(customCssDest), { recursive: true });
+    fs.writeFileSync(customCssDest, '');
+  }
+
   const themeId = config?.theme?.id;
   if (themeId) {
     try {
