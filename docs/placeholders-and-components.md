@@ -17,6 +17,28 @@ Every component block requires:
 
 All other fields are component-specific (see below).
 
+> **Important:** Pages that use components must include `templateEngineOverride: njk,md` in their front matter. Without it, the placeholders will not render.
+
+### Common fields on all components
+
+| Field | Description |
+|---|---|
+| `classes` | Additional CSS classes appended to the component's root element. |
+| `titleCulture` / `textCulture` | Language code of the content (e.g. `de`, `en`). Set automatically by the CMS editor; safe to omit when editing files manually. |
+
+**`themeStyleClass`** controls the visual variant of components that support it (TextMedia, TitleText, Video). The default value `c-component--main` applies the standard section styling. Other common values: `c-component--light`, `c-component--dark`, `c-component--accent` — the available variants depend on the active theme.
+
+### Image fields
+
+Components with images share a common image structure:
+
+| Field | Description |
+|---|---|
+| `image.src` | Path to the image. Use `/_media/` for project-uploaded media or `/_assets/images/` for lib-provided images. |
+| `image.alt` | Alt text for accessibility. |
+| `image.caption` | Optional caption shown below the image. |
+| `image.originalId` | Base filename used when the build generates responsive image variants (e.g. `my-image` → `my-image-800w.webp`). Set automatically by the CMS; when writing front matter manually, use a short slug without extension. |
+
 ## Placeholder availability per layout
 
 | Placeholder | `content_1col` | `content_2col_main_left` | `content_2col_main_right` | `content_3col_main_center` |
@@ -43,6 +65,7 @@ A full-width image banner, optionally linked.
 | `id` | string | ✓ | Unique block ID |
 | `image.src` | string | ✓ | Path to image file |
 | `image.alt` | string | | Alt text |
+| `image.originalId` | string | | Base filename for responsive image variants (slug without extension). |
 | `image.width` | string | | Image width in px (for aspect-ratio hint) |
 | `image.height` | string | | Image height in px |
 | `link` | string | | URL the banner links to |
@@ -55,6 +78,7 @@ A full-width image banner, optionally linked.
   image:
     src: /_media/summer-sale.jpg
     alt: Summer sale — up to 40% off
+    originalId: summer-sale
   link: /sale/
   linkAriaLabel: View summer sale offers
 ```
@@ -119,6 +143,7 @@ A large hero section with image, title, text, and optional CTA.
 | `id` | string | ✓ | Unique block ID |
 | `image.src` | string | ✓ | Hero image path |
 | `image.alt` | string | | Image alt text |
+| `image.originalId` | string | | Base filename for responsive image variants (slug without extension). |
 | `title` | string | | Main heading |
 | `text` | string (HTML) | | Body text. Supports rich text HTML (`<p>`, `<strong>`, `<a>`, …). |
 | `flushNav` | boolean | | Remove gap between navigation and hero (default: `false`) |
@@ -134,6 +159,7 @@ A large hero section with image, title, text, and optional CTA.
   image:
     src: /_media/hero.jpg
     alt: Team collaborating in a modern office
+    originalId: hero
   flushNav: true
   invertTextColor: true
 ```
@@ -155,6 +181,7 @@ A text block with optional image, positioned above, below, left, or right of the
 | `imageSize` | string | | Image column width when positioned left/right: `wide` (8 cols) or `slim` (4 cols) (default: `wide`) |
 | `image.src` | string | | Image path |
 | `image.alt` | string | | Image alt text |
+| `image.originalId` | string | | Base filename for responsive image variants (slug without extension). |
 | `link` | string | | Optional link URL |
 | `linkText` | string | | Link label |
 | `linkAsCta` | boolean | | Render link as CTA button (default: `false`) |
@@ -173,6 +200,7 @@ A text block with optional image, positioned above, below, left, or right of the
   image:
     src: /_media/approach.jpg
     alt: Sketch on a whiteboard
+    originalId: approach
   link: /about/
   linkText: Meet the team
   linkAsCta: true
@@ -230,6 +258,7 @@ Four components that combine a title, text, link, and image in a fixed two-colum
 | `text` | string | | Body text. Supports inline HTML. |
 | `image.src` | string | ✓ | Image path |
 | `image.alt` | string | | Image alt text |
+| `image.originalId` | string | | Base filename for responsive image variants (slug without extension). |
 | `variantName` | string | | `wide_image` or `slim_image` (left/right only, default: `wide_image`) |
 | `link` | string | | Optional link URL |
 | `linkText` | string | | Link label |
@@ -245,6 +274,7 @@ Four components that combine a title, text, link, and image in a fixed two-colum
   image:
     src: /_media/infrastructure.jpg
     alt: Server room
+    originalId: infrastructure
   variantName: slim_image
   link: /features/
   linkText: All features
@@ -273,9 +303,11 @@ Two images displayed side by side.
   image1:
     src: /_media/project-a.jpg
     alt: Project A — storefront view
+    originalId: project-a
   image2:
     src: /_media/project-b.jpg
     alt: Project B — interior
+    originalId: project-b
 ```
 
 ---
