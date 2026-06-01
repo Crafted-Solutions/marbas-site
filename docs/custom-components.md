@@ -17,7 +17,7 @@ The directory name is the component type. It must start with an uppercase letter
 
 ```yaml
 Placeholder_Main:
-  - _type: Testimonial
+  - componentType: Testimonial
     id: client-quote
     quote: "Working with them changed everything."
     author: Jane Smith

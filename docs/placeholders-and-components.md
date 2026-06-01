@@ -6,13 +6,13 @@ A placeholder is a named content slot within a page layout. Each layout defines 
 
 ```yaml
 Placeholder_Main:
-  - _type: Hero
+  - componentType: Hero
     id: my-hero
     title: Hello
 ```
 
 Every component block requires:
-- `_type` — the component name (case-sensitive)
+- `componentType` — the component name (case-sensitive)
 - `id` — a unique identifier within the page
 
 All other fields are component-specific (see below).
@@ -50,7 +50,7 @@ A full-width image banner, optionally linked.
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: Banner
+- componentType: Banner
   id: promo-banner
   image:
     src: /_media/summer-sale.jpg
@@ -90,7 +90,7 @@ A grid of teaser cards with optional headline.
 | `linkAsCta` | boolean | Render the link as a call-to-action button (default: `false`) |
 
 ```yaml
-- _type: Cards
+- componentType: Cards
   id: services
   headline: What we offer
   columns: 3
@@ -127,7 +127,7 @@ A large hero section with image, title, text, and optional CTA.
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: Hero
+- componentType: Hero
   id: page-hero
   title: Building the web, one site at a time
   text: "<p>We help small businesses establish a strong online presence.</p>"
@@ -164,7 +164,7 @@ A text block with optional image, positioned above, below, left, or right of the
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: TextMedia
+- componentType: TextMedia
   id: about-intro
   title: Our approach
   text: We start every project by listening. Only then do we design.
@@ -199,7 +199,7 @@ A simple heading + text block with optional link. Use for section introductions 
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: TitleText
+- componentType: TitleText
   id: contact-intro
   title: Get in touch
   text: We respond to all enquiries within one business day.
@@ -238,7 +238,7 @@ Four components that combine a title, text, link, and image in a fixed two-colum
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: TitleTextImageRight
+- componentType: TitleTextImageRight
   id: feature-1
   title: Fast and reliable
   text: Our infrastructure is built for uptime and speed.
@@ -268,7 +268,7 @@ Two images displayed side by side.
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: TwoImages
+- componentType: TwoImages
   id: gallery-pair
   image1:
     src: /_media/project-a.jpg
@@ -302,7 +302,7 @@ An embedded HTML5 video player with optional headline.
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
-- _type: Video
+- componentType: Video
   id: product-demo
   videoHeadline: See it in action
   video:

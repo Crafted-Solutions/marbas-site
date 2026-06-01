@@ -118,7 +118,7 @@ The `layout` field controls which column structure is used and which placeholder
 
 ## Placeholders and components in front matter
 
-Components are placed inside named placeholders directly in the front matter. Each placeholder holds a list of component blocks. Each block has a `_type` that identifies the component and an `id` that must be unique within the page.
+Components are placed inside named placeholders directly in the front matter. Each placeholder holds a list of component blocks. Each block has a `componentType` that identifies the component and an `id` that must be unique within the page.
 
 ```yaml
 ---
@@ -126,7 +126,7 @@ layout: content_2col_main_left.njk
 title: Homepage
 
 Placeholder_Hero:
-  - _type: Hero
+  - componentType: Hero
     id: hero-main
     title: Welcome to Our Site
     text: "<p>We build great things.</p>"
@@ -135,7 +135,7 @@ Placeholder_Hero:
       alt: Team at work
 
 Placeholder_Main:
-  - _type: TextMedia
+  - componentType: TextMedia
     id: intro-block
     title: What we do
     text: We design and build digital products.
@@ -143,7 +143,7 @@ Placeholder_Main:
     image:
       src: /_media/what-we-do.jpg
       alt: Design process
-  - _type: Cards
+  - componentType: Cards
     id: services-cards
     headline: Our Services
     columns: 3
@@ -158,7 +158,7 @@ Placeholder_Main:
         linkText: Learn more
 
 Placeholder_Aside_1:
-  - _type: Banner
+  - componentType: Banner
     id: cta-sidebar
     link: /contact/
     image:
@@ -229,7 +229,7 @@ eleventyNavigation:
 robotsNoIndex: false
 
 Placeholder_Hero:
-  - _type: Hero
+  - componentType: Hero
     id: about-hero
     title: Meet the team
     text: "<p>We are a small team with big ambitions.</p>"
@@ -238,7 +238,7 @@ Placeholder_Hero:
       alt: The Acme team in the office
 
 Placeholder_Main:
-  - _type: TextMedia
+  - componentType: TextMedia
     id: mission
     title: Our mission
     text: We believe in open, accessible web experiences for everyone.
@@ -248,7 +248,7 @@ Placeholder_Main:
       alt: Team whiteboarding
 
 Placeholder_Aside_1:
-  - _type: Banner
+  - componentType: Banner
     id: contact-cta
     link: /contact/
     image:
