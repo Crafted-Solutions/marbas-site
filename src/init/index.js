@@ -51,7 +51,7 @@ function copyStarterPages(targetPagesDir) {
  * @param {string} [options.name]               Project name (defaults to directory basename)
  * @param {string} [options.description]        Optional description
  * @param {string} [options.defaultEnvironment] Default build environment (default: "development")
- * @param {boolean} [options.force]             Overwrite if directory already exists
+ * @param {boolean} [options.force]             Overwrite if already a Marbas project
  * @param {boolean} [options.starter]           Copy starter pages with example components
  */
 export function initProject({
@@ -65,7 +65,8 @@ export function initProject({
   const absPath = path.resolve(projectPath);
   const projectName = name || path.basename(absPath);
 
-  if (fs.existsSync(absPath) && !force) {
+  const alreadyInitialised = fs.existsSync(path.join(absPath, 'marbas-project.json'));
+  if (alreadyInitialised && !force) {
     throw new Error(
       `Directory already exists: ${absPath}\nUse --force to overwrite.`
     );
