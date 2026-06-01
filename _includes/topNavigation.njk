@@ -1,0 +1,14 @@
+{# @name: Header Navigation #}
+{# @description: Top-Navigation – routes to the matching header preset partial. #}
+{# @category: header #}
+
+{%- set _preset = site.header.preset | default("brand-nav") -%}
+{%- if _preset == "brand-nav-actions" %}
+{% include "header/presets/brand-nav-actions.njk" %}
+{%- elif _preset == "utility-brand-nav" %}
+{% include "header/presets/utility-brand-nav.njk" %}
+{%- elif _preset == "centered-nav" %}
+{% include "header/presets/centered-nav.njk" %}
+{%- else %}
+{% include "header/presets/brand-nav.njk" %}
+{%- endif %}

@@ -1,0 +1,31 @@
+{# TwoImages Component - CSS Framework Architecture
+   Data is now in flat format from YAML front matter
+   Images are local files processed with eleventy-img
+#}
+
+{# Process local image files #}
+{% set imageData1 = data.image1 | processLocalImage({"sizes":[12,12,12,6,6,6], "placeholder_sizes":placeholder_sizes}) %}
+{% set imageData2 = data.image2 | processLocalImage({"sizes":[12,12,12,6,6,6], "placeholder_sizes":placeholder_sizes}) %}
+
+<div class="c-cols-1 c-cols-md-2 {{ data.classes | default('') | safe }}">
+    <article class="c-component c-component--media-top">
+        <div class="c-component__media">
+            {{ imageData1.html | safe }}
+        </div>
+        {% if imageData1.caption %}
+        <div class="c-component__text" {{ lang | getLangAttribute(data.image1Culture) }}>
+            {{ imageData1.caption | safe }}
+        </div>
+        {% endif %}
+    </article>
+    <article class="c-component c-component--media-top">
+        <div class="c-component__media">
+            {{ imageData2.html | safe }}
+        </div>
+        {% if imageData2.caption %}
+        <div class="c-component__text" {{ lang | getLangAttribute(data.image2Culture) }}>
+            {{ imageData2.caption | safe }}
+        </div>
+        {% endif %}
+    </article>
+</div>

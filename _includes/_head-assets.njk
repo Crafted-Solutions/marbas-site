@@ -1,0 +1,21 @@
+    {% if buildConfig.useCmsStyles %}
+    <!-- CSS Framework -->
+    <link rel="stylesheet" href="{{ '/_assets/css/base.full.css' | url }}">
+    <link rel="stylesheet" href="{{ '/_assets/css/theme.css' | url }}">
+    <link rel="stylesheet" href="{{ '/_assets/css/custom.bundle.css' | url }}">
+    {% endif %}
+
+    <!-- JS framework (Bootstrap + helpers) — served via Eleventy passthrough, works in preview and build -->
+    {% if buildConfig.useCmsStyles %}
+    <script src="{{ '/_assets/js/full.js' | url }}" defer></script>
+    {% endif %}
+    {% if buildConfig.useLanguageSwitcher %}
+    <script src="{{ '/_assets/js/languageSwitcher.js' | url }}" defer></script>
+    {% endif %}
+
+    <!-- JavaScript bundles -->
+    <script src="{{ '/_assets/js/main.bundle.js' | url }}" defer></script>
+    {% if vendors %}
+      <script src="{{ '/_assets/js/vendors.bundle.js' | url }}" defer></script>
+    {% endif %}
+    <script src="{{ '/_assets/js/custom.bundle.js' | url }}" defer></script>

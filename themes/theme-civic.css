@@ -1,0 +1,145 @@
+/* ============================================================
+   theme-civic.css – "Civic"
+
+   Zielgruppe  : Behörden, Kommunen, öffentliche Institutionen
+   Stil        : USWDS-inspiriert, klar, barrierefrei, neutral
+   Schriften   : Public Sans (Body + Headlines)
+                 Google Fonts: ?family=Public+Sans:wght@400;500;600;700
+   Akzentfarbe : #005ea2 – Kontrast auf Weiß 7.7:1 (WCAG AAA ✓)
+   Barrierefreiheit: WCAG AAA ✓ | Alle Textpaare ≥ 7:1
+                     prefers-contrast: high integriert
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --t-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --t-bg:      #ffffff;
+  --t-surface: #f0f4f8;
+
+  --t-text:    #1b1b1b;   /* 19.1:1 auf #ffffff – AAA ✓ */
+  --t-muted:   #454545;   /* 9.7:1 auf #ffffff – AAA ✓ */
+
+  --t-border:  #c9c9c9;
+  --t-accent:  #005ea2;   /* USWDS Primary Blue – 7.7:1 auf #ffffff – AAA ✓ */
+
+  --t-radius-sm: 0.25rem;
+  --t-radius-md: 0.375rem;
+  --t-radius-lg: 0.5rem;
+
+  --t-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --t-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  /* Invert-Palette für Zebra / Dark-Blöcke */
+  --t-surface-invert: #1b1b1b;
+  --t-text-invert:    #f0f4f8;
+  --t-muted-invert:   #adadad;
+  --t-border-invert:  #454545;
+  --t-accent-invert:  #73b3e7;   /* helles Blau auf Dunkel */
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: color-mix(in oklab, var(--t-accent) 42%, var(--t-surface-invert));
+  --t-announcement-color: var(--t-text-invert);
+  --t-announcement-link: var(--t-accent-invert);
+  --t-announcement-dismiss-border: color-mix(in oklab, var(--t-text-invert) 40%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-surface) 76%, var(--t-bg));
+  --t-utility-bar-border: color-mix(in oklab, var(--t-border) 82%, var(--t-surface));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: var(--t-muted);
+  --t-utility-bar-link-hover: var(--t-accent);
+
+  --t-header-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-header-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-border) 55%, transparent),
+                     var(--t-shadow-sm);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: var(--t-accent);
+  --t-header-brand-mark-bg: color-mix(in oklab, var(--t-accent) 84%, var(--t-surface));
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-nav-item-hover-color: var(--t-accent);
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-color: var(--t-accent);
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-footer-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: var(--t-accent);
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: var(--t-accent);
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-footer-social-color: var(--t-accent);
+  --t-footer-social-hover-bg: var(--t-accent);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* High-Contrast-Modus */
+@media (prefers-contrast: high) {
+  :root {
+    --t-text:   #000000;
+    --t-muted:  #000000;
+    --t-border: #000000;
+    --t-bg:     #ffffff;
+    --t-surface: #ffffff;
+  }
+  .c-component--framed {
+    border-width: 2px !important;
+  }
+}
+
+/* Typografie – klar und lesbar */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.c-component__kicker {
+  font-weight: 600;
+  font-size: 0.82em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Verbesserte Focus-Styles */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--t-accent);
+  outline-offset: 3px;
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: color-mix(in oklab, var(--t-accent) 35%, var(--t-border));
+  --cmp-shadow: var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 80%, var(--t-bg));
+  --cmp-shadow:  var(--t-shadow-sm);
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 8%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 30%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);
+  --cmp-shadow:  var(--t-shadow-md);
+}

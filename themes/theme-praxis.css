@@ -1,0 +1,135 @@
+/* ============================================================
+   theme-praxis.css – "Praxis"
+
+   Zielgruppe  : Rechtsanwaltskanzleien, Steuerberatungen,
+                 Finanzdienstleister, Wirtschaftsprüfungen
+   Stil        : Konservativ, autoritär, Tiefes Navy, kein Schnörkel
+   Schriften   : Libre Baskerville (Headlines/Autorität), system-ui (Body)
+                 Google Fonts: ?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400
+   Akzentfarbe : #1a3a6b – Kontrast auf Weiß 12.8:1 (WCAG AAA ✓)
+   Barrierefreiheit: WCAG AAA ✓ | Text/BG 18.9:1 (AAA ✓)
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans:  system-ui, 'Segoe UI', -apple-system, Arial, sans-serif;
+  --t-font-serif: 'Libre Baskerville', Georgia, serif;
+  --t-font-mono:  ui-monospace, SFMono-Regular, monospace;
+
+  --t-bg:      #ffffff;
+  --t-surface: #f6f7f8;
+
+  --t-text:    #0e1825;   /* Tiefes Navy-Schwarz – 18.9:1 auf #ffffff */
+  --t-muted:   #4a5568;   /* Kühles Grau – 7.3:1 auf #ffffff – AA ✓ */
+
+  --t-border:  #d2d6dc;
+  --t-accent:  #1a3a6b;   /* Tiefes Navy – 12.8:1 auf #ffffff – AAA ✓ */
+
+  --t-radius-sm: 0.125rem;
+  --t-radius-md: 0.25rem;
+  --t-radius-lg: 0.375rem;
+
+  --t-shadow-sm: 0 1px 2px rgba(14, 24, 37, 0.06);
+  --t-shadow-md: 0 6px 20px rgba(14, 24, 37, 0.10);
+
+  /* Invert-Palette für Zebra / Dark-Blöcke */
+  --t-surface-invert: #0e1825;
+  --t-text-invert:    #f6f7f8;
+  --t-muted-invert:   #94a3b8;
+  --t-border-invert:  #1e2d42;
+  --t-accent-invert:  #5a90d0;   /* Helleres Navy-Blau auf Dunkel */
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: color-mix(in oklab, var(--t-accent) 42%, var(--t-surface-invert));
+  --t-announcement-color: var(--t-text-invert);
+  --t-announcement-link: var(--t-accent-invert);
+  --t-announcement-dismiss-border: color-mix(in oklab, var(--t-text-invert) 40%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-surface) 76%, var(--t-bg));
+  --t-utility-bar-border: color-mix(in oklab, var(--t-border) 82%, var(--t-surface));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: var(--t-muted);
+  --t-utility-bar-link-hover: var(--t-accent);
+
+  --t-header-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-header-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-border) 55%, transparent),
+                     var(--t-shadow-sm);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: var(--t-accent);
+  --t-header-brand-mark-bg: color-mix(in oklab, var(--t-accent) 84%, var(--t-surface));
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-nav-item-hover-color: var(--t-accent);
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-color: var(--t-accent);
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-footer-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: var(--t-accent);
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: var(--t-accent);
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-footer-social-color: var(--t-accent);
+  --t-footer-social-hover-bg: var(--t-accent);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* Typografie – seriös, autoritär */
+h1, h2, h3 {
+  font-family: var(--t-font-serif);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+h4 {
+  font-family: var(--t-font-serif);
+  font-weight: 400;
+}
+.c-component__kicker {
+  font-family: var(--t-font-sans);
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cmp-link, var(--t-muted));
+}
+.c-component__headline {
+  font-family: var(--t-font-serif);
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: color-mix(in oklab, var(--t-accent) 30%, var(--t-border));
+  --cmp-shadow: var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 75%, var(--t-bg));
+  --cmp-shadow:  var(--t-shadow-sm);
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 6%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 20%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);
+  --cmp-shadow:  var(--t-shadow-md);
+}

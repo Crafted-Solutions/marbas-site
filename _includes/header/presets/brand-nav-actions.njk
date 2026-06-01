@@ -1,0 +1,13 @@
+{%- set _variant = site.header.variant | default("default") -%}
+<a class="c-skip-link" href="#main-content">Zum Inhalt springen</a>
+{% include "header/slots/announcement.njk" %}
+<header role="banner" class="c-header c-header--with-actions{% if _variant and _variant != 'default' %} c-header--{{ _variant }}{% endif %}{% if site.header.sticky %} c-header--sticky{% endif %}">
+  <div class="c-container c-header__inner">
+    {% include "header/slots/brand.njk" %}
+    {% include "header/slots/nav.njk" %}
+    {% include "header/slots/actions.njk" %}
+    <button class="c-nav-toggle" type="button" aria-label="Navigation öffnen" aria-expanded="false" aria-controls="main-nav">
+      <span class="c-nav-toggle__icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>

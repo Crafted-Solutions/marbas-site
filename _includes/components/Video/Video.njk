@@ -1,0 +1,44 @@
+{# Video Component - CSS Framework Architecture
+   Data is now in flat format from YAML front matter
+   Videos are local files copied to output
+#}
+
+{# Get local video paths #}
+{% set videoData = data.video | getLocalVideo %}
+
+{% set attrMuted = "" %}
+{% set attrAutoplay = "" %}
+{% set attrLoop = "" %}
+
+{% if data.autoplay %}
+    {% set attrAutoplay = "autoplay" %}
+{% endif %}
+
+{% if data.muted %}
+    {% set attrMuted = "muted" %}
+{% endif %}
+
+{% if data.loop %}
+    {% set attrLoop = "loop" %}
+{% endif %}
+
+{% set styleClasses = data.classes | default('') | trim %}
+{% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
+
+<article class="c-component {{ themeClasses | safe }}" {{ "aria-label" | htmlAttribute(data.ariaLabelHeadline) | safe }}>
+    {% if data.videoHeadline %}
+    <h2 class="c-component__headline" {{ lang | getLangAttribute(data.videoHeadlineCulture) }}>
+        {{ data.videoHeadline | safe }}
+    </h2>
+    {% endif %}
+    <div class="c-component__media">
+        <video class="c-video" {{ attrAutoplay }} {{ attrMuted }} {{ attrLoop }} playsinline controlslist="nodownload" poster="{{ videoData.poster.path }}" controls>
+            {% if videoData.webm.path %}
+            <source src="{{ videoData.webm.path }}" type="video/webm">
+            {% endif %}
+            {% if videoData.mp4.path %}
+            <source src="{{ videoData.mp4.path }}" type="video/mp4">
+            {% endif %}
+        </video>
+    </div>
+</article>

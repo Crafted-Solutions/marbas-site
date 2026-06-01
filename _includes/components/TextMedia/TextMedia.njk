@@ -1,0 +1,92 @@
+{# TextMedia Component - Unified with image position variants
+   imagePosition: none | top | bottom | left | right
+   imageSize (left/right only): wide | slim
+#}
+
+{% set linkText = data.linkText | default("weitere Informationen") %}
+{% set linkAsCta = data.linkAsCta | default(false) %}
+{% set styleClasses = data.classes | default('') | trim %}
+{% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
+{% set imagePosition = data.imagePosition | default("none") %}
+
+{% if imagePosition == "left" or imagePosition == "right" %}
+  {% set imageSize = data.imageSize | default("wide") %}
+  {% set sizes = [12,12,12,4,4,4] if imageSize == "slim" else [12,12,12,8,8,8] %}
+  {% set splitClass = "c-media-span-1" if imageSize == "slim" else "c-media-span-2" %}
+  {% set mobileBottomClass = " c-component--mobile-media-bottom" if data.mobileMediaBottom else "" %}
+  {% set imageData = data.image | processLocalImage({"sizes":sizes, "placeholder_sizes":placeholder_sizes}) %}
+{% elif imagePosition == "top" or imagePosition == "bottom" %}
+  {% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
+{% endif %}
+
+{% macro bodyContent() %}
+    {% if data.title %}
+    <h2 class="c-component__headline" {{ lang | getLangAttribute(data.titleCulture) }}>
+        {{ data.title | safe }}
+    </h2>
+    {% endif %}
+    <div class="c-component__text c-richtext" {{ lang | getLangAttribute(data.textCulture) }}>
+        {{ data.text | safe }}
+    </div>
+    {% if data.link %}
+    <div class="c-component__actions" {{ lang | getLangAttribute(data.linkTextCulture) }}>
+        <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %}>{{ linkText }}</a>
+    </div>
+    {% endif %}
+{% endmacro %}
+
+{% if imagePosition == "none" %}
+
+<article class="c-component c-component--full-width {{ themeClasses | safe }}">
+    {{ bodyContent() }}
+</article>
+
+{% elif imagePosition == "top" %}
+
+<article class="c-component c-component--media-top {{ themeClasses | safe }}">
+    <div class="c-component__media">
+        {{ imageData.html | safe }}
+    </div>
+    <div class="c-component__body">
+        {{ bodyContent() }}
+    </div>
+</article>
+
+{% elif imagePosition == "bottom" %}
+
+<article class="c-component c-component--media-bottom {{ themeClasses | safe }}">
+    <div class="c-component__body">
+        {{ bodyContent() }}
+    </div>
+    <div class="c-component__media">
+        {{ imageData.html | safe }}
+    </div>
+</article>
+
+{% elif imagePosition == "left" %}
+
+<article class="c-component c-component--media-left {{ splitClass }}{{ mobileBottomClass }} {{ themeClasses | safe }}">
+    <div class="c-component__layout">
+        <div class="c-component__media">
+            {{ imageData.html | safe }}
+        </div>
+        <div class="c-component__body">
+            {{ bodyContent() }}
+        </div>
+    </div>
+</article>
+
+{% elif imagePosition == "right" %}
+
+<article class="c-component c-component--media-right {{ splitClass }}{{ mobileBottomClass }} {{ themeClasses | safe }}">
+    <div class="c-component__layout">
+        <div class="c-component__body">
+            {{ bodyContent() }}
+        </div>
+        <div class="c-component__media">
+            {{ imageData.html | safe }}
+        </div>
+    </div>
+</article>
+
+{% endif %}

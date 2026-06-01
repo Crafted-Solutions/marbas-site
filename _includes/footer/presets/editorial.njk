@@ -1,0 +1,12 @@
+{%- set _variant = site.footer.variant | default("default") -%}
+<footer role="contentinfo" class="c-footer c-footer--editorial{% if _variant and _variant != 'default' %} c-footer--{{ _variant }}{% endif %}">
+  <div class="c-container c-footer__inner">
+    <div class="c-footer__brand">
+      {% include "footer/slots/intro.njk" %}
+      {% include "footer/slots/social.njk" %}
+      {% include "footer/slots/contact.njk" %}
+    </div>
+    {% include "footer/slots/groups.njk" %}
+  </div>
+  {% include "footer/slots/bottom.njk" %}
+</footer>

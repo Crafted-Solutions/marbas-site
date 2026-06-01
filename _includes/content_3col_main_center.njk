@@ -1,0 +1,43 @@
+---
+layout: base.njk
+---
+
+{% if Placeholder_Hero and (Placeholder_Hero | length) > 0 %}
+<div class="c-section{% if Placeholder_Hero[0].flushNav %} c-section--flush-top{% endif %}">
+  {% renderFile libIncludesDir + "/placeholder.njk", {placeholderData: Placeholder_Hero, placeholderSizes: [12,12,12,12,12,12], lang: pageLanguage, placeholderName: "Placeholder_Hero"} %}
+</div>
+{% endif %}
+
+<div class="c-section">
+  <div class="c-grid c-cols-1 c-cols-lg-3">
+    <aside>
+      <div class="c-stream">
+        {% set placeholderData = Placeholder_Aside_1 %}
+        {% set lang = pageLanguage %}
+        {% set placeholderSizes = [12,12,12,3,3,3] %}
+        {% set placeholderName = "Placeholder_Aside_1" %}
+        {% include "./placeholder.njk" %}
+      </div>
+    </aside>
+
+    <div>
+      <div class="c-stream">
+        {% set placeholderData = Placeholder_Main %}
+        {% set lang = pageLanguage %}
+        {% set placeholderSizes = [12,12,12,6,6,6] %}
+        {% set placeholderName = "Placeholder_Main" %}
+        {% include "./placeholder.njk" %}
+      </div>
+    </div>
+
+    <aside>
+      <div class="c-stream">
+        {% set placeholderData = Placeholder_Aside_2 %}
+        {% set lang = pageLanguage %}
+        {% set placeholderSizes = [12,12,12,3,3,3] %}
+        {% set placeholderName = "Placeholder_Aside_2" %}
+        {% include "./placeholder.njk" %}
+      </div>
+    </aside>
+  </div>
+</div>

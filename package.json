@@ -1,0 +1,90 @@
+{
+  "name": "@crafted.solutions/marbas-site",
+  "version": "0.5.0",
+  "description": "Marbas site runtime — build, preview, deploy, templates and CLI for Marbas websites",
+  "license": "MIT",
+  "author": "Timo Müller <timo.m@plurex.de>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Crafted-Solutions/marbas-site.git"
+  },
+  "homepage": "https://github.com/Crafted-Solutions/marbas-site#readme",
+  "bugs": {
+    "url": "https://github.com/Crafted-Solutions/marbas-site/issues"
+  },
+  "keywords": [
+    "marbas",
+    "cms",
+    "static-site",
+    "ssg",
+    "eleventy",
+    "cli",
+    "build",
+    "deploy"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./build": "./src/build/index.js",
+    "./preview": "./src/preview/index.js",
+    "./deploy": "./src/deploy/index.js",
+    "./site-settings": "./src/site-settings/index.js",
+    "./project": "./src/project/config.js",
+    "./theme": "./src/theme/index.js",
+    "./init": "./src/init/index.js",
+    "./eject": "./src/eject/index.js",
+    "./reset": "./src/reset/index.js",
+    "./component": "./src/component/index.js",
+    "./plugin": "./src/plugin/index.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "marbas-site": "./src/cli/bin.js"
+  },
+  "files": [
+    "src",
+    "themes",
+    "_includes",
+    "_layouts",
+    "_assets",
+    "tm.eleventy.js",
+    "webpack.config.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.js"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-fetch": "^5.0.2",
+    "@11ty/eleventy-img": "^6.0.1",
+    "@11ty/eleventy-navigation": "^1.0.3",
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.5",
+    "autoprefixer": "^10.4.21",
+    "babel-loader": "^10.1.1",
+    "basic-ftp": "^5.0.5",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.2",
+    "eleventy-plugin-metagen": "^1.8.3",
+    "glob": "^11.0.0",
+    "mini-css-extract-plugin": "^2.9.2",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.86.3",
+    "sass-loader": "^16.0.5",
+    "terser-webpack-plugin": "^5.3.14",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-merge": "^6.0.1",
+    "yaml": "^2.7.1"
+  }
+}

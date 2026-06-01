@@ -1,0 +1,7 @@
+{%- set _companyName = site.footer.companyName | default(site.title | default("Marbas")) -%}
+<div class="c-footer-intro">
+  <strong class="c-footer-intro__name">{{ _companyName }}</strong>
+  {%- if site.footer.intro %}
+  <p class="c-footer-intro__text">{{ site.footer.intro }}</p>
+  {%- endif %}
+</div>

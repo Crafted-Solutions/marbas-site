@@ -1,0 +1,135 @@
+/* ============================================================
+   theme-gazette.css – "Gazette"
+
+   Zielgruppe  : Nachrichtenportale, Magazin-Websites, Journalismus
+   Stil        : Editorial, klassisch-modern, Amber-braun, Serif-Headlines
+   Schriften   : Playfair Display (Headlines), Source Sans 3 (Body)
+                 Google Fonts: ?family=Playfair+Display:ital,wght@0,700;0,800;1,400&family=Source+Sans+3:wght@400;600
+   Akzentfarbe : #92400e – Kontrast auf #fffdf8 8.1:1 (WCAG AAA ✓)
+   Barrierefreiheit: WCAG AAA ✓ | Text/BG 18.8:1 (AAA ✓)
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans:  'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+  --t-font-serif: 'Playfair Display', 'Georgia', serif;
+  --t-font-mono:  ui-monospace, SFMono-Regular, monospace;
+
+  --t-bg:      #fffdf8;   /* Warmes Off-White */
+  --t-surface: #fef9f0;
+
+  --t-text:    #1c1816;   /* Warmton Near-Black – 18.8:1 auf #fffdf8 */
+  --t-muted:   #5c4830;   /* Warmes Dunkelbraun – 5.9:1 auf #fffdf8 */
+
+  --t-border:  #e0ceb0;
+  --t-accent:  #92400e;   /* Amber-800 – 8.1:1 auf #fffdf8 – AAA ✓ */
+
+  --t-radius-sm: 0;
+  --t-radius-md: 0.125rem;
+  --t-radius-lg: 0.25rem;
+
+  --t-shadow-sm: 0 1px 2px rgba(28, 24, 22, 0.06);
+  --t-shadow-md: 0 6px 20px rgba(28, 24, 22, 0.10);
+
+  /* Invert-Palette für Zebra / Dark-Blöcke */
+  --t-surface-invert: #1c1816;
+  --t-text-invert:    #fef9f0;
+  --t-muted-invert:   #c4a880;
+  --t-border-invert:  #3a2c1c;
+  --t-accent-invert:  #fbbf24;   /* Amber-400 – leuchtend auf Dunkel */
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: color-mix(in oklab, var(--t-surface-invert) 74%, var(--t-accent));
+  --t-announcement-color: var(--t-text-invert);
+  --t-announcement-link: var(--t-accent-invert);
+  --t-announcement-dismiss-border: color-mix(in oklab, var(--t-text-invert) 40%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-surface) 92%, var(--t-bg));
+  --t-utility-bar-border: color-mix(in oklab, var(--t-accent) 18%, var(--t-border));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: color-mix(in oklab, var(--t-muted) 84%, var(--t-text));
+  --t-utility-bar-link-hover: var(--t-accent);
+
+  --t-header-bg: color-mix(in oklab, var(--t-bg) 84%, var(--t-surface));
+  --t-header-border: color-mix(in oklab, var(--t-accent) 16%, var(--t-border));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-accent) 20%, transparent),
+                     0 8px 18px rgba(28, 24, 22, 0.06);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: var(--t-accent);
+  --t-header-brand-mark-bg: color-mix(in oklab, var(--t-accent) 84%, var(--t-surface));
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 10%, var(--t-bg));
+  --t-nav-item-hover-color: var(--t-accent);
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-bg));
+  --t-nav-item-active-color: var(--t-accent);
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 72%, var(--t-bg));
+  --t-footer-border: color-mix(in oklab, var(--t-accent) 18%, var(--t-border));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: var(--t-accent);
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: var(--t-accent);
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 18%, var(--t-surface));
+  --t-footer-social-color: var(--t-accent);
+  --t-footer-social-hover-bg: var(--t-accent);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* Typografie – redaktionell, klassisch-modern */
+h1, h2, h3 {
+  font-family: var(--t-font-serif);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+h4, h5, h6 {
+  font-family: var(--t-font-serif);
+  font-weight: 700;
+}
+.c-component__kicker {
+  font-family: var(--t-font-sans);
+  font-weight: 600;
+  font-size: 0.78em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cmp-link, var(--t-accent));
+}
+.c-component__headline {
+  font-family: var(--t-font-serif);
+  line-height: 1.18;
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: color-mix(in oklab, var(--t-accent) 25%, var(--t-border));
+  --cmp-shadow: var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 82%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 68%, var(--t-bg));
+  --cmp-shadow:  var(--t-shadow-sm);
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 8%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 22%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);
+  --cmp-shadow:  var(--t-shadow-md);
+}

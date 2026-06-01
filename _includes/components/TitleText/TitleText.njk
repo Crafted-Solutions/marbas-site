@@ -1,0 +1,24 @@
+{# TitleText Component - CSS Framework Architecture
+   Data is now in flat format from YAML front matter
+#}
+
+{% set linkText = data.linkText | default("weitere Informationen") %}
+{% set linkAsCta = data.linkAsCta | default(false) %}
+{% set styleClasses = data.classes | default('') | trim %}
+{% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
+
+<article class="c-component c-component--full-width {{ themeClasses | safe }}">
+    {% if data.title %}
+    <h2 class="c-component__headline" {{ lang | getLangAttribute(data.titleCulture) }}>
+        {{ data.title | safe }}
+    </h2>
+    {% endif %}
+    <div class="c-component__text c-richtext" {{ lang | getLangAttribute(data.textCulture) }}>
+        {{ data.text | safe }}
+    </div>
+    {% if data.link %}
+    <div class="c-component__actions" {{ lang | getLangAttribute(data.linkTextCulture) }}>
+        <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %}>{{ linkText }}</a>
+    </div>
+    {% endif %}
+</article>

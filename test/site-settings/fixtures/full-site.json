@@ -1,0 +1,92 @@
+{
+  "title": "Muster GmbH",
+  "logo": {
+    "show": true,
+    "path": "/_assets/images/Logo.png"
+  },
+  "header": {
+    "preset": "brand-nav-actions",
+    "showCompanyName": false,
+    "variant": "compact",
+    "navigationVariant": "pill",
+    "sticky": true,
+    "announcement": {
+      "enabled": true,
+      "id": "spring-2026",
+      "text": "Angebot gültig bis 31. März",
+      "label": "Mehr erfahren",
+      "href": "/angebote/"
+    },
+    "utilityLinks": {
+      "source": "manual",
+      "links": [
+        { "label": "Kontakt", "href": "/kontakt/" }
+      ]
+    },
+    "actions": [
+      { "label": "Angebot anfordern", "href": "/kontakt/", "style": "primary" }
+    ],
+    "mobile": {
+      "drawer": true,
+      "showUtilityLinksInDrawer": false,
+      "showActionsInDrawer": true
+    }
+  },
+  "footer": {
+    "preset": "columns",
+    "variant": "accent",
+    "companyName": "Muster GmbH",
+    "intro": "Wir bauen Websites.",
+    "groups": [
+      {
+        "title": "Unternehmen",
+        "source": "manual",
+        "links": [
+          { "label": "Über uns", "href": "/ueber-uns/" }
+        ]
+      }
+    ],
+    "contact": {
+      "address": {
+        "street": "Musterstraße 1",
+        "zip": "12345",
+        "city": "Musterstadt",
+        "country": "Deutschland"
+      },
+      "phone": "+49 123 456789",
+      "email": "info@muster.de"
+    },
+    "socialLinks": [
+      { "platform": "linkedin", "label": "LinkedIn", "href": "https://linkedin.com/company/muster" }
+    ],
+    "ctaBlock": {
+      "enabled": false,
+      "title": "",
+      "text": "",
+      "label": "",
+      "href": ""
+    },
+    "bottomLinks": {
+      "source": "manual",
+      "links": [
+        { "label": "Impressum", "href": "/impressum/" },
+        { "label": "Datenschutz", "href": "/datenschutz/" }
+      ]
+    },
+    "copyright": "© 2026 Muster GmbH"
+  },
+  "seo": {
+    "siteName": "Muster GmbH",
+    "defaultAuthor": "Muster GmbH",
+    "defaultCopyright": "© 2026 Muster GmbH",
+    "twitterSiteHandle": "muster",
+    "defaultTwitterCreatorHandle": "",
+    "defaultImage": {
+      "src": "/_assets/images/og-default.jpg",
+      "alt": "Muster GmbH",
+      "width": "1200",
+      "height": "630",
+      "type": "image/jpeg"
+    }
+  }
+}

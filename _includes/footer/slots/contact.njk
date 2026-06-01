@@ -1,0 +1,22 @@
+{%- set _contact = site.footer.contact | default({}) -%}
+{%- set _address = _contact.address | default({}) -%}
+{%- set _hasAddress = _address.street or _address.zip or _address.city or _address.country -%}
+{%- set _hasPhone = _contact.phone -%}
+{%- set _hasEmail = _contact.email -%}
+{%- if _hasAddress or _hasPhone or _hasEmail -%}
+<div class="c-footer-contact">
+  {%- if _hasAddress %}
+  <address class="c-footer-contact__address">
+    {%- if _address.street %}<span>{{ _address.street }}</span>{% endif %}
+    {%- if _address.zip or _address.city %}<span>{{ _address.zip | default("") }} {{ _address.city | default("") }}</span>{% endif %}
+    {%- if _address.country %}<span>{{ _address.country }}</span>{% endif %}
+  </address>
+  {%- endif %}
+  {%- if _hasPhone or _hasEmail %}
+  <p class="c-footer-contact__links">
+    {%- if _hasPhone %}<a class="c-footer-contact__phone" href="tel:{{ _contact.phone | replace(' ', '') }}">{{ _contact.phone }}</a>{% endif %}
+    {%- if _hasEmail %}<a class="c-footer-contact__email" href="mailto:{{ _contact.email }}">{{ _contact.email }}</a>{% endif %}
+  </p>
+  {%- endif %}
+</div>
+{%- endif -%}

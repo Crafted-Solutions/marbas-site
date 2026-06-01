@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Editorial Image 3</title>
+  <desc id="desc">Geometric editorial placeholder image.</desc>
+  <rect width="1200" height="800" fill="#3a0ca3"/>
+  <rect x="80" y="80" width="1040" height="640" rx="28" fill="#4361ee"/>
+  <circle cx="360" cy="360" r="160" fill="#4cc9f0"/>
+  <text x="620" y="580" font-family="Arial, sans-serif" font-size="62" fill="#edf2fb">Image 3</text>
+</svg>

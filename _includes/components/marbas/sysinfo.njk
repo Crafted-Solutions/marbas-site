@@ -1,0 +1,11 @@
+{% set dataSysConfig =  "json" | marbasSystemInfo %}
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">Marbas Sysinfo</h3>
+        <div><span class="label">Name: </span>{{dataSysConfig.name}}</div>
+        <div><span class="label">Description: </span>{{dataSysConfig.description}}</div>
+        <div><span class="label">Version: </span>{{dataSysConfig.version}}</div>
+        <div><span class="label">Schema Version: </span>{{dataSysConfig.schemaVersion}}</div>
+    </div>
+    {{dataSysConfig | stringify}}
+</div>

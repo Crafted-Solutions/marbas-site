@@ -1,0 +1,15 @@
+{%- if site.header.announcement.enabled and site.header.announcement.text -%}
+<div class="c-announcement" role="region" aria-label="Ankündigung" data-announcement-id="{{ site.header.announcement.id }}">
+  <div class="c-container c-announcement__inner">
+    <p class="c-announcement__text">
+      {{ site.header.announcement.text }}
+      {%- if site.header.announcement.label and site.header.announcement.href %}
+      <a class="c-announcement__link" href="{{ site.header.announcement.href }}">{{ site.header.announcement.label }}</a>
+      {%- endif %}
+    </p>
+    <button class="c-announcement__dismiss" type="button" aria-label="Ankündigung schließen">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+</div>
+{%- endif -%}

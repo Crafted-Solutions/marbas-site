@@ -1,0 +1,38 @@
+{%- if site.footer.groups and (site.footer.groups | length) > 0 -%}
+<div class="c-footer-groups">
+  {%- for group in site.footer.groups %}
+  <div class="c-footer-group">
+    {%- if group.title %}
+    <p class="c-footer-group__title">{{ group.title }}</p>
+    {%- endif %}
+    {%- if group.source == "tagCollection" %}
+    {%- set _groupPages = [] %}
+    {%- for tag in group.tags %}
+      {%- set _tagPages = collections[tag] | default([]) %}
+      {%- set _groupPages = (_groupPages.concat(_tagPages)) %}
+    {%- endfor %}
+    <nav aria-label="{{ group.title }}">
+      <ul class="c-footer-group__list">
+        {%- for item in _groupPages | slice(0, group.limit | default(10)) %}
+        <li><a class="c-footer-group__link" href="{{ item.url }}">{{ item.data.title | default(item.fileSlug) }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    {%- elif group.links and (group.links | length) > 0 %}
+    <nav aria-label="{{ group.title }}">
+      <ul class="c-footer-group__list">
+        {%- for link in group.links %}
+        <li>
+          <a class="c-footer-group__link"
+             href="{{ link.href }}"
+             {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel }}"{% endif %}
+             {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+        </li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    {%- endif %}
+  </div>
+  {%- endfor %}
+</div>
+{%- endif -%}

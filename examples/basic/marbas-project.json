@@ -1,0 +1,22 @@
+{
+  "name": "marbas-basic-example",
+  "description": "Beispielprojekt für marbas-site",
+  "marbasSite": "0.0.1",
+  "paths": {
+    "buildDir": "./build"
+  },
+  "defaultEnvironment": "development",
+  "environments": {
+    "development": {
+      "outputName": "development",
+      "env": {}
+    },
+    "staging": {
+      "outputName": "staging",
+      "env": {
+        "BASE_URL": "https://example.com"
+      }
+    }
+  },
+  "deployTargets": {}
+}

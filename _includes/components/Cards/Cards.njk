@@ -1,0 +1,51 @@
+{# Cards Component - CSS Framework Architecture
+   Displays a responsive grid of cards with headline, image, body, and link
+#}
+
+<section class="c-cards {{ data.classes | default('') | safe }}" {{ "aria-label" | htmlAttribute(data.ariaLabelHeadline) | safe }}>
+
+    {# Optional section headline #}
+    {% if data.headline %}
+    <h2 class="c-cards__headline" {{ lang | getLangAttribute(data.headlineCulture) }}>
+        {{ data.headline | safe }}
+    </h2>
+    {% endif %}
+
+    {# Cards grid #}
+    {% set colClass = "c-cols-lg-" + (data.columns | default(3)) %}
+    <div class="c-grid c-grid--cards c-cols-1 c-cols-md-2 {{ colClass }}">
+        {% for card in data.cards %}
+        {% set cardImageData = card.image | processLocalImage({"sizes":[12,12,6,4,4,4], "placeholder_sizes":placeholder_sizes}) if card.image %}
+
+        <article class="c-component c-component--media-top">
+            {% if card.image %}
+            <div class="c-component__media">
+                {{ cardImageData.html | safe }}
+            </div>
+            {% endif %}
+
+            <div class="c-component__body">
+                {% if card.headline %}
+                <h3 class="c-component__headline" {{ lang | getLangAttribute(card.headlineCulture) }}>
+                    {{ card.headline | safe }}
+                </h3>
+                {% endif %}
+
+                {% if card.body %}
+                <div class="c-component__text c-richtext" {{ lang | getLangAttribute(card.bodyCulture) }}>
+                    {{ card.body | safe }}
+                </div>
+                {% endif %}
+
+                {% if card.link %}
+                <div class="c-component__actions">
+                    <a href="{{ card.link | locale_url }}"{% if card.linkAsCta %} class="c-btn"{% endif %} {{ "aria-label" | htmlAttribute(card.linkAriaLabel) | safe }} {{ lang | getLangAttribute(card.linkCulture) }}>
+                        {{ card.linkText | default("More") | safe }}
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>

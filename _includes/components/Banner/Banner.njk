@@ -1,0 +1,21 @@
+{# Banner Component - CSS Framework Architecture
+   Data is now in flat format from YAML front matter
+   Images are local files processed with eleventy-img
+#}
+
+{# Process local image file #}
+{% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
+
+<section class="c-banner {{ data.classes | default('') | safe }}">
+    {% if data.link %}
+    <a href="{{ data.link | locale_url }}" {{ "aria-label" | htmlAttribute(data.linkAriaLabel) | safe }} class="c-banner__link">
+        <div class="c-banner__media">
+            {{ imageData.html | safe }}
+        </div>
+    </a>
+    {% else %}
+    <div class="c-banner__media">
+        {{ imageData.html | safe }}
+    </div>
+    {% endif %}
+</section>

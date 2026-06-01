@@ -1,0 +1,7 @@
+{%- if site.header.actions and (site.header.actions | length) > 0 -%}
+<div class="c-header-actions">
+  {%- for action in site.header.actions %}
+  <a class="c-btn c-btn--{{ action.style | default('primary') }}" href="{{ action.href }}">{{ action.label }}</a>
+  {%- endfor %}
+</div>
+{%- endif -%}

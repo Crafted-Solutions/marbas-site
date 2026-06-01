@@ -1,0 +1,84 @@
+{# @name: Seitenlayout (Basis) #}
+{# @description: Globales HTML-Layout mit Header, Content und Footer. #}
+{# @category: layout #}
+
+<!DOCTYPE html>
+<html lang="{{pageLanguage}}">
+
+{% set dlang = defaultLanguage %}
+
+  <head>
+    <base href="">
+    {% siteMeta %}
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png"><!-- 180×180 -->
+
+    {% siteHeadAssets %}
+  </head>
+
+  <body class="c-page">
+    <div class="c-container">
+      {% if buildConfig.useLanguageSwitcher %}
+      <div class="c-language-switcher">
+        <language-switcher default-language="{{dlang}}" languages='{{websiteLanguages}}'></language-switcher>
+      </div>
+      {% endif %}
+
+      {% siteHeader %}
+
+      {% set hasHeroInPage = false %}
+      {% set hasHeroAsFirstInHero = false %}
+      {% if Placeholder_Hero and (Placeholder_Hero | length) > 0 %}
+        {% if Placeholder_Hero[0].componentType == "Hero" %}
+          {% set hasHeroAsFirstInHero = true %}
+        {% endif %}
+        {% for item in Placeholder_Hero %}
+          {% if item.componentType == "Hero" %}
+            {% set hasHeroInPage = true %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      {% if not hasHeroInPage %}
+        {% if Placeholder_Main and (Placeholder_Main | length) > 0 %}
+          {% for item in Placeholder_Main %}
+            {% if item.componentType == "Hero" %}
+              {% set hasHeroInPage = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% if Placeholder_Aside_1 and (Placeholder_Aside_1 | length) > 0 %}
+          {% for item in Placeholder_Aside_1 %}
+            {% if item.componentType == "Hero" %}
+              {% set hasHeroInPage = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% if Placeholder_Aside_2 and (Placeholder_Aside_2 | length) > 0 %}
+          {% for item in Placeholder_Aside_2 %}
+            {% if item.componentType == "Hero" %}
+              {% set hasHeroInPage = true %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      {% endif %}
+      <main id="main-content" class="c-main">
+        <div class="c-container">
+          {% set hasPageTitle = (title | default('') | trim) != '' %}
+          {% if hasPageTitle and not hasHeroInPage %}
+          <div class="c-section--top-only">
+            <div class="c-component c-component--secondary">
+              <h1 class="c-component__headline">{{ title }}</h1>
+            </div>
+          </div>
+          {% endif %}
+          {{ content | safe }}
+        </div>
+      </main>
+
+      {% siteFooter %}
+    </div>
+
+  </body>
+
+</html>

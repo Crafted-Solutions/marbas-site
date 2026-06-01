@@ -1,0 +1,20 @@
+{
+  "_comment": "Allow-list for expected divergences between two sequential builds of the same fixture. Each entry documents WHY the divergence is acceptable.",
+  "patterns": [
+    {
+      "glob": ".marbas/**",
+      "reason": "Internal build-context workspace — contains symlinks regenerated per build. Not part of the delivered output.",
+      "addedAt": "2026-05-22"
+    },
+    {
+      "glob": "**/.eleventy-cache/**",
+      "reason": "Eleventy image processing cache — regenerated on each build with internal timestamps.",
+      "addedAt": "2026-05-22"
+    },
+    {
+      "glob": "**/img/**",
+      "reason": "Eleventy-img generates responsive images with content-addressed filenames that may vary due to cache state.",
+      "addedAt": "2026-05-22"
+    }
+  ]
+}

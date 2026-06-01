@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" role="img" aria-labelledby="title desc">
+  <title id="title">Gallery Image 2</title>
+  <desc id="desc">Gallery placeholder image with abstract cards.</desc>
+  <rect width="1000" height="700" fill="#14213d"/>
+  <rect x="120" y="120" width="760" height="460" rx="24" fill="#1f6f8b"/>
+  <rect x="200" y="200" width="200" height="300" rx="18" fill="#99a8b2"/>
+  <rect x="430" y="200" width="200" height="300" rx="18" fill="#e6d5b8"/>
+  <rect x="660" y="200" width="140" height="300" rx="18" fill="#fca311"/>
+  <text x="120" y="80" font-family="Arial, sans-serif" font-size="52" fill="#fefefe">Gallery 2</text>
+</svg>

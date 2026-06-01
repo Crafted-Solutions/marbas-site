@@ -1,0 +1,24 @@
+{#
+  placeholder.njk
+
+  Renders a list of component blocks for one placeholder slot.
+  Path resolution is project-first: if the project has a matching
+  _components/<Type>/<Type>.njk, that file takes precedence over the
+  lib built-in. This is the eject/override mechanism for components.
+#}
+
+{% for item in placeholderData %}
+  {% if item.componentType %}
+    {% set resolvedPath = item.componentType | resolveComponentTemplatePath %}
+    {% set componentData = {
+      data: item,
+      lang: lang,
+      placeholder_sizes: placeholderSizes
+    } %}
+    {% if resolvedPath %}
+      {% renderFile resolvedPath, componentData %}
+    {% else %}
+      {% renderMissingComponent item.componentType, placeholderName, page.inputPath or page.url or '', env.environment %}
+    {% endif %}
+  {% endif %}
+{% endfor %}

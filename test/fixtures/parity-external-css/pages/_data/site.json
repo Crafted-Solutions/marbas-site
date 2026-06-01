@@ -1,0 +1,39 @@
+{
+  "title": "Parity External CSS",
+  "logo": { "show": false, "path": "" },
+  "header": {
+    "preset": "brand-nav",
+    "showCompanyName": true,
+    "variant": "default",
+    "navigationVariant": "default",
+    "sticky": false,
+    "announcement": { "enabled": false, "id": "", "text": "", "label": "", "href": "" },
+    "utilityLinks": { "source": "manual", "links": [] },
+    "actions": [],
+    "mobile": { "drawer": true, "showUtilityLinksInDrawer": true, "showActionsInDrawer": true }
+  },
+  "footer": {
+    "preset": "simple",
+    "variant": "default",
+    "companyName": "Parity External CSS",
+    "intro": "",
+    "groups": [],
+    "contact": {
+      "address": { "street": "", "zip": "", "city": "", "country": "" },
+      "phone": "",
+      "email": ""
+    },
+    "socialLinks": [],
+    "ctaBlock": { "enabled": false, "title": "", "text": "", "label": "", "href": "" },
+    "bottomLinks": { "source": "manual", "links": [] },
+    "copyright": "© 2026 Parity External CSS"
+  },
+  "seo": {
+    "defaultAuthor": "",
+    "defaultCopyright": "",
+    "siteName": "Parity External CSS",
+    "twitterSiteHandle": "",
+    "defaultTwitterCreatorHandle": "",
+    "defaultImage": { "src": "", "alt": "", "width": "", "height": "", "type": "" }
+  }
+}

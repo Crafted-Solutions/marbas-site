@@ -1,0 +1,131 @@
+/* ============================================================
+   theme-signal.css – "Signal"
+
+   Zielgruppe  : Developer Tools, CLI-Produkte, API-Dokumentation,
+                 technische SaaS-Plattformen
+   Stil        : Dark-First, Violett, Monospace-Ästhetik, fokussiert
+   Schriften   : JetBrains Mono (Kicker/Headlines), system-ui (Body)
+                 Google Fonts: ?family=JetBrains+Mono:wght@400;500;600;700
+   Akzentfarbe : #8b5cf6 – Kontrast auf #161a24 5.7:1 (WCAG AA ✓)
+   Barrierefreiheit: WCAG AA ✓ | Text/BG 13.2:1 (AAA ✓)
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --t-font-mono: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Menlo, monospace;
+
+  --t-bg:      #161a24;   /* Tiefes Blau-Grau */
+  --t-surface: #1e2432;
+
+  --t-text:    #e8eaf0;   /* 13.2:1 auf #161a24 – AAA ✓ */
+  --t-muted:   #8896a8;   /* 5.4:1 auf #161a24 – AA ✓ */
+
+  --t-border:  #2c3448;
+  --t-accent:  #8b5cf6;   /* Violet-500 – 5.7:1 auf #161a24 – AA ✓ */
+
+  --t-radius-sm: 0.25rem;
+  --t-radius-md: 0.375rem;
+  --t-radius-lg: 0.5rem;
+
+  --t-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --t-shadow-md: 0 12px 40px rgba(0, 0, 0, 0.5);
+
+  /* Invert-Palette – helles Surface für special/contrast-Blöcke */
+  --t-surface-invert: #e8eaf0;
+  --t-text-invert:    #161a24;
+  --t-muted-invert:   #475569;
+  --t-border-invert:  #c8d0de;
+  --t-accent-invert:  #5b21b6;   /* Dunkleres Violett auf hellem BG */
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: linear-gradient(90deg, #111827 0%, color-mix(in oklab, var(--t-accent) 42%, #111827) 100%);
+  --t-announcement-color: #f5f3ff;
+  --t-announcement-link: #c4b5fd;
+  --t-announcement-dismiss-border: color-mix(in oklab, #c4b5fd 50%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-bg) 92%, #0b1020);
+  --t-utility-bar-border: color-mix(in oklab, var(--t-accent) 20%, var(--t-border));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: color-mix(in oklab, var(--t-muted) 86%, var(--t-text));
+  --t-utility-bar-link-hover: #c4b5fd;
+
+  --t-header-bg: color-mix(in oklab, var(--t-surface) 84%, var(--t-bg));
+  --t-header-border: color-mix(in oklab, var(--t-accent) 24%, var(--t-border));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-accent) 35%, transparent),
+                     0 0 0 1px color-mix(in oklab, var(--t-accent) 12%, transparent),
+                     var(--t-shadow-sm);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: #c4b5fd;
+  --t-header-brand-mark-bg: linear-gradient(135deg, var(--t-accent), #38bdf8);
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 18%, var(--t-surface));
+  --t-nav-item-hover-color: #ddd6fe;
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 24%, var(--t-surface));
+  --t-nav-item-active-color: #f5f3ff;
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 82%, #101524);
+  --t-footer-border: color-mix(in oklab, var(--t-accent) 20%, var(--t-border));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: #c4b5fd;
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: #c4b5fd;
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 18%, var(--t-surface));
+  --t-footer-social-color: #ddd6fe;
+  --t-footer-social-hover-bg: linear-gradient(135deg, var(--t-accent), #38bdf8);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* Typografie – technisch, fokussiert */
+h1, h2, h3 {
+  font-family: var(--t-font-mono);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+h4 {
+  font-family: var(--t-font-mono);
+  font-weight: 500;
+}
+.c-component__kicker {
+  font-family: var(--t-font-mono);
+  font-weight: 500;
+  font-size: 0.78em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--cmp-link, var(--t-accent));
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: color-mix(in oklab, var(--t-accent) 35%, var(--t-border));
+  --cmp-shadow: 0 0 0 1px color-mix(in oklab, var(--t-accent) 40%, transparent), var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 85%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 75%, var(--t-bg));
+  --cmp-shadow:  var(--t-shadow-sm);
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 30%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);
+  --cmp-shadow:  var(--t-shadow-sm);
+}

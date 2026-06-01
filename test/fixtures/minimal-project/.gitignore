@@ -1,0 +1,6 @@
+node_modules/
+build/
+_webpack/
+.marbas/trash/
+.marbas/build-context/
+.marbas/migration-backup/

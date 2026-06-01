@@ -1,0 +1,28 @@
+{# @name: Footer (Legacy) #}
+{# @description: Footer-Rendering über Placeholder und Footer-Navigation. #}
+{# @category: footer #}
+
+{% set footerVariant = "default" %}
+{% if site and site.footer and site.footer.variant %}
+  {% set footerVariant = site.footer.variant %}
+{% endif %}
+
+<footer class="c-footer{% if footerVariant and footerVariant != 'default' %} c-footer--{{ footerVariant }}{% endif %}">
+  <div class="c-container c-footer__inner c-cols-1 c-cols-md-2">
+
+    <div class="c-footer__content">
+      {% set placeholderData = Placeholder_Footer %}
+      {% set lang = pageLanguage %}
+      {% set placeholderSizes = [12,12,12,12,12,12] %}
+      {% include "./placeholder.njk" %}
+    </div>
+
+    <div class="c-footer__nav">
+      {% set navPagesFiltered = collections.footer | filterCollectionByLanguage(pageLanguage) %}
+      <nav class="c-footer-nav">
+        {{ navPagesFiltered | eleventyNavigation | eleventyNavigationToHtml | safe }}
+      </nav>
+    </div>
+
+  </div>
+</footer>

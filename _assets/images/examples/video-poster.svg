@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Video Poster</title>
+  <desc id="desc">Poster image with a play button for the video component.</desc>
+  <rect width="1280" height="720" fill="#0f172a"/>
+  <rect x="120" y="100" width="1040" height="520" rx="28" fill="#1e293b"/>
+  <circle cx="640" cy="360" r="110" fill="#f8fafc" opacity="0.9"/>
+  <polygon points="600,300 600,420 705,360" fill="#0f172a"/>
+  <text x="170" y="180" font-family="Arial, sans-serif" font-size="56" fill="#f8fafc">Video Component Demo</text>
+</svg>

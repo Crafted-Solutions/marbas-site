@@ -1,0 +1,16 @@
+{%- set _cta = site.footer.ctaBlock | default({}) -%}
+{%- if _cta.enabled and _cta.title -%}
+<div class="c-footer-cta">
+  <div class="c-container c-footer-cta__inner">
+    <div class="c-footer-cta__content">
+      <p class="c-footer-cta__title">{{ _cta.title }}</p>
+      {%- if _cta.text %}
+      <p class="c-footer-cta__text">{{ _cta.text }}</p>
+      {%- endif %}
+    </div>
+    {%- if _cta.label and _cta.href %}
+    <a class="c-btn c-btn--primary c-footer-cta__btn" href="{{ _cta.href }}">{{ _cta.label }}</a>
+    {%- endif %}
+  </div>
+</div>
+{%- endif -%}
