@@ -16,9 +16,10 @@ const DEFAULT_LIB_ROOT = path.resolve(__dirname, '../..');
  */
 export function addLibAssetsPassthrough(eleventyConfig, { libRoot = DEFAULT_LIB_ROOT } = {}) {
   eleventyConfig.addPassthroughCopy({
-    [path.join(libRoot, '_assets/css/_lib')]: '_assets/css/_lib',
-    [path.join(libRoot, '_assets/js/_lib')]: '_assets/js/_lib',
-    [path.join(libRoot, '_assets/images/examples')]: '_assets/images/examples'
+    [path.join(libRoot, '_assets/css/base.full.css')]:     '_assets/css/base.full.css',
+    [path.join(libRoot, '_assets/css/base.full.min.css')]: '_assets/css/base.full.min.css',
+    [path.join(libRoot, '_assets/js/_lib')]:               '_assets/js/_lib',
+    [path.join(libRoot, '_assets/images/examples')]:       '_assets/images/examples'
   });
 }
 
