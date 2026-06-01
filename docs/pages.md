@@ -63,16 +63,46 @@ seoImage:
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `topNavigation` | boolean | `false` | Include this page in the top navigation bar. |
+| `tags` | array | `[]` | Must include `menu` for the page to appear in the navigation. |
 | `navigation.key` | string | — | Unique key for this page in the navigation tree. Used as `parent` reference by child pages. |
 | `navigation.title` | string | value of `title` | Navigation label. Overrides the page title in menus. |
 | `navigation.parent` | string | — | `key` of the parent page. Creates a nested navigation item. |
 | `navigation.order` | number | `0` | Sort order within the same navigation level. Lower numbers appear first. |
+| `eleventyNavigation.key` | string | — | Same as `navigation.key` — required by the Eleventy Navigation plugin. |
+| `eleventyNavigation.title` | string | — | Same as `navigation.title`. |
+| `eleventyNavigation.parent` | string | — | Same as `navigation.parent`. |
+| `eleventyNavigation.order` | number | `0` | Same as `navigation.order`. |
+
+To show a page in the top navigation, set **all three**: `topNavigation: true`, `tags: [menu]`, and `eleventyNavigation`. The `navigation` and `eleventyNavigation` blocks hold the same values — `navigation` is used by the CMS editor, `eleventyNavigation` by the Eleventy Navigation plugin at build time.
 
 ```yaml
+topNavigation: true
+tags: [menu]
 navigation:
   key: services
-  title: Our Services
+  title: Services
   order: 2
+eleventyNavigation:
+  key: services
+  title: Services
+  order: 2
+```
+
+For nested navigation (dropdown), set `parent` to the `key` of the parent page:
+
+```yaml
+topNavigation: true
+tags: [menu]
+navigation:
+  key: web-design
+  title: Web Design
+  parent: services
+  order: 1
+eleventyNavigation:
+  key: web-design
+  title: Web Design
+  parent: services
+  order: 1
 ```
 
 ## Layouts
@@ -187,7 +217,12 @@ seoTitle: About Our Team — Acme Corp
 seoDescription: Learn about the people behind Acme Corp and our mission.
 pageLanguage: en
 topNavigation: true
+tags: [menu]
 navigation:
+  key: about
+  title: About
+  order: 3
+eleventyNavigation:
   key: about
   title: About
   order: 3
