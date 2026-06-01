@@ -24,22 +24,43 @@ title: Willkommen
 # Willkommen bei deinem neuen Marbas-Projekt
 `;
 
+const STARTER_PAGES_DIR = path.join(__dirname, 'starter', 'pages');
+
+function copyStarterPages(targetPagesDir) {
+  const stack = [{ src: STARTER_PAGES_DIR, dest: targetPagesDir }];
+  while (stack.length > 0) {
+    const { src, dest } = stack.pop();
+    fs.mkdirSync(dest, { recursive: true });
+    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+      if (entry.isDirectory()) {
+        stack.push({ src: srcPath, dest: destPath });
+      } else if (entry.name !== '_data') {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+  }
+}
+
 /**
- * Initialise a new, minimal Marbas project at projectPath.
+ * Initialise a new Marbas project at projectPath.
  *
  * @param {object} options
- * @param {string} options.projectPath         Target directory (must not exist unless force)
- * @param {string} [options.name]              Project name (defaults to directory basename)
- * @param {string} [options.description]       Optional description
+ * @param {string} options.projectPath          Target directory (must not exist unless force)
+ * @param {string} [options.name]               Project name (defaults to directory basename)
+ * @param {string} [options.description]        Optional description
  * @param {string} [options.defaultEnvironment] Default build environment (default: "development")
- * @param {boolean} [options.force]            Overwrite if directory already exists
+ * @param {boolean} [options.force]             Overwrite if directory already exists
+ * @param {boolean} [options.starter]           Copy starter pages with example components
  */
 export function initProject({
   projectPath,
   name,
   description = '',
   defaultEnvironment = 'development',
-  force = false
+  force = false,
+  starter = false
 } = {}) {
   const absPath = path.resolve(projectPath);
   const projectName = name || path.basename(absPath);
@@ -97,8 +118,12 @@ export function initProject({
     JSON.stringify(siteSettings, null, 2) + '\n'
   );
 
-  // pages/index.md
-  fs.writeFileSync(path.join(absPath, 'pages', 'index.md'), INDEX_PAGE);
+  // pages/index.md — starter copies example pages, minimal writes a blank index
+  if (starter) {
+    copyStarterPages(path.join(absPath, 'pages'));
+  } else {
+    fs.writeFileSync(path.join(absPath, 'pages', 'index.md'), INDEX_PAGE);
+  }
 
   // .gitignore
   fs.writeFileSync(path.join(absPath, '.gitignore'), GITIGNORE);
