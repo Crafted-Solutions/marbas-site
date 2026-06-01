@@ -16,9 +16,9 @@ export const COMMANDS = [
   {
     name: 'init',
     description: 'Create a new Marbas project',
-    usage: 'marbas-site init <path> [--name=<name>] [--env=<name>] [--force]',
+    usage: 'marbas-site init <path> [--name=<name>] [--env=<name>] [--force] [--starter]',
     positionals: ['path'],
-    flags: ['--name=<name>', '--env=<name>', '--force'],
+    flags: ['--name=<name>', '--env=<name>', '--force', '--starter'],
     run({ projectPath, flags }) {
       if (!projectPath) {
         process.stderr.write('Usage: marbas-site init <path>\n');
@@ -30,9 +30,11 @@ export const COMMANDS = [
           name: flags.name || '',
           description: flags.description || '',
           defaultEnvironment: flags.env || 'development',
-          force: Boolean(flags.force)
+          force: Boolean(flags.force),
+          starter: Boolean(flags.starter)
         });
-        process.stdout.write(`Project initialised at ${projectPath}\n`);
+        const mode = flags.starter ? 'starter project' : 'project';
+        process.stdout.write(`Project initialised at ${projectPath} (${mode})\n`);
       } catch (err) {
         process.stderr.write(`${err.message}\n`);
         process.exit(1);

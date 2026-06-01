@@ -63,16 +63,46 @@ seoImage:
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `topNavigation` | boolean | `false` | Include this page in the top navigation bar. |
+| `tags` | array | `[]` | Must include `menu` for the page to appear in the navigation. |
 | `navigation.key` | string | — | Unique key for this page in the navigation tree. Used as `parent` reference by child pages. |
 | `navigation.title` | string | value of `title` | Navigation label. Overrides the page title in menus. |
 | `navigation.parent` | string | — | `key` of the parent page. Creates a nested navigation item. |
 | `navigation.order` | number | `0` | Sort order within the same navigation level. Lower numbers appear first. |
+| `eleventyNavigation.key` | string | — | Same as `navigation.key` — required by the Eleventy Navigation plugin. |
+| `eleventyNavigation.title` | string | — | Same as `navigation.title`. |
+| `eleventyNavigation.parent` | string | — | Same as `navigation.parent`. |
+| `eleventyNavigation.order` | number | `0` | Same as `navigation.order`. |
+
+To show a page in the top navigation, set **all three**: `topNavigation: true`, `tags: [menu]`, and `eleventyNavigation`. The `navigation` and `eleventyNavigation` blocks hold the same values — `navigation` is used by the CMS editor, `eleventyNavigation` by the Eleventy Navigation plugin at build time.
 
 ```yaml
+topNavigation: true
+tags: [menu]
 navigation:
   key: services
-  title: Our Services
+  title: Services
   order: 2
+eleventyNavigation:
+  key: services
+  title: Services
+  order: 2
+```
+
+For nested navigation (dropdown), set `parent` to the `key` of the parent page:
+
+```yaml
+topNavigation: true
+tags: [menu]
+navigation:
+  key: web-design
+  title: Web Design
+  parent: services
+  order: 1
+eleventyNavigation:
+  key: web-design
+  title: Web Design
+  parent: services
+  order: 1
 ```
 
 ## Layouts
@@ -88,7 +118,7 @@ The `layout` field controls which column structure is used and which placeholder
 
 ## Placeholders and components in front matter
 
-Components are placed inside named placeholders directly in the front matter. Each placeholder holds a list of component blocks. Each block has a `_type` that identifies the component and an `id` that must be unique within the page.
+Components are placed inside named placeholders directly in the front matter. Each placeholder holds a list of component blocks. Each block has a `componentType` that identifies the component and an `id` that must be unique within the page.
 
 ```yaml
 ---
@@ -96,7 +126,7 @@ layout: content_2col_main_left.njk
 title: Homepage
 
 Placeholder_Hero:
-  - _type: Hero
+  - componentType: Hero
     id: hero-main
     title: Welcome to Our Site
     text: "<p>We build great things.</p>"
@@ -105,7 +135,7 @@ Placeholder_Hero:
       alt: Team at work
 
 Placeholder_Main:
-  - _type: TextMedia
+  - componentType: TextMedia
     id: intro-block
     title: What we do
     text: We design and build digital products.
@@ -113,7 +143,7 @@ Placeholder_Main:
     image:
       src: /_media/what-we-do.jpg
       alt: Design process
-  - _type: Cards
+  - componentType: Cards
     id: services-cards
     headline: Our Services
     columns: 3
@@ -128,7 +158,7 @@ Placeholder_Main:
         linkText: Learn more
 
 Placeholder_Aside_1:
-  - _type: Banner
+  - componentType: Banner
     id: cta-sidebar
     link: /contact/
     image:
@@ -187,14 +217,19 @@ seoTitle: About Our Team — Acme Corp
 seoDescription: Learn about the people behind Acme Corp and our mission.
 pageLanguage: en
 topNavigation: true
+tags: [menu]
 navigation:
+  key: about
+  title: About
+  order: 3
+eleventyNavigation:
   key: about
   title: About
   order: 3
 robotsNoIndex: false
 
 Placeholder_Hero:
-  - _type: Hero
+  - componentType: Hero
     id: about-hero
     title: Meet the team
     text: "<p>We are a small team with big ambitions.</p>"
@@ -203,7 +238,7 @@ Placeholder_Hero:
       alt: The Acme team in the office
 
 Placeholder_Main:
-  - _type: TextMedia
+  - componentType: TextMedia
     id: mission
     title: Our mission
     text: We believe in open, accessible web experiences for everyone.
@@ -213,7 +248,7 @@ Placeholder_Main:
       alt: Team whiteboarding
 
 Placeholder_Aside_1:
-  - _type: Banner
+  - componentType: Banner
     id: contact-cta
     link: /contact/
     image:

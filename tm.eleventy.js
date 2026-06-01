@@ -33,6 +33,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(metagen);
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
 
+
   // Read locale config from site.json; fall back to single-language default
   let localeConfig = null;
   try {

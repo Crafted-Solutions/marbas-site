@@ -48,11 +48,21 @@ Until the package is published to npm, install directly from GitHub:
 npm install -g github:Crafted-Solutions/marbas-site
 ```
 
-Or use it without installing:
+---
+
+## Try it without a global install
+
+No global install needed — just a project directory:
 
 ```bash
-npx @crafted.solutions/marbas-site init my-site
+mkdir my-site && cd my-site
+npm install github:Crafted-Solutions/marbas-site
+npx marbas-site init . --starter
+npx marbas-site build . --env=development
+npx marbas-site preview . --env=development
 ```
+
+`--starter` creates a ready-to-go project with example pages and components so you can see a styled site immediately. Drop it once you start building your own content.
 
 ---
 
@@ -61,6 +71,9 @@ npx @crafted.solutions/marbas-site init my-site
 ```bash
 # Create a new project
 marbas-site init my-site
+
+# Or with example pages and components to explore right away
+marbas-site init my-site --starter
 
 # Build it
 marbas-site build my-site --env=development
@@ -88,7 +101,7 @@ The build output lands in `my-site/build/public_development/` (or `public_<env>/
 
 | Command | Description |
 |---------|-------------|
-| `marbas-site init <path>` | Create a new project at `<path>` |
+| `marbas-site init <path>` | Create a new project at `<path>`. Add `--starter` for example pages and components. |
 | `marbas-site build <path> --env=<name>` | Build the project for the given environment |
 | `marbas-site preview <path> --env=<name>` | Start a live-preview server (Eleventy + Webpack watch) |
 | `marbas-site deploy <path> --env=<name>` | Deploy to the configured target for the given environment |
