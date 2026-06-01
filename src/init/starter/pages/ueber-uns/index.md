@@ -3,7 +3,12 @@ layout: base
 title: Über uns
 pageLanguage: de
 topNavigation: true
+tags: [menu]
 navigation:
+  key: ueber-uns
+  title: Über uns
+  order: 2
+eleventyNavigation:
   key: ueber-uns
   title: Über uns
   order: 2

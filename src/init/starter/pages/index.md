@@ -3,7 +3,12 @@ layout: base
 title: Willkommen
 pageLanguage: de
 topNavigation: true
+tags: [menu]
 navigation:
+  key: home
+  title: Home
+  order: 1
+eleventyNavigation:
   key: home
   title: Home
   order: 1
