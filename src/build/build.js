@@ -81,7 +81,7 @@ export async function build({ projectPath, environment = 'development', libRoot,
   }
 
   const siteSettings = readSiteSettings(absProject, config);
-  const themeId = siteSettings?.theme?.id;
+  const themeId = siteSettings?.site?.theme?.id;
   if (themeId) {
     try {
       const themeSrcPath = resolveThemeFile({ projectPath: absProject, themeId, libRoot: absLib });
