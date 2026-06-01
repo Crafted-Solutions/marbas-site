@@ -48,7 +48,15 @@ export default function (eleventyConfig) {
     localeConfig = { defaultLanguage: 'de', languages: [{ code: 'de', label: 'Deutsch' }] };
   }
 
-  registerWithEleventy(eleventyConfig, { publishFolder: '', domain: '', localeConfig });
+  // Resolve output path early so image processing writes into the build output dir.
+  let publishFolder = '';
+  try {
+    const projectConfig = readProjectConfig(projectRoot);
+    const absOutput = resolveBuildOutputPath({ projectRoot, config: projectConfig, environment });
+    publishFolder = path.relative(projectRoot, absOutput);
+  } catch { /* fallback to empty — images land in ./images/ */ }
+
+  registerWithEleventy(eleventyConfig, { publishFolder, domain: '', localeConfig });
 
   // Absolute path to lib _includes/ — used by renderFile shortcodes in templates
   const libIncludesDir = path.join(LIB_ROOT, '_includes');

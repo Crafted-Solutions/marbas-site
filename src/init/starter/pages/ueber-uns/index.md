@@ -22,6 +22,7 @@ Placeholder_Hero:
     image:
       src: /_assets/images/starter-feature-left.jpg
       alt: Über uns
+      originalId: starter-feature-left-ueber
     invertTextColor: false
     showContentBox: true
 Placeholder_Main:
@@ -33,6 +34,7 @@ Placeholder_Main:
     image:
       src: /_assets/images/starter-feature-right.jpg
       alt: Unser Team
+      originalId: starter-feature-right-team
   - componentType: TextMedia
     id: unsere-mission
     title: Unsere Mission

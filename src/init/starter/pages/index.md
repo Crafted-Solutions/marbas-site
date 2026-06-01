@@ -22,6 +22,7 @@ Placeholder_Hero:
     image:
       src: /_assets/images/starter-hero.jpg
       alt: Willkommensbild
+      originalId: starter-hero
     flushNav: false
     invertTextColor: false
     showContentBox: true
@@ -34,6 +35,7 @@ Placeholder_Main:
     image:
       src: /_assets/images/starter-feature-left.jpg
       alt: Feature-Bild
+      originalId: starter-feature-left
   - componentType: Cards
     id: leistungen
     headline: Unsere Leistungen
@@ -44,6 +46,7 @@ Placeholder_Main:
         image:
           src: /_assets/images/starter-card-content.svg
           alt: Leistung 1
+          originalId: starter-card-1
         link: "#"
         linkText: Mehr erfahren
         linkAsCta: false
@@ -52,6 +55,7 @@ Placeholder_Main:
         image:
           src: /_assets/images/starter-card-content.svg
           alt: Leistung 2
+          originalId: starter-card-2
         link: "#"
         linkText: Mehr erfahren
         linkAsCta: false
@@ -60,6 +64,7 @@ Placeholder_Main:
         image:
           src: /_assets/images/starter-card-content.svg
           alt: Leistung 3
+          originalId: starter-card-3
         link: "#"
         linkText: Mehr erfahren
         linkAsCta: false
@@ -70,6 +75,7 @@ Placeholder_Main:
     image:
       src: /_assets/images/starter-feature-right.jpg
       alt: Banner-Bild
+      originalId: starter-feature-right
     link: "#"
     linkAriaLabel: Zum Kontakt
 ---
