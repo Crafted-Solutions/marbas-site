@@ -1,0 +1,19 @@
+{
+  "title": "Legacy Site",
+  "footer": {
+    "links": {
+      "imprint": { "label": "Impressum", "href": "/impressum/" },
+      "privacy": { "label": "Datenschutz", "href": "/datenschutz/" }
+    },
+    "address": {
+      "street": "Altstraße 5",
+      "zip": "54321",
+      "city": "Altstadt",
+      "country": "Deutschland"
+    },
+    "contact": {
+      "phone": "+49 999 111222",
+      "email": "alt@example.com"
+    }
+  }
+}

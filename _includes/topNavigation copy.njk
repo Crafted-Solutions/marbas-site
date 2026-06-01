@@ -1,0 +1,22 @@
+<header class="c-header">
+  <nav class="c-nav">
+    <a class="c-nav__logo" tabIndex="0" aria-label="Home" href="{{ "/" | locale_url }}">
+      <img alt="Logo" src="/_assets/images/Logo.png" height="80"/>
+    </a>
+
+    <button class="c-nav-toggle" type="button" aria-expanded="false" aria-controls="navbarTop" aria-label="Toggle navigation">
+      <span class="c-nav-toggle__icon"></span>
+    </button>
+
+    {% set navPagesFiltered = collections.menu | filterCollectionByLanguage(pageLanguage) %}
+    {% set navPages = navPagesFiltered | eleventyNavigation %}
+
+    <ul class="c-nav__menu" id="navbarTop">
+    {%- for entry in navPages %}
+      <li class="c-nav__item{% if entry.key == eleventyNavigation.key %} c-nav__item--active{% endif %}">
+        <a class="c-nav__link" {{ "aria-label" | htmlAttribute( entry.arialabel ) | safe }} tabIndex="0" href="{{ entry.url }}">{{ entry.title }}</a>
+      </li>
+    {%- endfor %}
+    </ul>
+  </nav>
+</header>

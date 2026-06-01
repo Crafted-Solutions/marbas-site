@@ -1,0 +1,126 @@
+/* ============================================================
+   theme-forum.css – "Forum"
+
+   Zielgruppe  : eLearning-Plattformen, Online-Kurse, Bildungsportale
+   Stil        : Freundlich, einladend, Violett, großzügige Radien
+   Schriften   : Plus Jakarta Sans (modern, lesbar)
+                 Google Fonts: ?family=Plus+Jakarta+Sans:wght@400;500;600;700
+   Akzentfarbe : #7c3aed – Kontrast auf Weiß 5.44:1 (WCAG AA ✓)
+   Barrierefreiheit: WCAG AA ✓ | Text/BG 17.1:1 (AAA ✓)
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --t-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --t-bg:      #fdfbff;   /* Sehr helles Lavendel */
+  --t-surface: #f5f0fe;
+
+  --t-text:    #1e1435;   /* Tiefer Violett-Navy – 17.1:1 auf #fdfbff */
+  --t-muted:   #5e4d7a;   /* Gedämpftes Violett – 5.2:1 auf #fdfbff */
+
+  --t-border:  #d4c4f5;
+  --t-accent:  #7c3aed;   /* Violet-600 – 5.44:1 auf #ffffff – AA ✓ */
+
+  --t-radius-sm: 0.5rem;
+  --t-radius-md: 1rem;
+  --t-radius-lg: 1.5rem;
+
+  --t-shadow-sm: 0 1px 4px rgba(30, 20, 53, 0.08);
+  --t-shadow-md: 0 10px 30px rgba(30, 20, 53, 0.14);
+
+  /* Invert-Palette für Zebra / Dark-Blöcke */
+  --t-surface-invert: #1e1435;
+  --t-text-invert:    #f5f0fe;
+  --t-muted-invert:   #b09dd4;
+  --t-border-invert:  #3d2a6e;
+  --t-accent-invert:  #c4b5fd;   /* Violet-300 – hell auf Dunkel */
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: color-mix(in oklab, var(--t-accent) 42%, var(--t-surface-invert));
+  --t-announcement-color: var(--t-text-invert);
+  --t-announcement-link: var(--t-accent-invert);
+  --t-announcement-dismiss-border: color-mix(in oklab, var(--t-text-invert) 40%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-surface) 76%, var(--t-bg));
+  --t-utility-bar-border: color-mix(in oklab, var(--t-border) 82%, var(--t-surface));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: var(--t-muted);
+  --t-utility-bar-link-hover: var(--t-accent);
+
+  --t-header-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-header-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-border) 55%, transparent),
+                     var(--t-shadow-sm);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: var(--t-accent);
+  --t-header-brand-mark-bg: color-mix(in oklab, var(--t-accent) 84%, var(--t-surface));
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-nav-item-hover-color: var(--t-accent);
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-color: var(--t-accent);
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-footer-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: var(--t-accent);
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: var(--t-accent);
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-footer-social-color: var(--t-accent);
+  --t-footer-social-hover-bg: var(--t-accent);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* Typografie – freundlich, modern */
+h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+h4 {
+  font-weight: 600;
+}
+.c-component__kicker {
+  font-weight: 600;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cmp-link, var(--t-accent));
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: color-mix(in oklab, var(--t-accent) 30%, var(--t-border));
+  --cmp-shadow: var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 80%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 65%, var(--t-bg));
+  --cmp-shadow:  var(--t-shadow-sm);
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 25%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);
+  --cmp-shadow:  var(--t-shadow-md);
+}

@@ -1,0 +1,27 @@
+  <div class="navbar-container sticky-top">
+    <nav class="cnt_head navbar navbar-expand-lg col_grey_headerfooter col-font-white spacer">
+      <a class="navbar-brand" href="{{ "/" | locale_url }}">
+        <img src="/_assets/images/2040-logo-white2.png" height="80px"/>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTop"  aria-controls="navbarTop" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarTop">
+        
+        {% set navPages = collections.menu %}
+        
+        <ul class="navbar-nav mr-auto">
+        {%- for entry in navPages %}
+        {# {{ entry | log | stringify }} #}
+          {% if entry.data.language == language %}
+          <li {% if entry.data.eleventyNavigation.key == eleventyNavigation.key %} class="nav-item border-lg-bottom active " {% else %} class="nav-item" {% endif %}>
+            <a class="navi-link" href="{{ entry.data.page.filePathStem }}">{{ entry.data.eleventyNavigation.key }}</a>
+          </li>
+          <li class="nav-item d-none d-lg-block"><div> | </div></li>
+          {% endif %}
+        {%- endfor %}
+        </ul>
+  
+      </div>
+    </nav>  
+  </div>

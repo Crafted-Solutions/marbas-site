@@ -1,0 +1,130 @@
+/* ============================================================
+   theme-studio.css – "Studio"
+
+   Zielgruppe  : Kreativagenturen, Designstudios, Portfolios
+   Stil        : Maximale Reduktion, Schwarz auf Off-White, kein Radius
+                 Gold als Akzent nur in der dark-Variante
+   Schriften   : DM Sans (geometrisch, clean)
+                 Google Fonts: ?family=DM+Sans:wght@300;400;500;700
+   Akzentfarbe : #0a0a0a (Schwarz) / #c9a84c (Gold in dark) – AAA ✓
+   Barrierefreiheit: WCAG AA ✓ | Text/BG 20.3:1 (AAA ✓)
+                     Gold (#c9a84c) auf Schwarz = 9.1:1 (AAA ✓)
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --t-font-mono: ui-monospace, SFMono-Regular, monospace;
+
+  --t-bg:      #f5f5f2;   /* Warmes Off-White */
+  --t-surface: #ffffff;
+
+  --t-text:    #0a0a0a;   /* Near-Black – 20.3:1 auf #f5f5f2 – AAA ✓ */
+  --t-muted:   #636363;   /* Mittelgrau – 5.0:1 auf #f5f5f2 – AA ✓ */
+
+  --t-border:  #d6d6d0;
+  --t-accent:  #0a0a0a;   /* Akzent = Schwarz – maximale Reduktion */
+
+  --t-radius-sm: 0;
+  --t-radius-md: 0;
+  --t-radius-lg: 0;
+
+  --t-shadow-sm: none;
+  --t-shadow-md: 0 4px 16px rgba(10, 10, 10, 0.12);
+
+  /* Invert-Palette – Gold als Geheimakzent in Dark-Blöcken */
+  --t-surface-invert: #0a0a0a;
+  --t-text-invert:    #f5f5f2;
+  --t-muted-invert:   #9a9a9a;
+  --t-border-invert:  #2a2a2a;
+  --t-accent-invert:  #c9a84c;   /* Gold – 9.1:1 auf #0a0a0a – AAA ✓ */
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: color-mix(in oklab, var(--t-accent) 42%, var(--t-surface-invert));
+  --t-announcement-color: var(--t-text-invert);
+  --t-announcement-link: var(--t-accent-invert);
+  --t-announcement-dismiss-border: color-mix(in oklab, var(--t-text-invert) 40%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-surface) 76%, var(--t-bg));
+  --t-utility-bar-border: color-mix(in oklab, var(--t-border) 82%, var(--t-surface));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: var(--t-muted);
+  --t-utility-bar-link-hover: var(--t-accent);
+
+  --t-header-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-header-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-border) 55%, transparent),
+                     var(--t-shadow-sm);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: var(--t-accent);
+  --t-header-brand-mark-bg: color-mix(in oklab, var(--t-accent) 84%, var(--t-surface));
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-nav-item-hover-color: var(--t-accent);
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-color: var(--t-accent);
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 88%, var(--t-bg));
+  --t-footer-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: var(--t-accent);
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: var(--t-accent);
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
+  --t-footer-social-color: var(--t-accent);
+  --t-footer-social-hover-bg: var(--t-accent);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* Typografie – geometrisch, präzise */
+h1, h2, h3 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+h4 {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.c-component__kicker {
+  font-weight: 400;
+  font-size: 0.75em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cmp-link, var(--t-muted));
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: var(--t-accent);
+  --cmp-shadow: var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 82%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 70%, var(--t-bg));
+  --cmp-shadow:  none;
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 5%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 20%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);   /* Gold – distinktiv, mutig */
+  --cmp-shadow:  var(--t-shadow-md);
+}

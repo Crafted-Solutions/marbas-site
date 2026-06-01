@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" role="img" aria-labelledby="title desc">
+  <title id="title">Gallery Image 1</title>
+  <desc id="desc">Gallery placeholder image with simple landscape shapes.</desc>
+  <rect width="1000" height="700" fill="#003049"/>
+  <rect y="430" width="1000" height="270" fill="#1d3557"/>
+  <circle cx="790" cy="170" r="90" fill="#fcbf49"/>
+  <polygon points="140,460 360,210 580,460" fill="#669bbc"/>
+  <polygon points="340,470 560,240 780,470" fill="#a8dadc"/>
+  <text x="70" y="110" font-family="Arial, sans-serif" font-size="54" fill="#eae2b7">Gallery 1</text>
+</svg>

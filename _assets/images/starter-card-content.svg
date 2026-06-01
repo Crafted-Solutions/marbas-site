@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Icon Inhalte</title>
+  <desc id="desc">Abstraktes Icon mit gestapelten Ebenen.</desc>
+  <rect width="256" height="256" rx="36" fill="#0f172a"/>
+  <rect x="56" y="70" width="144" height="30" rx="10" fill="#38bdf8"/>
+  <rect x="56" y="113" width="144" height="30" rx="10" fill="#67e8f9"/>
+  <rect x="56" y="156" width="144" height="30" rx="10" fill="#a5f3fc"/>
+</svg>

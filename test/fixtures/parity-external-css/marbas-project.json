@@ -1,0 +1,17 @@
+{
+  "name": "parity-external-css",
+  "description": "Parity fixture: cssMode external with ejected base layout + Bootstrap CDN",
+  "marbasSite": "0.0.1",
+  "cssMode": "external",
+  "paths": {
+    "buildDir": "./build"
+  },
+  "defaultEnvironment": "development",
+  "environments": {
+    "development": {
+      "outputName": "development",
+      "env": {}
+    }
+  },
+  "deployTargets": {}
+}

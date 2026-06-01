@@ -1,0 +1,16 @@
+{# @name: Footer (Global Data) #}
+{# @description: Footer – routes to the matching footer preset partial. #}
+{# @category: footer #}
+
+{%- set _preset = site.footer.preset | default("simple") -%}
+{%- if _preset == "columns" %}
+{% include "footer/presets/columns.njk" %}
+{%- elif _preset == "columns-social" %}
+{% include "footer/presets/columns-social.njk" %}
+{%- elif _preset == "columns-cta" %}
+{% include "footer/presets/columns-cta.njk" %}
+{%- elif _preset == "editorial" %}
+{% include "footer/presets/editorial.njk" %}
+{%- else %}
+{% include "footer/presets/simple.njk" %}
+{%- endif %}

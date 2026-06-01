@@ -1,0 +1,9 @@
+{%- set _logoPath = site.logo.path | default("/_assets/images/Logo.png") -%}
+<a class="c-brand" href="{{ "/" | locale_url }}">
+  {%- if site.logo.show %}
+  <img class="c-brand__mark" alt="Logo" src="{{ _logoPath }}" height="40"/>
+  {%- endif %}
+  {%- if site.header.showCompanyName %}
+  <span class="c-brand__name">{{ site.title | default("Marbas") }}</span>
+  {%- endif %}
+</a>

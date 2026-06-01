@@ -1,0 +1,15 @@
+{%- set _utilityLinks = site.header.utilityLinks -%}
+{%- if _utilityLinks and _utilityLinks.links and (_utilityLinks.links | length) > 0 -%}
+<nav class="c-utility-nav" aria-label="Service-Navigation">
+  <ul class="c-utility-nav__list">
+    {%- for link in _utilityLinks.links %}
+    <li class="c-utility-nav__item">
+      <a class="c-utility-nav__link"
+         href="{{ link.href }}"
+         {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel }}"{% endif %}
+         {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+    </li>
+    {%- endfor %}
+  </ul>
+</nav>
+{%- endif -%}

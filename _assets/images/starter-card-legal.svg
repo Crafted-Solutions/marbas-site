@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Icon Rechtliches</title>
+  <desc id="desc">Abstraktes Icon mit Schildsymbol.</desc>
+  <rect width="256" height="256" rx="36" fill="#0f172a"/>
+  <path d="M128 46 L198 74 V122 C198 168 169 206 128 224 C87 206 58 168 58 122 V74 Z" fill="#fb7185"/>
+  <path d="M128 76 L170 94 V123 C170 151 153 176 128 192 C103 176 86 151 86 123 V94 Z" fill="#fff1f2"/>
+  <rect x="122" y="101" width="12" height="56" rx="6" fill="#be123c"/>
+  <circle cx="128" cy="173" r="8" fill="#be123c"/>
+</svg>

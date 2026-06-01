@@ -1,0 +1,16 @@
+{
+  "name": "parity-minimal",
+  "description": "Parity fixture: default layout, one page, default theme",
+  "marbasSite": "0.0.1",
+  "paths": {
+    "buildDir": "./build"
+  },
+  "defaultEnvironment": "development",
+  "environments": {
+    "development": {
+      "outputName": "development",
+      "env": {}
+    }
+  },
+  "deployTargets": {}
+}

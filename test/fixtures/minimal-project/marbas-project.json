@@ -1,0 +1,16 @@
+{
+  "name": "minimal-project",
+  "description": "Minimal fixture project for integration tests",
+  "marbasSite": "0.0.1",
+  "paths": {
+    "buildDir": "./build"
+  },
+  "defaultEnvironment": "development",
+  "environments": {
+    "development": {
+      "outputName": "development",
+      "env": {}
+    }
+  },
+  "deployTargets": {}
+}

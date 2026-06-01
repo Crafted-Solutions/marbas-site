@@ -1,0 +1,35 @@
+{%- set _navVariant = site.header.navigationVariant | default("default") -%}
+{%- set _navPagesFiltered = collections.menu | filterCollectionByLanguage(pageLanguage) -%}
+{%- set _navPages = _navPagesFiltered | eleventyNavigation -%}
+<nav class="c-nav{% if _navVariant and _navVariant != 'default' %} c-nav--{{ _navVariant }}{% endif %}" id="main-nav" aria-label="Hauptnavigation">
+  <ul class="c-nav__list">
+    {%- for entry in _navPages %}
+    {%- set _entryTitle = entry.title or entry.key %}
+    {%- set _hasChildren = entry.children and (entry.children | length) > 0 %}
+    {%- set _isCurrentEntry = entry.url == page.url or entry.key == eleventyNavigation.key %}
+    {%- set _hasActiveChild = eleventyNavigation.parent == entry.key %}
+    <li class="c-nav__entry{% if _hasChildren %} c-nav__entry--has-children{% endif %}{% if _hasActiveChild %} c-nav__entry--active-trail{% endif %}">
+      {%- if _hasChildren %}
+      <div class="c-nav__primary">
+        <a href="{{ entry.url }}" class="c-nav__item{% if _isCurrentEntry %} c-nav__item--active{% endif %}"{% if _isCurrentEntry %} aria-current="page"{% endif %} {{ "aria-label" | htmlAttribute(entry.arialabel) | safe }}>{{ _entryTitle }}</a>
+        <button class="c-nav__submenu-toggle" type="button" aria-expanded="false">
+          <span class="u-sr-only">Unterseiten von {{ _entryTitle }} anzeigen</span>
+          <span class="c-nav__submenu-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+      <ul class="c-nav__submenu">
+        {%- for child in entry.children %}
+        {%- set _childTitle = child.title or child.key %}
+        {%- set _isCurrentChild = child.url == page.url %}
+        <li>
+          <a href="{{ child.url }}" class="c-nav__subitem"{% if _isCurrentChild %} aria-current="page"{% endif %} {{ "aria-label" | htmlAttribute(child.arialabel) | safe }}>{{ _childTitle }}</a>
+        </li>
+        {%- endfor %}
+      </ul>
+      {%- else %}
+      <a href="{{ entry.url }}" class="c-nav__item{% if _isCurrentEntry %} c-nav__item--active{% endif %}"{% if _isCurrentEntry %} aria-current="page"{% endif %} {{ "aria-label" | htmlAttribute(entry.arialabel) | safe }}>{{ _entryTitle }}</a>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ul>
+</nav>

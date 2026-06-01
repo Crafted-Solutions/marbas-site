@@ -1,0 +1,37 @@
+{%- set _bottomLinks = site.footer.bottomLinks | default({}) -%}
+<div class="c-footer-bottom">
+  <div class="c-container c-footer-bottom__inner">
+    {%- if site.footer.copyright %}
+    <small class="c-footer-bottom__copyright">{{ site.footer.copyright }}</small>
+    {%- endif %}
+    {%- if _bottomLinks.source == "tagCollection" %}
+    {%- set _bottomPages = [] %}
+    {%- for tag in _bottomLinks.tags %}
+      {%- set _tagPages = collections[tag] | default([]) %}
+      {%- set _bottomPages = (_bottomPages.concat(_tagPages)) %}
+    {%- endfor %}
+    {%- if (_bottomPages | length) > 0 %}
+    <nav class="c-footer-bottom__nav" aria-label="Rechtliches">
+      <ul class="c-footer-bottom__list">
+        {%- for item in _bottomPages | slice(0, _bottomLinks.limit | default(10)) %}
+        <li><a class="c-footer-bottom__link" href="{{ item.url }}">{{ item.data.title | default(item.fileSlug) }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    {%- endif %}
+    {%- elif _bottomLinks.links and (_bottomLinks.links | length) > 0 %}
+    <nav class="c-footer-bottom__nav" aria-label="Rechtliches">
+      <ul class="c-footer-bottom__list">
+        {%- for link in _bottomLinks.links %}
+        <li>
+          <a class="c-footer-bottom__link"
+             href="{{ link.href }}"
+             {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel }}"{% endif %}
+             {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+        </li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    {%- endif %}
+  </div>
+</div>

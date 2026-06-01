@@ -1,0 +1,131 @@
+/* ============================================================
+   theme-tempo.css – "Tempo"
+
+   Zielgruppe  : Sportvereine, Fitness-Marken, athletische Produkte
+   Stil        : Dark-First, hohes Kontrastverhältnis, Orange-Energie
+   Schriften   : Oswald (Headlines kondensiert), system-ui (Body)
+                 Google Fonts: ?family=Oswald:wght@500;600;700
+   Akzentfarbe : #f97316 – Kontrast auf #1c2028 5.4:1 (WCAG AA ✓)
+   Barrierefreiheit: WCAG AA ✓ | Text/BG 14.9:1 (AAA ✓)
+
+   Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
+   ============================================================ */
+
+:root {
+  --t-font-sans: 'Oswald', 'Arial Narrow', system-ui, sans-serif;
+  --t-font-mono: ui-monospace, SFMono-Regular, monospace;
+
+  --t-bg:      #1c2028;   /* Tiefes Anthrazit */
+  --t-surface: #262d38;
+
+  --t-text:    #f4f6f8;   /* 14.9:1 auf #1c2028 – AAA ✓ */
+  --t-muted:   #9aa5b4;   /* 5.4:1 auf #1c2028 – AA ✓ */
+
+  --t-border:  #374151;
+  --t-accent:  #f97316;   /* Orange-500 – 5.4:1 auf #1c2028 – AA ✓ */
+
+  --t-radius-sm: 0;
+  --t-radius-md: 0.125rem;
+  --t-radius-lg: 0.25rem;
+
+  --t-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --t-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+  /* Invert-Palette – invertiertes Orange für helle Surfaces */
+  --t-surface-invert: #f97316;
+  --t-text-invert:    #1c2028;
+  --t-muted-invert:   #374151;
+  --t-border-invert:  #fb923c;
+  --t-accent-invert:  #1c2028;
+
+  /* Chrome tokens – page chrome, announcement, footer helpers */
+  --t-announcement-bg: linear-gradient(90deg, #ff6a00 0%, #f97316 52%, #c2410c 100%);
+  --t-announcement-color: #1c2028;
+  --t-announcement-link: #111827;
+  --t-announcement-dismiss-border: color-mix(in oklab, #1c2028 45%, transparent);
+
+  --t-utility-bar-bg: color-mix(in oklab, var(--t-bg) 94%, #111827);
+  --t-utility-bar-border: color-mix(in oklab, var(--t-accent) 26%, var(--t-border));
+  --t-utility-bar-color: var(--t-muted);
+  --t-utility-bar-link: color-mix(in oklab, var(--t-muted) 80%, var(--t-text));
+  --t-utility-bar-link-hover: #fdba74;
+
+  --t-header-bg: color-mix(in oklab, var(--t-surface) 82%, var(--t-bg));
+  --t-header-border: color-mix(in oklab, var(--t-accent) 32%, var(--t-border));
+  --t-header-shadow: 0 1px 0 color-mix(in oklab, var(--t-accent) 32%, transparent),
+                     0 10px 24px rgba(0, 0, 0, 0.32);
+  --t-header-brand-color: var(--t-text);
+  --t-header-brand-hover: #fdba74;
+  --t-header-brand-mark-bg: linear-gradient(135deg, #fb923c, #f97316 58%, #c2410c);
+  --t-header-brand-mark-radius: var(--t-radius-md);
+
+  --t-nav-item-color: var(--t-text);
+  --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 18%, var(--t-surface));
+  --t-nav-item-hover-color: #fdba74;
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 24%, var(--t-surface));
+  --t-nav-item-active-color: #fff7ed;
+  --t-nav-toggle-bg: var(--t-surface);
+  --t-nav-toggle-border: var(--t-border);
+  --t-nav-toggle-icon: var(--t-text);
+  --t-nav-mobile-panel-bg: color-mix(in oklab, var(--t-surface) 90%, var(--t-bg));
+  --t-nav-mobile-border: color-mix(in oklab, var(--t-border) 85%, var(--t-surface));
+  --t-nav-mobile-shadow: 0 20px 50px color-mix(in oklab, var(--t-text) 12%, transparent);
+
+  --t-footer-bg: color-mix(in oklab, var(--t-surface) 84%, #161a22);
+  --t-footer-border: color-mix(in oklab, var(--t-accent) 24%, var(--t-border));
+  --t-footer-heading: var(--t-text);
+  --t-footer-link: var(--t-muted);
+  --t-footer-link-hover: #fdba74;
+  --t-footer-bottom-link: color-mix(in oklab, var(--t-muted) 88%, var(--t-text));
+  --t-footer-bottom-link-hover: #fdba74;
+  --t-footer-social-bg: color-mix(in oklab, var(--t-accent) 20%, var(--t-surface));
+  --t-footer-social-color: #fdba74;
+  --t-footer-social-hover-bg: linear-gradient(135deg, #fb923c, #f97316);
+  --t-footer-social-hover-color: var(--t-text-invert);
+}
+
+/* Typografie – kondensiert, kraftvoll */
+h1, h2, h3 {
+  font-family: 'Oswald', 'Arial Narrow', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+h4 {
+  font-family: 'Oswald', 'Arial Narrow', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.c-component__kicker {
+  font-family: 'Oswald', 'Arial Narrow', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.8em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cmp-link, var(--t-accent));
+}
+
+/* ---- Varianten-Mappings ---- */
+.c-component--main {
+  --cmp-border: color-mix(in oklab, var(--t-accent) 40%, var(--t-border));
+  --cmp-shadow: var(--t-shadow-md);
+  --cmp-pad: clamp(1.25rem, 3vw, 2rem);
+}
+.c-component--secondary {
+  --cmp-surface: color-mix(in oklab, var(--t-surface) 85%, var(--t-bg));
+  --cmp-border:  color-mix(in oklab, var(--t-border) 75%, var(--t-bg));
+  --cmp-shadow:  var(--t-shadow-sm);
+}
+.c-component--special {
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 15%, var(--t-surface));
+  --cmp-border:  color-mix(in oklab, var(--t-accent) 35%, var(--t-border));
+  --cmp-link:    var(--t-accent);
+}
+.c-component--dark {
+  --cmp-surface: var(--t-surface-invert);
+  --cmp-text:    var(--t-text-invert);
+  --cmp-muted:   var(--t-muted-invert);
+  --cmp-border:  var(--t-border-invert);
+  --cmp-link:    var(--t-accent-invert);
+  --cmp-shadow:  0 12px 40px rgba(249, 115, 22, 0.25);
+}

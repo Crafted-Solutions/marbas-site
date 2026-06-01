@@ -1,0 +1,64 @@
+{% set urlWithPath = page.url | getDomainWithPath %}
+
+{%- if robotsNoIndex and robotsNoFollow -%}
+  {%- set _robots = "noindex, nofollow" -%}
+{%- elif robotsNoIndex -%}
+  {%- set _robots = "noindex, follow" -%}
+{%- elif robotsNoFollow -%}
+  {%- set _robots = "index, nofollow" -%}
+{%- else -%}
+  {%- set _robots = "index, follow" -%}
+{%- endif -%}
+
+{%- set _ogImageSrc = seoImage.src if (seoImage and seoImage.src) else site.seo.defaultImage.src -%}
+{%- set _ogImageAlt = seoImage.alt if (seoImage and seoImage.alt) else site.seo.defaultImage.alt -%}
+{%- set _ogImageWidth = seoImage.width if (seoImage and seoImage.width) else site.seo.defaultImage.width -%}
+{%- set _ogImageHeight = seoImage.height if (seoImage and seoImage.height) else site.seo.defaultImage.height -%}
+{%- set _ogImageType = seoImage.type if (seoImage and seoImage.type) else site.seo.defaultImage.type -%}
+{%- set _ogImageAbsolute = _ogImageSrc | getDomainWithPath if _ogImageSrc else "" -%}
+
+{% metagen
+  title=seoTitle or title,
+  desc=seoDescription,
+  url=seoCanonicalUrl or urlWithPath,
+  name=seoAuthor or site.seo.defaultAuthor,
+  locale=pageLanguage,
+  site_name=site.seo.siteName or site.title,
+  img=_ogImageAbsolute,
+  img_alt=_ogImageAlt,
+  img_width=_ogImageWidth,
+  img_height=_ogImageHeight,
+  og_img_type=_ogImageType,
+  twitter_card_type=seoTwitterCardType or "summary_large_image",
+  twitter_handle=site.seo.twitterSiteHandle,
+  creator_handle=seoTwitterCreatorHandle or site.seo.defaultTwitterCreatorHandle,
+  generator="eleventy",
+  comments=true,
+  robots=_robots
+%}
+
+{% if seoKeywords and seoKeywords | length > 0 %}
+  {%- if seoKeywords is not string -%}
+    {%- set _keywordsStr = seoKeywords | join(", ") -%}
+  {%- else -%}
+    {%- set _keywordsStr = seoKeywords -%}
+  {%- endif -%}
+  {% if _keywordsStr %}
+<meta name="keywords" content="{{ _keywordsStr | safe }}"/>
+  {% endif %}
+{% endif %}
+
+{%- set _copyright = seoCopyright or site.seo.defaultCopyright -%}
+{% if _copyright %}
+<meta name="copyright" content="{{ _copyright | safe }}"/>
+{% endif %}
+
+{% set languages = page.url | localeUrls %}
+
+{% for lang in languages %}
+  {% if lang.code != pageLanguage %}
+  <meta property="og:locale:alternate" content="{{ lang.code }}"/>
+  {% endif %}
+  {% set path = lang.path | getDomainWithPath %}
+  <link rel="alternate" hreflang="{{ lang.code }}" href="{{ path }}">
+{% endfor %}

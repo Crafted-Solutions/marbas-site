@@ -1,0 +1,33 @@
+{# TitleTextImageBottom Component - CSS Framework Architecture
+   Data is now in flat format from YAML front matter
+   Images are local files processed with eleventy-img
+#}
+
+{# Process local image file #}
+{% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
+
+{% set linkText = data.linkText | default("weitere Informationen") %}
+{% set linkAsCta = data.linkAsCta | default(false) %}
+{% set styleClasses = data.classes | default('') | trim %}
+{% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
+
+<article class="c-component c-component--media-bottom {{ themeClasses | safe }}">
+    <div class="c-component__body">
+        {% if data.title %}
+        <h2 class="c-component__headline" {{ lang | getLangAttribute(data.titleCulture) }}>
+            {{ data.title | safe }}
+        </h2>
+        {% endif %}
+        <div class="c-component__text c-richtext" {{ lang | getLangAttribute(data.textCulture) }}>
+            {{ data.text | safe }}
+        </div>
+        {% if data.link %}
+        <div class="c-component__actions" {{ lang | getLangAttribute(data.linkTextCulture) }}>
+            <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %}>{{ linkText }}</a>
+        </div>
+        {% endif %}
+    </div>
+    <div class="c-component__media">
+        {{ imageData.html | safe }}
+    </div>
+</article>

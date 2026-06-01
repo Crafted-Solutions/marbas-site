@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.log
+.marbas/
+.cache/
+public_*/
+_src_assets/
+nonexistent-path/
+examples/*/build/
+examples/*/.marbas/
+test/fixtures/**/.page-versions/

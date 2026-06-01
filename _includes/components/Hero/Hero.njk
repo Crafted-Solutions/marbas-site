@@ -1,0 +1,26 @@
+{# Hero Component - CSS Framework Architecture
+   Data is now in flat format from YAML front matter
+   Images are local files processed with eleventy-img
+#}
+
+{# Process local image file #}
+{% set imageData = {html: "", caption: ""} %}
+{% if data.image and data.image.src %}
+  {% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
+{% endif %}
+
+<section class="c-hero c-hero--bleed c-hero--edge{% if data.flushNav %} c-hero--flush-nav{% endif %}{% if data.invertTextColor %} c-hero--text-invert{% endif %}{% if data.showContentBox %} c-hero--content-box{% endif %}{% if data.classes %} {{ data.classes | safe }}{% endif %}">
+    <div class="c-hero__media">
+        {{ (imageData.html if imageData else "") | safe }}
+    </div>
+    <div class="c-hero__content">
+        {% if data.showContentBox %}<div class="c-hero__content-box">{% endif %}
+        {% if data.title %}
+        <h1 class="c-hero__title" {{ lang | getLangAttribute(data.titleCulture) }}>{{ data.title | safe }}</h1>
+        {% endif %}
+        {% if data.text %}
+        <div class="c-hero__lead c-richtext" {{ lang | getLangAttribute(data.textCulture) }}>{{ data.text | safe }}</div>
+        {% endif %}
+        {% if data.showContentBox %}</div>{% endif %}
+    </div>
+</section>

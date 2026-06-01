@@ -1,0 +1,50 @@
+{%- if site.header.mobile.drawer -%}
+{%- set _navPagesFiltered = collections.menu | filterCollectionByLanguage(pageLanguage) -%}
+{%- set _navPages = _navPagesFiltered | eleventyNavigation -%}
+<div class="c-mobile-drawer" id="mobile-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Navigation" hidden>
+  <div class="c-mobile-drawer__overlay"></div>
+  <div class="c-mobile-drawer__panel">
+    <button class="c-mobile-drawer__close" type="button" aria-label="Navigation schließen">
+      <span aria-hidden="true">×</span>
+    </button>
+    <nav class="c-mobile-nav" aria-label="Hauptnavigation">
+      <ul class="c-mobile-nav__list">
+        {%- for entry in _navPages %}
+        {%- set _entryTitle = entry.title or entry.key %}
+        {%- set _hasChildren = entry.children and (entry.children | length) > 0 %}
+        {%- set _isCurrentEntry = entry.url == page.url or entry.key == eleventyNavigation.key %}
+        {%- set _hasActiveChild = eleventyNavigation.parent == entry.key %}
+        <li class="c-mobile-nav__entry{% if _hasChildren %} c-mobile-nav__entry--has-children{% endif %}{% if _hasActiveChild %} c-mobile-nav__entry--active-trail{% endif %}">
+          {%- if _hasChildren %}
+          <div class="c-mobile-nav__primary">
+            <a href="{{ entry.url }}" class="c-mobile-nav__item{% if _isCurrentEntry %} c-mobile-nav__item--active{% endif %}"{% if _isCurrentEntry %} aria-current="page"{% endif %}>{{ _entryTitle }}</a>
+            <button class="c-mobile-nav__submenu-toggle" type="button" aria-expanded="false">
+              <span class="u-sr-only">Unterseiten von {{ _entryTitle }} anzeigen</span>
+              <span class="c-mobile-nav__submenu-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+          <ul class="c-mobile-nav__submenu">
+            {%- for child in entry.children %}
+            {%- set _childTitle = child.title or child.key %}
+            {%- set _isCurrentChild = child.url == page.url %}
+            <li>
+              <a href="{{ child.url }}" class="c-mobile-nav__subitem"{% if _isCurrentChild %} aria-current="page"{% endif %}>{{ _childTitle }}</a>
+            </li>
+            {%- endfor %}
+          </ul>
+          {%- else %}
+          <a href="{{ entry.url }}" class="c-mobile-nav__item{% if _isCurrentEntry %} c-mobile-nav__item--active{% endif %}"{% if _isCurrentEntry %} aria-current="page"{% endif %}>{{ _entryTitle }}</a>
+          {%- endif %}
+        </li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    {%- if site.header.mobile.showUtilityLinksInDrawer %}
+    {% include "header/slots/utility-links.njk" %}
+    {%- endif %}
+    {%- if site.header.mobile.showActionsInDrawer %}
+    {% include "header/slots/actions.njk" %}
+    {%- endif %}
+  </div>
+</div>
+{%- endif -%}
