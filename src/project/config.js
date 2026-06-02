@@ -23,6 +23,9 @@ function convertLegacyConfig(legacy) {
     };
   }
 
+  const themeSelected = String(legacy?.theme?.selected || '').trim();
+  const themeId = themeSelected ? themeSelected.replace(/\.css$/, '') : null;
+
   return {
     name: legacy?.name || path.basename(process.cwd()),
     marbasSite: legacy?.marbasSite || '0.0.1',
@@ -33,6 +36,15 @@ function convertLegacyConfig(legacy) {
     defaultEnvironment: legacy?.preview?.defaultEnvironment || 'development',
     environments: envs,
     deployTargets: {},
+    theme: {
+      id: themeId,
+      cssMode: legacy?.cssMode || legacy?.theme?.cssMode || 'marbas',
+      languageSwitcher: legacy?.theme?.languageSwitcher !== false
+    },
+    rendering: {
+      footerMode: legacy?.rendering?.footerMode || 'legacy',
+      headerMode: legacy?.rendering?.headerMode || 'legacy'
+    },
     ...(legacy?.i18n ? { i18n: legacy.i18n } : {}),
     _fromLegacy: true
   };
@@ -43,6 +55,18 @@ function applyDefaults(raw) {
   if (!config.paths) config.paths = {};
   if (!config.paths.buildDir) config.paths.buildDir = './build';
   if (!config.environments || typeof config.environments !== 'object') config.environments = {};
+  config.theme = {
+    id: null,
+    cssMode: 'marbas',
+    languageSwitcher: true,
+    ...(config.theme || {})
+  };
+  config.rendering = {
+    footerMode: 'legacy',
+    headerMode: 'legacy',
+    ...(config.rendering || {})
+  };
+  if (!config.i18n) config.i18n = {};
   return config;
 }
 

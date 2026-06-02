@@ -105,7 +105,16 @@ export function initProject({
         env: {}
       }
     },
-    deployTargets: {}
+    deployTargets: {},
+    theme: {
+      id: null,
+      cssMode: 'marbas',
+      languageSwitcher: true
+    },
+    rendering: {
+      footerMode: 'globalData',
+      headerMode: 'globalData'
+    }
   };
   fs.writeFileSync(
     path.join(absPath, 'marbas-project.json'),

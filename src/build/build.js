@@ -7,7 +7,7 @@ import { readProjectConfig } from '../project/config.js';
 import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolveThemeFile } from '../theme/resolver.js';
-import { readSiteSettings } from '../site-settings/io.js';
+import { buildEnvVars } from '../env/build-env.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -20,10 +20,10 @@ function resolveWebpackConfigPath(environment) {
   return path.join(WEBPACK_CONFIG_DIR, 'development.js');
 }
 
-function spawnInProject(bin, args, { projectPath, environment, onLog }) {
+function spawnInProject(bin, args, { projectPath, environment, envVars = {}, onLog }) {
   const result = spawnSync(process.execPath, [bin, ...args], {
     cwd: projectPath,
-    env: { ...process.env, MARBAS_PUBLISH_ENVIRONMENT: environment },
+    env: { ...process.env, MARBAS_PUBLISH_ENVIRONMENT: environment, ...envVars },
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe']
   });
@@ -62,11 +62,13 @@ export async function build({ projectPath, environment = 'development', libRoot,
     outputPath = path.join(absProject, 'build', `public_${env}`);
   }
 
+  const envVars = buildEnvVars({ projectPath: absProject, environment: env, config });
+
   onLog('[build] Running webpack…');
   const webpackBin = resolvePackageBin('webpack-cli', absLib, 'webpack');
   const webpackConfig = resolveWebpackConfigPath(env);
   const webpackResult = spawnInProject(webpackBin, ['--config', webpackConfig], {
-    projectPath: absProject, environment: env, onLog
+    projectPath: absProject, environment: env, envVars, onLog
   });
   if ((webpackResult.status ?? 1) !== 0) {
     throw new Error(`Webpack failed with exit code ${webpackResult.status}`);
@@ -80,8 +82,7 @@ export async function build({ projectPath, environment = 'development', libRoot,
     fs.writeFileSync(customCssDest, '');
   }
 
-  const siteSettings = readSiteSettings(absProject, config);
-  const themeId = siteSettings?.site?.theme?.id;
+  const themeId = config?.theme?.id || null;
   if (themeId) {
     try {
       const themeSrcPath = resolveThemeFile({ projectPath: absProject, themeId, libRoot: absLib });
@@ -98,7 +99,7 @@ export async function build({ projectPath, environment = 'development', libRoot,
   const eleventyBin = resolvePackageBin('@11ty/eleventy', absLib, 'eleventy');
   const eleventyConfig = path.join(absLib, 'tm.eleventy.js');
   const eleventyResult = spawnInProject(eleventyBin, ['--config', eleventyConfig], {
-    projectPath: absProject, environment: env, onLog
+    projectPath: absProject, environment: env, envVars, onLog
   });
   if ((eleventyResult.status ?? 1) !== 0) {
     throw new Error(`Eleventy failed with exit code ${eleventyResult.status}`);

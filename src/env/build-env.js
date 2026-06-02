@@ -51,6 +51,8 @@ function resolveI18nEnv(config) {
  * @returns {object}  Plain env-var map (all values are strings)
  */
 export function buildEnvVars({ projectPath, environment, config = null, themeFile = '', rendering = null }) {
+  // rendering param takes precedence; fall back to config.rendering
+  rendering = rendering ?? config?.rendering ?? null;
   const envResult = loadEnvForEnvironment({
     rootDir: projectPath,
     environment,
@@ -75,7 +77,7 @@ export function buildEnvVars({ projectPath, environment, config = null, themeFil
   vars.MARBAS_FOOTER_MODE = normalizeFooterMode(rendering?.footerMode);
   vars.MARBAS_HEADER_MODE = normalizeHeaderMode(rendering?.headerMode);
 
-  const cssMode = String(config?.cssMode || 'marbas').trim();
+  const cssMode = String(config?.theme?.cssMode || config?.cssMode || 'marbas').trim();
   vars.MARBAS_USE_CMS_STYLES = cssMode !== 'external' ? '1' : '0';
   vars.MARBAS_USE_LANGUAGE_SWITCHER = config?.theme?.languageSwitcher !== false ? '1' : '0';
 
