@@ -109,6 +109,7 @@ The build output lands in `my-site/build/public_development/` (or `public_<env>/
 | `marbas-site reset <path> <file>` | Remove a customized file and restore the library default (backup saved to `.marbas/trash/`) |
 | `marbas-site doctor <path>` | Show project status, version check, and customized-file diffs |
 | `marbas-site envs <path>` | List configured environments |
+| `marbas-site reinit <path>` | Migrate a legacy project to `marbas-project.json`. Reads `.marbas-site-project.json` if present and writes a fresh config. A backup is saved to `.marbas/migration-backup/`. Add `--force` to overwrite an existing `marbas-project.json`. |
 
 `--env` is required for `build`, `preview`, and `deploy`. If `defaultEnvironment` is set in `marbas-project.json`, it is used when `--env` is omitted.
 
