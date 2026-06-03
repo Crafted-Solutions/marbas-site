@@ -2,12 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { loadEnvForEnvironment } from '../config/load-env.js';
+import { buildEnvVars } from '../env/build-env.js';
 import { withLogger } from '../logger.js';
 import { runComponentBuildHooks } from '../component/build-hooks.js';
 import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { readProjectConfig } from '../project/config.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolvePackageBin } from './resolve-bin.js';
+import { resolveThemeFile } from '../theme/resolver.js';
 
 const LIB_ROOT = getLibRoot();
 const LIB_WEBPACK_DIR = path.join(LIB_ROOT, 'src', 'build', 'webpack');
@@ -180,6 +182,18 @@ export class BuildHandler {
     process.env.MARBAS_PUBLISH_ENVIRONMENT = this.environment;
     process.env.NODE_ENV = this.optimize ? 'production' : 'development';
     process.env.LOG_LEVEL = this.logLevel;
+
+    // Apply render-settings from marbas-project.json (theme, rendering, i18n)
+    // only when not already set by the caller (e.g. CMS passes MARBAS_THEME_FILE via extraEnv)
+    try {
+      const config = readProjectConfig(this.rootDir);
+      const configEnvVars = buildEnvVars({ projectPath: this.rootDir, environment: this.environment, config });
+      for (const [key, value] of Object.entries(configEnvVars)) {
+        if (!process.env[key]) process.env[key] = value;
+      }
+    } catch {
+      // marbas-project.json absent or unreadable — skip
+    }
   }
 
   cleanOutputDirectory() {
@@ -279,6 +293,31 @@ export class BuildHandler {
     });
   }
 
+  copyTheme() {
+    let config;
+    try { config = readProjectConfig(this.rootDir); } catch { return; }
+
+    const themeId = config?.theme?.id || null;
+    if (!themeId) return;
+
+    let outputPath;
+    try {
+      outputPath = resolveBuildOutputPath({ projectRoot: this.rootDir, config, environment: this.environment });
+    } catch {
+      outputPath = path.join(this.rootDir, 'build', `public_${this.environment}`);
+    }
+
+    try {
+      const src = resolveThemeFile({ projectPath: this.rootDir, themeId, libRoot: LIB_ROOT });
+      const destDir = path.join(outputPath, '_assets', 'css');
+      fs.mkdirSync(destDir, { recursive: true });
+      fs.copyFileSync(src, path.join(destDir, 'theme.css'));
+      this.logger.buildStep?.('🎨', `Theme: ${themeId}`);
+    } catch (err) {
+      this.logger.buildWarning?.('⚠️', `Theme copy failed: ${err.message}`);
+    }
+  }
+
   async run() {
     if (this.logger.shouldLog?.('minimal') ?? true) {
       this.logger.buildStart?.('Marbas Site Project - Universal Build Handler');
@@ -290,6 +329,7 @@ export class BuildHandler {
 
     this.loadEnvironmentVariables();
     this.cleanOutputDirectory();
+    this.copyTheme();
     this.buildWebpack();
     this.buildEleventy();
     await this.runBuildHooks();
