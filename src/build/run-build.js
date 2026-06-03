@@ -329,8 +329,8 @@ export class BuildHandler {
 
     this.loadEnvironmentVariables();
     this.cleanOutputDirectory();
-    this.copyTheme();
     this.buildWebpack();
+    this.copyTheme();
     this.buildEleventy();
     await this.runBuildHooks();
 
