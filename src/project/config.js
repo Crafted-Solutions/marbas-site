@@ -42,8 +42,8 @@ function convertLegacyConfig(legacy) {
       languageSwitcher: legacy?.theme?.languageSwitcher !== false
     },
     rendering: {
-      footerMode: legacy?.rendering?.footerMode || 'legacy',
-      headerMode: legacy?.rendering?.headerMode || 'legacy'
+      footerMode: legacy?.rendering?.footerMode || 'globalData',
+      headerMode: legacy?.rendering?.headerMode || 'globalData'
     },
     ...(legacy?.i18n ? { i18n: legacy.i18n } : {}),
     _fromLegacy: true
@@ -62,8 +62,8 @@ function applyDefaults(raw) {
     ...(config.theme || {})
   };
   config.rendering = {
-    footerMode: 'legacy',
-    headerMode: 'legacy',
+    footerMode: 'globalData',
+    headerMode: 'globalData',
     ...(config.rendering || {})
   };
   if (!config.i18n) config.i18n = {};

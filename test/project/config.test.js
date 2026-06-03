@@ -54,8 +54,8 @@ test('readProjectConfig applies rendering defaults when rendering block is absen
   });
 
   const config = readProjectConfig(tmp);
-  assert.equal(config.rendering.footerMode, 'legacy');
-  assert.equal(config.rendering.headerMode, 'legacy');
+  assert.equal(config.rendering.footerMode, 'globalData');
+  assert.equal(config.rendering.headerMode, 'globalData');
 });
 
 test('readProjectConfig preserves explicit rendering settings', () => {
