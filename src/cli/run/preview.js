@@ -1,6 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { startPreview } from '../../preview/orchestrator.js';
+import { readProjectConfig } from '../../project/config.js';
+import { buildEnvVars } from '../../env/build-env.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const LIB_ROOT = path.resolve(path.dirname(__filename), '../../..');
@@ -13,12 +15,21 @@ export async function runPreview({ projectPath, flags }) {
 
   const onLog = quiet ? () => {} : (line) => process.stdout.write(line + '\n');
 
+  let extraEnv = {};
+  try {
+    const config = readProjectConfig(absProject);
+    extraEnv = buildEnvVars({ projectPath: absProject, environment, config });
+  } catch {
+    // marbas-project.json absent — preview starts with defaults
+  }
+
   try {
     const handle = await startPreview({
       projectRoot: absProject,
       environment,
       port,
       libRoot: LIB_ROOT,
+      extraEnv,
       onLog
     });
 
