@@ -8,12 +8,16 @@ import { logger } from '../../logger.js';
 
 logger.verbose('Loading webpack development configuration');
 
+// The development webpack base also serves any custom environment whose
+// `mode` is development — so the output path follows the actual target env.
+const targetEnvironment = process.env.MARBAS_PUBLISH_ENVIRONMENT || 'development';
+
 function resolveOutputPath() {
   try {
     const config = readProjectConfig(projectRoot);
-    return resolveBuildOutputPath({ projectRoot, config, environment: 'development' });
+    return resolveBuildOutputPath({ projectRoot, config, environment: targetEnvironment });
   } catch {
-    return path.join(projectRoot, 'build', 'public_development');
+    return path.join(projectRoot, 'build', `public_${targetEnvironment}`);
   }
 }
 
@@ -23,7 +27,7 @@ const baseConfig = getBaseConfig({
   mode: 'development',
   devtool: 'source-map',
   outputPath: path.join(outputPath, '_assets'),
-  environment: 'development',
+  environment: targetEnvironment,
   filenamePattern: { js: 'js/[name].bundle.js', css: 'css/[name].bundle.css' },
   enableSourceMaps: true
 });

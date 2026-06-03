@@ -1,4 +1,4 @@
-import { listEnvironments } from '../../project/config.js';
+import { listEnvironments } from '../../env/resolve.js';
 
 export function runEnvs({ projectPath }) {
   if (!projectPath) {

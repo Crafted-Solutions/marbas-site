@@ -10,9 +10,10 @@ import { readProjectConfig } from '../project/config.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolvePackageBin } from './resolve-bin.js';
 import { resolveThemeFile } from '../theme/resolver.js';
+import { listEnvironments, isValidEnvironment } from '../env/resolve.js';
+import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
 
 const LIB_ROOT = getLibRoot();
-const LIB_WEBPACK_DIR = path.join(LIB_ROOT, 'src', 'build', 'webpack');
 
 function runCliViaNode({ cliScriptPath, args = [], cwd, env = {}, logger }) {
   const childProcessOptions = logger.getChildProcessOptions?.(cwd, env) || {
@@ -43,12 +44,6 @@ export class BuildHandler {
   constructor({ rootDir, args, logger }) {
     this.rootDir = rootDir;
     this.logger = withLogger(logger);
-    this.validEnvironments = ['development', 'local_test', 'staging', 'production'];
-    this.legacyMapping = {
-      develop: 'development',
-      test: 'local_test',
-      prod: 'production'
-    };
 
     this.args = args;
     this.environment = null;
@@ -76,7 +71,7 @@ export class BuildHandler {
 
     if (!envArg) {
       this.logger.error('❌ Environment is required!');
-      this.logger.error('Usage: node scripts/build.js --env=development|local_test|staging|production [--optimize] [--serve] [--log-level=silent|minimal|normal|verbose]');
+      this.logger.error('Usage: node scripts/build.js --env=<name> [--optimize] [--serve] [--log-level=silent|minimal|normal|verbose]');
       this.logger.error('');
       this.logger.error('Available environments:');
       this.listAvailableEnvironments();
@@ -90,43 +85,18 @@ export class BuildHandler {
       process.exit(1);
     }
 
-    if (this.legacyMapping[this.environment]) {
-      this.logger.info?.(`🔄 Mapping legacy environment '${this.environment}' to '${this.legacyMapping[this.environment]}'`);
-      this.environment = this.legacyMapping[this.environment];
+    if (!isValidEnvironment(this.environment, this.rootDir)) {
+      this.logger.error(`❌ Unknown environment: ${this.environment}`);
+      this.logger.error('Available environments:');
+      this.listAvailableEnvironments();
+      process.exit(1);
     }
   }
 
   listAvailableEnvironments() {
-    this.logger.error('  Standard environments:');
-    this.validEnvironments.forEach((env) => {
+    for (const env of listEnvironments(this.rootDir)) {
       this.logger.error(`    ✅ ${env}`);
-    });
-
-    this.logger.error('  Legacy environments (mapped):');
-    Object.entries(this.legacyMapping).forEach(([legacy, mapped]) => {
-      this.logger.error(`    🔄 ${legacy} → ${mapped}`);
-    });
-
-    const envDir = path.join(this.rootDir, 'config', 'env');
-    if (!fs.existsSync(envDir)) {
-      return;
     }
-
-    const envFiles = fs
-      .readdirSync(envDir)
-      .filter((file) => file.startsWith('.env.') && !file.endsWith('.example'))
-      .map((file) => file.replace('.env.', ''))
-      .sort();
-
-    if (envFiles.length === 0) {
-      return;
-    }
-
-    this.logger.error('  Available environment files:');
-    envFiles.forEach((env) => {
-      const indicator = this.validEnvironments.includes(env) ? '✅' : '🔧';
-      this.logger.error(`    ${indicator} ${env}`);
-    });
   }
 
   loadEnvironmentVariables() {
@@ -210,26 +180,20 @@ export class BuildHandler {
   }
 
   buildWebpack() {
-    const webpackConfigName = process.env.WEBPACK_CONFIG || this.environment;
-    const configName = webpackConfigName.replace(/\.js$/, '');
-    const webpackConfigPath = path.join(LIB_WEBPACK_DIR, `${configName}.js`);
+    const webpackConfigPath = resolveWebpackConfigPath({
+      libRoot: LIB_ROOT,
+      projectRoot: this.rootDir,
+      environment: this.environment
+    });
 
-    if (!fs.existsSync(webpackConfigPath)) {
-      this.logger.buildWarning('⚠️', `Environment-specific webpack config not found: ${webpackConfigPath}`);
-    }
-
-    this.logger.webpackStart?.(fs.existsSync(webpackConfigPath) ? configName : 'default');
+    this.logger.webpackStart?.(path.basename(webpackConfigPath, '.js'));
 
     try {
       const webpackCli = resolvePackageBin('webpack-cli', this.rootDir, 'webpack');
 
-      const args = fs.existsSync(webpackConfigPath)
-        ? ['--config', webpackConfigPath]
-        : [];
-
       runCliViaNode({
         cliScriptPath: webpackCli,
-        args,
+        args: ['--config', webpackConfigPath],
         cwd: this.rootDir,
         logger: this.logger
       });

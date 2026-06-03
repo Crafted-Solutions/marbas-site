@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import { CONFIG_MAP } from '../../src/build/webpack/config-loader.js';
 import { getBaseConfig, getWebpackCacheConfig, getStatsConfig, getStaticAssetCopyPatterns, getFaviconCopyConfig } from '../../src/build/webpack/base.js';
 
-test('CONFIG_MAP — has all four environment entries', () => {
+test('CONFIG_MAP — has the two webpack base entries', () => {
   assert.ok('development' in CONFIG_MAP);
-  assert.ok('local_test' in CONFIG_MAP);
-  assert.ok('staging' in CONFIG_MAP);
   assert.ok('production' in CONFIG_MAP);
+  // local_test / staging are no longer built-in bases (Task 87)
+  assert.ok(!('local_test' in CONFIG_MAP));
+  assert.ok(!('staging' in CONFIG_MAP));
 });
 
 test('CONFIG_MAP — all entries are file:// URLs pointing to existing files', async () => {

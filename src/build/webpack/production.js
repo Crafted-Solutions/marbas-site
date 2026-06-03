@@ -9,12 +9,16 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
 console.log('Loading webpack production configuration');
 
+// The production webpack base also serves any custom environment whose
+// `mode` is production — so the output path follows the actual target env.
+const targetEnvironment = process.env.MARBAS_PUBLISH_ENVIRONMENT || 'production';
+
 function resolveOutputPath() {
   try {
     const config = readProjectConfig(projectRoot);
-    return resolveBuildOutputPath({ projectRoot, config, environment: 'production' });
+    return resolveBuildOutputPath({ projectRoot, config, environment: targetEnvironment });
   } catch {
-    return path.join(projectRoot, 'build', 'public_production');
+    return path.join(projectRoot, 'build', `public_${targetEnvironment}`);
   }
 }
 
@@ -24,7 +28,7 @@ const baseConfig = getBaseConfig({
   mode: 'production',
   devtool: false,
   outputPath: path.join(outputPath, '_assets'),
-  environment: 'production',
+  environment: targetEnvironment,
   filenamePattern: { js: 'js/[name].bundle.js', css: 'css/[name].bundle.css' },
   enableSourceMaps: false
 });

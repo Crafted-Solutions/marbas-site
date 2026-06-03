@@ -30,14 +30,17 @@ test('initProject creates marbas-project.json with correct structure', () => {
   const tmp = makeTmpDir();
   const projectPath = path.join(tmp, 'test-proj');
 
-  initProject({ projectPath, name: 'My Site', defaultEnvironment: 'staging' });
+  initProject({ projectPath, name: 'My Site' });
 
   const config = JSON.parse(fs.readFileSync(path.join(projectPath, 'marbas-project.json'), 'utf8'));
   assert.equal(config.name, 'My Site');
   assert.ok(config.marbasSite, 'marbasSite version should be set');
-  assert.equal(config.defaultEnvironment, 'staging');
+  assert.equal(config.defaultEnvironment, 'development');
   assert.equal(config.paths.buildDir, './build');
-  assert.ok(config.environments.staging, 'Should have staging environment');
+  // Task 87: init seeds exactly the two built-in environments
+  assert.ok(config.environments.development, 'Should have development environment');
+  assert.ok(config.environments.production, 'Should have production environment');
+  assert.deepEqual(Object.keys(config.environments).sort(), ['development', 'production']);
   assert.deepEqual(config.deployTargets, {});
 
   fs.rmSync(tmp, { recursive: true });

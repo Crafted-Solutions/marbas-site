@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { listEnvironments, isValidEnvironment } from '../../env/resolve.js';
 
 /**
  * @param {string} projectPath
@@ -19,17 +20,10 @@ export function checkEnvironments(projectPath) {
     return [{ id: 'environments', status: 'error', message: `Cannot parse marbas-project.json: ${err.message}` }];
   }
 
-  const environments = raw.environments || {};
-  const envNames = Object.keys(environments);
+  // Resolved environments = built-ins (development, production) merged with
+  // those defined in marbas-project.json.
+  const envNames = listEnvironments(projectPath);
   const defaultEnv = raw.defaultEnvironment || null;
-
-  if (envNames.length === 0) {
-    return [{
-      id: 'environments',
-      status: 'warn',
-      message: 'No environments defined in marbas-project.json',
-    }];
-  }
 
   const results = [];
 
@@ -39,11 +33,11 @@ export function checkEnvironments(projectPath) {
       status: 'warn',
       message: 'defaultEnvironment not set in marbas-project.json',
     });
-  } else if (!environments[defaultEnv]) {
+  } else if (!isValidEnvironment(defaultEnv, projectPath)) {
     results.push({
       id: 'environments.default',
       status: 'warn',
-      message: `defaultEnvironment "${defaultEnv}" is not defined in environments`,
+      message: `defaultEnvironment "${defaultEnv}" is not a valid environment`,
     });
   }
 

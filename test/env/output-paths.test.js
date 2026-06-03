@@ -8,28 +8,19 @@ describe('buildOutputDirForEnvironment', () => {
     assert.equal(buildOutputDirForEnvironment('development'), 'public_development');
   });
 
-  it('returns public_development for alias "develop"', () => {
-    assert.equal(buildOutputDirForEnvironment('develop'), 'public_development');
-  });
-
-  it('returns public_staging for "staging"', () => {
-    assert.equal(buildOutputDirForEnvironment('staging'), 'public_staging');
-  });
-
   it('returns public_production for "production"', () => {
     assert.equal(buildOutputDirForEnvironment('production'), 'public_production');
   });
 
-  it('returns public_production for alias "produktion"', () => {
-    assert.equal(buildOutputDirForEnvironment('produktion'), 'public_production');
-  });
-
-  it('returns public_local_test for "local_test"', () => {
+  it('returns public_<name> generically for any valid env name (no special aliases)', () => {
+    // develop/produktion/test-local are no longer aliased (Task 87)
+    assert.equal(buildOutputDirForEnvironment('develop'), 'public_develop');
+    assert.equal(buildOutputDirForEnvironment('staging'), 'public_staging');
     assert.equal(buildOutputDirForEnvironment('local_test'), 'public_local_test');
   });
 
-  it('returns public_local_test for alias "test-local"', () => {
-    assert.equal(buildOutputDirForEnvironment('test-local'), 'public_local_test');
+  it('returns empty string for hyphenated names (invalid)', () => {
+    assert.equal(buildOutputDirForEnvironment('test-local'), '');
   });
 
   it('returns public_<name> for a custom env name', () => {

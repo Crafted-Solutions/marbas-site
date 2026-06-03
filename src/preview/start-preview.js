@@ -3,6 +3,7 @@ import path from 'path';
 import http from 'http';
 import { withLogger } from '../logger.js';
 import { loadEnvForEnvironment } from '../config/load-env.js';
+import { isValidEnvironment, listEnvironments } from '../env/resolve.js';
 
 export class PreviewServer {
   constructor({ rootDir, environment, logger, editorAdapter }) {
@@ -10,7 +11,6 @@ export class PreviewServer {
     this.logger = withLogger(logger);
     this.editorAdapter = editorAdapter || null;
 
-    this.validEnvironments = ['development', 'local_test'];
     this.environment = environment;
     this.port = null;
     this.publicDir = null;
@@ -18,8 +18,9 @@ export class PreviewServer {
     this.editorConfig = null;
     this.buildService = null;
 
-    if (!this.validEnvironments.includes(this.environment)) {
-      throw new Error(`Invalid environment: ${this.environment}`);
+    if (!isValidEnvironment(this.environment, this.rootDir)) {
+      const available = listEnvironments(this.rootDir).join(', ');
+      throw new Error(`Invalid environment: ${this.environment}. Available: ${available}`);
     }
 
     this.publicDir = path.join(this.rootDir, `public_${this.environment}`);
@@ -84,12 +85,8 @@ export class PreviewServer {
   }
 
   getDefaultPort() {
-    const defaultPorts = {
-      development: 3001,
-      local_test: 3002
-    };
-
-    return defaultPorts[this.environment];
+    // Single default port for any environment; override per-run via PREVIEW_PORT.
+    return 3001;
   }
 
   sendJson(res, statusCode, payload) {
@@ -505,7 +502,7 @@ export function startPreviewServerFromCli({
     safeLogger.error('Usage: node scripts/preview-server.js [environment]');
     safeLogger.error('');
     safeLogger.error('Available environments:');
-    ['development', 'local_test'].forEach((env) => {
+    listEnvironments(rootDir).forEach((env) => {
       safeLogger.error(`  ✅ ${env}`);
     });
     process.exit(1);

@@ -4,6 +4,7 @@ import path from 'path';
 import readline from 'readline';
 import { withLogger } from '../logger.js';
 import { loadEnvForEnvironment } from '../config/load-env.js';
+import { isValidEnvironment, listEnvironments } from '../env/resolve.js';
 
 export class SimpleFTPDeployer {
   constructor(environment, options = {}) {
@@ -325,18 +326,16 @@ export async function runDeployFromCli({
   const environment = args[0];
   if (!environment) {
     safeLogger.error('❌ Environment is required!');
-    safeLogger.error('Usage: node scripts/deploy.js <staging|production> [--confirm]');
+    safeLogger.error('Usage: node scripts/deploy.js <environment> [--confirm]');
     safeLogger.error('');
-    safeLogger.error('Examples:');
-    safeLogger.error('  node scripts/deploy.js staging');
-    safeLogger.error('  node scripts/deploy.js production --confirm');
+    safeLogger.error('Available environments:');
+    listEnvironments(rootDir).forEach((env) => safeLogger.error(`  ✅ ${env}`));
     process.exit(1);
   }
 
-  const validEnvironments = ['staging', 'production'];
-  if (!validEnvironments.includes(environment)) {
+  if (!isValidEnvironment(environment, rootDir)) {
     safeLogger.error(`❌ Invalid environment: ${environment}`);
-    safeLogger.error(`Valid environments: ${validEnvironments.join(', ')}`);
+    safeLogger.error(`Available environments: ${listEnvironments(rootDir).join(', ')}`);
     process.exit(1);
   }
 

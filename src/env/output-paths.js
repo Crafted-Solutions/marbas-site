@@ -1,30 +1,12 @@
 import path from 'path';
 
-const OUTPUT_DIR_BY_ENVIRONMENT = {
-  development: 'public_development',
-  local_test: 'public_local_test',
-  staging: 'public_staging',
-  production: 'public_production'
-};
-
-const LEGACY_OUTPUT_DIR_PATTERN = /^public_(development|local_test|staging|production)$/;
+// Any environment maps to public_<env>. Detects a build dir that already points
+// at a concrete public_<env> directory (legacy configs) for backward compat.
+const LEGACY_OUTPUT_DIR_PATTERN = /^public_[a-z0-9_]+$/;
 
 export function buildOutputDirForEnvironment(environment) {
   const normalized = String(environment || '').trim().toLowerCase();
-
-  if (normalized === 'develop') {
-    return OUTPUT_DIR_BY_ENVIRONMENT.development;
-  }
-
-  if (normalized === 'test-local') {
-    return OUTPUT_DIR_BY_ENVIRONMENT.local_test;
-  }
-
-  if (normalized === 'produktion') {
-    return OUTPUT_DIR_BY_ENVIRONMENT.production;
-  }
-
-  return OUTPUT_DIR_BY_ENVIRONMENT[normalized] || (/^[a-z0-9_]+$/.test(normalized) ? `public_${normalized}` : '');
+  return /^[a-z0-9_]+$/.test(normalized) ? `public_${normalized}` : '';
 }
 
 function normalizeConfiguredBuildDir(configuredBuildDir) {

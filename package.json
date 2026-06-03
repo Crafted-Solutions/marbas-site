@@ -1,6 +1,6 @@
 {
   "name": "@crafted.solutions/marbas-site",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "description": "Marbas site runtime — build, preview, deploy, templates and CLI for Marbas websites",
   "license": "MIT",
   "author": "Timo Müller <timo.m@plurex.de>",
@@ -33,6 +33,7 @@
     "./build": "./src/build/index.js",
     "./preview": "./src/preview/index.js",
     "./deploy": "./src/deploy/index.js",
+    "./env": "./src/env/index.js",
     "./site-settings": "./src/site-settings/index.js",
     "./project": "./src/project/config.js",
     "./theme": "./src/theme/index.js",

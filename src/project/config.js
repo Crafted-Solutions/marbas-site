@@ -4,10 +4,8 @@ import path from 'path';
 const CONFIG_FILE = 'marbas-project.json';
 const LEGACY_CONFIG_FILE = '.marbas-site-project.json';
 
-const LEGACY_DEFAULT_ENVS = {
+const DEFAULT_ENVS = {
   development: { outputName: 'development', env: {} },
-  local_test:  { outputName: 'local_test',  env: {} },
-  staging:     { outputName: 'staging',     env: {} },
   production:  { outputName: 'production',  env: {} }
 };
 
@@ -15,8 +13,9 @@ function convertLegacyConfig(legacy) {
   const envs = {};
   const legacyEnvs = legacy?.environments || {};
 
-  // Merge legacy-defined envs with the four classic defaults
-  for (const [name, def] of Object.entries({ ...LEGACY_DEFAULT_ENVS, ...legacyEnvs })) {
+  // Seed the two built-ins, then merge in any legacy-defined envs (a legacy
+  // project's own local_test/staging survive as custom environments).
+  for (const [name, def] of Object.entries({ ...DEFAULT_ENVS, ...legacyEnvs })) {
     envs[name] = {
       outputName: def.outputName || name,
       env: def.env || {}

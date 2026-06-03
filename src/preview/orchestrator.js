@@ -2,9 +2,9 @@ import path from 'path';
 import { startWebpackWatch } from './webpack-watch.js';
 import { startEleventyWatch } from './eleventy-watch.js';
 import { getLibRoot } from '../eject/index.js';
+import { resolveWebpackConfigPath } from '../build/webpack/resolve-config.js';
 
 const LIB_ROOT = getLibRoot();
-const LIB_WEBPACK_DIR = path.join(LIB_ROOT, 'src', 'build', 'webpack');
 
 /**
  * Start the preview pipeline: Webpack watch → Eleventy serve.
@@ -31,7 +31,11 @@ export async function startPreview({
   _bins = {}
 } = {}) {
   const effectiveLibRoot = libRoot ? path.resolve(libRoot) : LIB_ROOT;
-  const webpackConfigPath = path.join(effectiveLibRoot, 'src', 'build', 'webpack', `${environment}.js`);
+  const webpackConfigPath = resolveWebpackConfigPath({
+    libRoot: effectiveLibRoot,
+    projectRoot,
+    environment
+  });
   const eleventyConfigPath = path.join(effectiveLibRoot, 'tm.eleventy.js');
 
   onLog(`[preview] Starting webpack watch (${environment})…`);

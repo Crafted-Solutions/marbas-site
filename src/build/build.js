@@ -8,17 +8,10 @@ import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolveThemeFile } from '../theme/resolver.js';
 import { buildEnvVars } from '../env/build-env.js';
+import { resolveEnvironment } from '../env/resolve.js';
+import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
 
 const LIB_ROOT = getLibRoot();
-
-const WEBPACK_CONFIG_DIR = path.join(LIB_ROOT, 'src', 'build', 'webpack');
-const KNOWN_ENVS = ['development', 'local_test', 'staging', 'production'];
-
-function resolveWebpackConfigPath(environment) {
-  const envConfig = path.join(WEBPACK_CONFIG_DIR, `${environment}.js`);
-  if (fs.existsSync(envConfig)) return envConfig;
-  return path.join(WEBPACK_CONFIG_DIR, 'development.js');
-}
 
 function spawnInProject(bin, args, { projectPath, environment, envVars = {}, onLog }) {
   const result = spawnSync(process.execPath, [bin, ...args], {
@@ -51,7 +44,10 @@ export async function build({ projectPath, environment = 'development', libRoot,
     throw new Error(`Project path does not exist: ${absProject}`);
   }
 
-  const env = KNOWN_ENVS.includes(environment) ? environment : 'development';
+  // Validate against the project's resolved environments (built-ins + custom).
+  // No silent fallback to development — unknown env is a clear error.
+  resolveEnvironment(environment, absProject);
+  const env = environment;
 
   // Read config and output path early — needed for theme copy and component hooks
   let config, outputPath;
@@ -66,7 +62,7 @@ export async function build({ projectPath, environment = 'development', libRoot,
 
   onLog('[build] Running webpack…');
   const webpackBin = resolvePackageBin('webpack-cli', absLib, 'webpack');
-  const webpackConfig = resolveWebpackConfigPath(env);
+  const webpackConfig = resolveWebpackConfigPath({ libRoot: absLib, projectRoot: absProject, environment: env });
   const webpackResult = spawnInProject(webpackBin, ['--config', webpackConfig], {
     projectPath: absProject, environment: env, envVars, onLog
   });

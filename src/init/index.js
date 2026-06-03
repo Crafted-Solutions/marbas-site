@@ -9,10 +9,11 @@ const LIB_PKG = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8')
 );
 
-const LEGACY_DEFAULT_ENVS = {
+// Built-in environments seeded into every project. Legacy projects that carried
+// local_test/staging keep those (they are merged in from the legacy config below)
+// but they are no longer seeded as defaults.
+const DEFAULT_ENVS = {
   development: { outputName: 'development', env: {} },
-  local_test:  { outputName: 'local_test',  env: {} },
-  staging:     { outputName: 'staging',     env: {} },
   production:  { outputName: 'production',  env: {} }
 };
 
@@ -42,11 +43,19 @@ export function reinitProject({ projectPath, force = false } = {}) {
     fs.copyFileSync(legacyPath, path.join(backupDir, `marbas-site-project.json.${timestamp}`));
   }
 
-  // Build environments — only lib-relevant fields (no CMS-specific baseHref/domain)
+  // Build environments — built-ins plus any legacy-defined env (lib-relevant
+  // fields only; CMS-specific baseHref/domain are dropped).
   const envs = {};
   const legacyEnvs = legacy?.environments || {};
-  for (const [name, def] of Object.entries({ ...LEGACY_DEFAULT_ENVS, ...legacyEnvs })) {
+  for (const [name, def] of Object.entries({ ...DEFAULT_ENVS, ...legacyEnvs })) {
     envs[name] = { outputName: def.outputName || name, env: def.env || {} };
+  }
+
+  // Preserve the legacy default environment as a custom env so a migrated
+  // project that built against e.g. "staging" keeps building (no hard break).
+  const defaultEnvironment = legacy?.preview?.defaultEnvironment || 'development';
+  if (!envs[defaultEnvironment]) {
+    envs[defaultEnvironment] = { outputName: defaultEnvironment, env: {} };
   }
 
   const themeSelected = String(legacy?.theme?.selected || '').trim();
@@ -56,7 +65,7 @@ export function reinitProject({ projectPath, force = false } = {}) {
     name: legacy?.name || path.basename(absPath),
     marbasSite: LIB_PKG.version,
     paths: { buildDir: legacy?.paths?.buildDir || './build' },
-    defaultEnvironment: legacy?.preview?.defaultEnvironment || 'development',
+    defaultEnvironment,
     environments: envs,
     deployTargets: {},
     theme: {
@@ -167,10 +176,8 @@ export function initProject({
     },
     defaultEnvironment,
     environments: {
-      [defaultEnvironment]: {
-        outputName: defaultEnvironment,
-        env: {}
-      }
+      development: { outputName: 'development', env: {} },
+      production: { outputName: 'production', env: {} }
     },
     deployTargets: {},
     theme: {
