@@ -2,7 +2,7 @@
  * Command registry.
  * Each entry describes a CLI command and holds a run() function.
  */
-import { initProject } from '../init/index.js';
+import { initProject, reinitProject } from '../init/index.js';
 import { runBuild } from './run/build.js';
 import { runPreview } from './run/preview.js';
 import { runDeploy } from './run/deploy.js';
@@ -35,6 +35,32 @@ export const COMMANDS = [
         });
         const mode = flags.starter ? 'starter project' : 'project';
         process.stdout.write(`Project initialised at ${projectPath} (${mode})\n`);
+      } catch (err) {
+        process.stderr.write(`${err.message}\n`);
+        process.exit(1);
+      }
+    }
+  },
+  {
+    name: 'reinit',
+    description: 'Migrate a legacy project to marbas-project.json',
+    usage: 'marbas-site reinit <path> [--force]',
+    positionals: ['path'],
+    flags: ['--force'],
+    run({ projectPath, flags }) {
+      if (!projectPath) {
+        process.stderr.write('Usage: marbas-site reinit <path>\n');
+        process.exit(1);
+      }
+      try {
+        const result = reinitProject({ projectPath, force: Boolean(flags.force) });
+        if (result.hadLegacy) {
+          process.stdout.write(`marbas-project.json created at ${result.configPath}\n`);
+          process.stdout.write('Your .marbas-site-project.json is preserved (CMS configuration).\n');
+          process.stdout.write('A backup was written to .marbas/migration-backup/\n');
+        } else {
+          process.stdout.write(`marbas-project.json created at ${result.configPath} (no legacy config found, used defaults)\n`);
+        }
       } catch (err) {
         process.stderr.write(`${err.message}\n`);
         process.exit(1);

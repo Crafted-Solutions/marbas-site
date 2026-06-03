@@ -5,6 +5,7 @@ import { checkCssMode } from './checks/css-mode.js';
 import { checkGitignore } from './checks/gitignore.js';
 import { checkStaleBuildContext } from './checks/stale-build-context.js';
 import { checkTheme } from './checks/theme.js';
+import { checkLegacyConfig } from './checks/legacy-config.js';
 
 /**
  * @param {{ projectPath: string, libRoot?: string }} opts
@@ -16,6 +17,7 @@ export function runDoctor({ projectPath, libRoot = null } = {}) {
   }
 
   const checks = [
+    checkLegacyConfig(projectPath),
     checkVersion(projectPath),
     ...checkEnvironments(projectPath),
     ...checkEjected({ projectPath, libRoot }),

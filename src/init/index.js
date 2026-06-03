@@ -9,6 +9,73 @@ const LIB_PKG = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8')
 );
 
+const LEGACY_DEFAULT_ENVS = {
+  development: { outputName: 'development', env: {} },
+  local_test:  { outputName: 'local_test',  env: {} },
+  staging:     { outputName: 'staging',     env: {} },
+  production:  { outputName: 'production',  env: {} }
+};
+
+export function reinitProject({ projectPath, force = false } = {}) {
+  const absPath = path.resolve(projectPath);
+  const configPath = path.join(absPath, 'marbas-project.json');
+  const legacyPath = path.join(absPath, '.marbas-site-project.json');
+
+  if (fs.existsSync(configPath) && !force) {
+    throw new Error(`marbas-project.json already exists at ${absPath}. Use --force to overwrite.`);
+  }
+
+  let legacy = {};
+  let hadLegacy = false;
+
+  if (fs.existsSync(legacyPath)) {
+    hadLegacy = true;
+    try {
+      legacy = JSON.parse(fs.readFileSync(legacyPath, 'utf8'));
+    } catch (err) {
+      throw new Error(`Cannot parse .marbas-site-project.json: ${err.message}`);
+    }
+
+    const backupDir = path.join(absPath, '.marbas', 'migration-backup');
+    fs.mkdirSync(backupDir, { recursive: true });
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    fs.copyFileSync(legacyPath, path.join(backupDir, `marbas-site-project.json.${timestamp}`));
+  }
+
+  // Build environments — only lib-relevant fields (no CMS-specific baseHref/domain)
+  const envs = {};
+  const legacyEnvs = legacy?.environments || {};
+  for (const [name, def] of Object.entries({ ...LEGACY_DEFAULT_ENVS, ...legacyEnvs })) {
+    envs[name] = { outputName: def.outputName || name, env: def.env || {} };
+  }
+
+  const themeSelected = String(legacy?.theme?.selected || '').trim();
+  const themeId = themeSelected ? themeSelected.replace(/\.css$/, '') : null;
+
+  const projectConfig = {
+    name: legacy?.name || path.basename(absPath),
+    marbasSite: LIB_PKG.version,
+    paths: { buildDir: legacy?.paths?.buildDir || './build' },
+    defaultEnvironment: legacy?.preview?.defaultEnvironment || 'development',
+    environments: envs,
+    deployTargets: {},
+    theme: {
+      id: themeId,
+      cssMode: legacy?.cssMode || legacy?.theme?.cssMode || 'marbas',
+      languageSwitcher: legacy?.theme?.languageSwitcher !== false
+    },
+    rendering: {
+      footerMode: legacy?.rendering?.footerMode || 'globalData',
+      headerMode: legacy?.rendering?.headerMode || 'globalData'
+    },
+    ...(legacy?.i18n ? { i18n: legacy.i18n } : {})
+  };
+
+  fs.writeFileSync(configPath, JSON.stringify(projectConfig, null, 2) + '\n');
+
+  return { configPath, hadLegacy, config: projectConfig };
+}
+
 const GITIGNORE = `node_modules/
 build/
 .marbas/trash/
