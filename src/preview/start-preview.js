@@ -70,11 +70,11 @@ export class PreviewServer {
     const envLocalFile = `.env.${this.environment}.local`;
 
     if (envResult.loadedFiles.includes(envFile)) {
-      this.logger.verbose?.(`Loaded ${Object.keys(envResult.publicEnvVars).length} public variables from ${envFile}`);
+      this.logger.verbose(`Loaded ${Object.keys(envResult.publicEnvVars).length} public variables from ${envFile}`);
     }
 
     if (envResult.loadedFiles.includes(envLocalFile)) {
-      this.logger.verbose?.(`Loaded ${Object.keys(envResult.privateEnvVars).length} private variables from ${envLocalFile}`);
+      this.logger.verbose(`Loaded ${Object.keys(envResult.privateEnvVars).length} private variables from ${envLocalFile}`);
     }
 
     this.port = parseInt(process.env.PREVIEW_PORT || '', 10) || this.getDefaultPort();
@@ -385,7 +385,7 @@ export class PreviewServer {
               res.writeHead(404, { 'Content-Type': 'text/html' });
               res.end('<h1>404 Not Found</h1>');
             } else {
-              this.logger.verbose?.(`SPA fallback: ${req.url} -> /index.html`);
+              this.logger.verbose(`SPA fallback: ${req.url} -> /index.html`);
               this.serveFile(fallbackIndexPath, res);
             }
           });
@@ -397,7 +397,7 @@ export class PreviewServer {
       }
 
       if (stats.isFile()) {
-        this.logger.verbose?.(`Serving: ${req.url}`);
+        this.logger.verbose(`Serving: ${req.url}`);
         this.serveFile(filePath, res);
         return;
       }
@@ -408,7 +408,7 @@ export class PreviewServer {
           res.writeHead(404, { 'Content-Type': 'text/html' });
           res.end('<h1>404 Not Found</h1>');
         } else {
-          this.logger.verbose?.(`Directory index: ${req.url} -> index.html`);
+          this.logger.verbose(`Directory index: ${req.url} -> index.html`);
           this.serveFile(directoryIndexPath, res);
         }
       });
@@ -429,7 +429,7 @@ export class PreviewServer {
 
   setupGracefulShutdown() {
     const gracefulShutdown = (signal) => {
-      this.logger.info?.(`\n📡 Received ${signal}. Shutting down gracefully...`);
+      this.logger.info(`\n📡 Received ${signal}. Shutting down gracefully...`);
 
       if (this.server) {
         this.server.close(() => {
@@ -446,11 +446,11 @@ export class PreviewServer {
   }
 
   start() {
-    this.logger.buildStart?.('Marbas Site Project - Preview Server');
-    this.logger.info?.(`Environment: ${this.environment}`);
-    this.logger.info?.(`Port: ${this.port}`);
-    this.logger.info?.(`Serving: ${this.publicDir}`);
-    this.logger.info?.(
+    this.logger.buildStart('Marbas Site Project - Preview Server');
+    this.logger.info(`Environment: ${this.environment}`);
+    this.logger.info(`Port: ${this.port}`);
+    this.logger.info(`Serving: ${this.publicDir}`);
+    this.logger.info(
       `Editor: ${this.editorConfig.enabled ? `enabled at ${this.editorConfig.routePrefix}` : 'disabled'}`
     );
 
@@ -464,15 +464,15 @@ export class PreviewServer {
 
     this.server.listen(this.port, () => {
       this.logger.buildSuccess('✅', 'Preview server started');
-      this.logger.info?.('');
-      this.logger.info?.('🌐 Open your browser and navigate to:');
-      this.logger.info?.(`   http://localhost:${this.port}`);
+      this.logger.info('');
+      this.logger.info('🌐 Open your browser and navigate to:');
+      this.logger.info(`   http://localhost:${this.port}`);
       if (this.editorConfig.enabled) {
-        this.logger.info?.(`   http://localhost:${this.port}${this.editorConfig.routePrefix}`);
+        this.logger.info(`   http://localhost:${this.port}${this.editorConfig.routePrefix}`);
       }
-      this.logger.info?.('');
-      this.logger.info?.('📝 To stop the server, press Ctrl+C');
-      this.logger.info?.('');
+      this.logger.info('');
+      this.logger.info('📝 To stop the server, press Ctrl+C');
+      this.logger.info('');
     });
 
     this.server.on('error', (err) => {
