@@ -9,7 +9,7 @@ import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { readProjectConfig } from '../project/config.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolvePackageBin } from './resolve-bin.js';
-import { resolveThemeFile } from '../theme/resolver.js';
+import { copyThemeToOutput } from '../theme/copy.js';
 import { listEnvironments, isValidEnvironment } from '../env/resolve.js';
 import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
 
@@ -258,27 +258,15 @@ export class BuildHandler {
   }
 
   copyTheme() {
-    let config;
-    try { config = readProjectConfig(this.rootDir); } catch { return; }
-
-    const themeId = config?.theme?.id || null;
-    if (!themeId) return;
-
-    let outputPath;
-    try {
-      outputPath = resolveBuildOutputPath({ projectRoot: this.rootDir, config, environment: this.environment });
-    } catch {
-      outputPath = path.join(this.rootDir, 'build', `public_${this.environment}`);
-    }
-
-    try {
-      const src = resolveThemeFile({ projectPath: this.rootDir, themeId, libRoot: LIB_ROOT });
-      const destDir = path.join(outputPath, '_assets', 'css');
-      fs.mkdirSync(destDir, { recursive: true });
-      fs.copyFileSync(src, path.join(destDir, 'theme.css'));
-      this.logger.buildStep?.('🎨', `Theme: ${themeId}`);
-    } catch (err) {
-      this.logger.buildWarning?.('⚠️', `Theme copy failed: ${err.message}`);
+    const result = copyThemeToOutput({
+      projectRoot: this.rootDir,
+      libRoot: LIB_ROOT,
+      environment: this.environment
+    });
+    if (result.copied) {
+      this.logger.buildStep?.('🎨', `Theme: ${result.themeId}`);
+    } else if (result.error) {
+      this.logger.buildWarning?.('⚠️', `Theme copy failed: ${result.error}`);
     }
   }
 

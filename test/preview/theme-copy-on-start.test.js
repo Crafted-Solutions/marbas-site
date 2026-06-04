@@ -1,3 +1,11 @@
+/**
+ * Smoke test: theme copy on preview start
+ *
+ * The development preview (webpack-watch, clean:false) never copied the theme
+ * into the output. copyThemeToOutput — invoked by the orchestrator after the
+ * first webpack compile — mirrors the production build's copyTheme() so the
+ * preview shows the configured theme.
+ */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'path';
@@ -7,15 +15,12 @@ import { copyThemeToOutput } from '../../src/theme/copy.js';
 import { resolveBuildOutputPath } from '../../src/env/output-paths.js';
 
 function makeTmpDir() {
-  return fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-build-theme-'));
+  return fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-preview-theme-'));
 }
 
-function makeMinimalProject(tmp, config = {}) {
+function makeProject(tmp, config = {}) {
   const projectPath = path.join(tmp, 'project');
-  const pagesDir = path.join(projectPath, 'pages');
-  fs.mkdirSync(pagesDir, { recursive: true });
-
-  // Minimal marbas-project.json
+  fs.mkdirSync(path.join(projectPath, 'pages'), { recursive: true });
   fs.writeFileSync(
     path.join(projectPath, 'marbas-project.json'),
     JSON.stringify({
@@ -26,7 +31,6 @@ function makeMinimalProject(tmp, config = {}) {
       ...config
     }, null, 2)
   );
-
   return projectPath;
 }
 
@@ -37,48 +41,51 @@ function makeFakeLib(tmp) {
   return libRoot;
 }
 
-function outputThemeCss(projectPath) {
-  const config = JSON.parse(fs.readFileSync(path.join(projectPath, 'marbas-project.json'), 'utf8'));
-  const outputPath = resolveBuildOutputPath({ projectRoot: projectPath, config, environment: 'development' });
-  return path.join(outputPath, '_assets', 'css', 'theme.css');
-}
-
-test('copyThemeToOutput: theme.id copies theme.css to output', () => {
+test('copyThemeToOutput: writes theme.css to resolved output dir', () => {
   const tmp = makeTmpDir();
   try {
     const libRoot = makeFakeLib(tmp);
-    const projectPath = makeMinimalProject(tmp, { theme: { id: 'theme-bloom' } });
+    const projectPath = makeProject(tmp, { theme: { id: 'theme-bloom' } });
 
     const result = copyThemeToOutput({ projectRoot: projectPath, libRoot, environment: 'development' });
     assert.equal(result.copied, true);
     assert.equal(result.themeId, 'theme-bloom');
 
-    const copied = fs.readFileSync(outputThemeCss(projectPath), 'utf8');
-    assert.ok(copied.includes('--t-bg'));
+    const config = JSON.parse(fs.readFileSync(path.join(projectPath, 'marbas-project.json'), 'utf8'));
+    const outputPath = resolveBuildOutputPath({ projectRoot: projectPath, config, environment: 'development' });
+    const themeCss = path.join(outputPath, '_assets', 'css', 'theme.css');
+
+    assert.ok(fs.existsSync(themeCss), 'theme.css must exist in the output dir');
+    assert.ok(fs.readFileSync(themeCss, 'utf8').includes('--t-bg'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-test('copyThemeToOutput: no theme.id — no theme.css copied', () => {
+test('copyThemeToOutput: no theme.id is a no-op', () => {
   const tmp = makeTmpDir();
   try {
     const libRoot = makeFakeLib(tmp);
-    const projectPath = makeMinimalProject(tmp);
+    const projectPath = makeProject(tmp);
 
     const result = copyThemeToOutput({ projectRoot: projectPath, libRoot, environment: 'development' });
     assert.equal(result.copied, false);
-    assert.ok(!fs.existsSync(outputThemeCss(projectPath)), 'theme.css must not exist when no theme.id configured');
+
+    const config = JSON.parse(fs.readFileSync(path.join(projectPath, 'marbas-project.json'), 'utf8'));
+    const outputPath = resolveBuildOutputPath({ projectRoot: projectPath, config, environment: 'development' });
+    const themeCss = path.join(outputPath, '_assets', 'css', 'theme.css');
+
+    assert.ok(!fs.existsSync(themeCss), 'theme.css must not be written without a theme.id');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 
-test('copyThemeToOutput: unknown theme.id reports error', () => {
+test('copyThemeToOutput: unknown theme.id reports error, no crash', () => {
   const tmp = makeTmpDir();
   try {
     const libRoot = makeFakeLib(tmp);
-    const projectPath = makeMinimalProject(tmp, { theme: { id: 'theme-nonexistent' } });
+    const projectPath = makeProject(tmp, { theme: { id: 'theme-nonexistent' } });
 
     const result = copyThemeToOutput({ projectRoot: projectPath, libRoot, environment: 'development' });
     assert.equal(result.copied, false);
