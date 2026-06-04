@@ -3,6 +3,7 @@ import { startWebpackWatch } from './webpack-watch.js';
 import { startEleventyWatch } from './eleventy-watch.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolveWebpackConfigPath } from '../build/webpack/resolve-config.js';
+import { copyThemeToOutput } from '../theme/copy.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -51,6 +52,25 @@ export async function startPreview({
 
   await webpackHandle.waitForFirstCompile();
   onLog('[preview] Webpack compiled.');
+
+  // webpack-watch runs with clean:false and never copies the theme — unlike the
+  // production build's copyTheme(). Mirror that step here so the dev preview
+  // shows the configured theme (and picks up theme switches on restart).
+  try {
+    const themeResult = copyThemeToOutput({
+      projectRoot,
+      libRoot: effectiveLibRoot,
+      environment
+    });
+    if (themeResult.copied) {
+      onLog(`[preview] Theme: ${themeResult.themeId}`);
+    } else if (themeResult.error) {
+      onLog(`[preview] Theme copy failed: ${themeResult.error}`);
+    }
+  } catch (err) {
+    onLog(`[preview] Theme copy failed: ${err.message}`);
+  }
+
   onLog('[preview] Starting Eleventy…');
 
   const eleventyHandle = startEleventyWatch({
