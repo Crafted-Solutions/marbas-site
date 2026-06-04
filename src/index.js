@@ -1,11 +1,16 @@
+import { SimpleFTPDeployer, runDeployFromCli } from './deploy/run-deploy.js';
+import { resolveBuildOutputPath } from './env/output-paths.js';
+import { readProjectConfig, writeProjectConfig } from './project/config.js';
+
 export { BuildHandler, runBuildFromCli } from './build/run-build.js';
 export { PreviewServer, startPreviewServerFromCli } from './preview/start-preview.js';
-export { SimpleFTPDeployer, runDeployFromCli } from './deploy/run-deploy.js';
+export { SimpleFTPDeployer, runDeployFromCli };
 export { loadEnvForEnvironment, parseEnvFile } from './config/load-env.js';
-export { buildOutputDirForEnvironment, resolveBuildOutputPath as resolveOutputPath } from './env/output-paths.js';
+export { buildOutputDirForEnvironment } from './env/output-paths.js';
+export { resolveBuildOutputPath as resolveOutputPath };
 export { buildEnvVars } from './env/build-env.js';
 export { listEnvironments, isValidEnvironment, resolveEnvironment, getEnvironmentMode, BUILTIN_ENVIRONMENTS } from './env/resolve.js';
-export { readProjectConfig, writeProjectConfig } from './project/config.js';
+export { readProjectConfig, writeProjectConfig };
 export { readSiteSettings, saveSiteSettings, normalizeSiteSettings, getDefaultSiteSettings, validateSiteSettings } from './site-settings/index.js';
 export { resolveThemeFile, listLibraryThemes, getThemeDefaults, THEME_DEFAULTS_BY_ID, getCssMode, getActiveCssAssets, getVariantDefaultsForTheme, applyVariantDefaultsToSiteSettings } from './theme/index.js';
 export { resolveHeaderConfig, resolveFooterConfig, resolveAnnouncementConfig, resolveActions, getHeaderPresetTemplate, getFooterPresetTemplate, VALID_HEADER_PRESETS, VALID_FOOTER_PRESETS } from './page/chrome/index.js';
@@ -20,9 +25,6 @@ export { reset } from './reset/index.js';
 export { runDoctor as doctor } from './doctor/index.js';
 
 export async function deploy({ projectPath, environment, onLog } = {}) {
-  const { SimpleFTPDeployer } = await import('./deploy/run-deploy.js');
-  const { readProjectConfig } = await import('./project/config.js');
-  const { resolveBuildOutputPath } = await import('./env/output-paths.js');
   const config = readProjectConfig(projectPath);
   const env = environment || config?.defaultEnvironment;
   const envConfig = config?.environments?.[env];

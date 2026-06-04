@@ -15,15 +15,6 @@ import { registerLayoutAliases } from './src/render/layout-aliases.js';
 
 const LIB_ROOT = getLibRoot();
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
 export default function (eleventyConfig) {
   const projectRoot = process.cwd();
   const environment = process.env.MARBAS_PUBLISH_ENVIRONMENT || 'development';
@@ -33,28 +24,39 @@ export default function (eleventyConfig) {
   eleventyConfig.addPlugin(metagen);
   eleventyConfig.addPlugin(EleventyHtmlBasePlugin);
 
-
-  // Read locale config from site.json; fall back to single-language default
-  let localeConfig = null;
+  // Read the project config once and derive everything (locale, output) from it.
+  let projectConfig = null;
+  let configOk = false;
   try {
-    const projectConfig = readProjectConfig(projectRoot);
-    const siteSettings = readSiteSettings(projectRoot, projectConfig);
-    if (siteSettings?.locale?.languages?.length) {
-      localeConfig = siteSettings.locale;
-    }
-  } catch { /* ignore — locale is optional */ }
+    projectConfig = readProjectConfig(projectRoot);
+    configOk = true;
+  } catch { /* marbas-project.json absent — use defaults below */ }
 
+  // Resolve the build output once. publishFolder feeds image processing,
+  // outputDir feeds Eleventy's dir.output — both derive from the same path.
+  let outputDir = path.join(projectRoot, 'build', `public_${environment}`);
+  let publishFolder = '';
+  if (configOk) {
+    try {
+      const absOutput = resolveBuildOutputPath({ projectRoot, config: projectConfig, environment });
+      outputDir = absOutput;
+      publishFolder = path.relative(projectRoot, absOutput);
+    } catch { /* keep fallbacks — images land in ./images/, output in build/public_<env> */ }
+  }
+
+  // Read locale config from site.json; fall back to single-language default.
+  let localeConfig = null;
+  if (configOk) {
+    try {
+      const siteSettings = readSiteSettings(projectRoot, projectConfig);
+      if (siteSettings?.locale?.languages?.length) {
+        localeConfig = siteSettings.locale;
+      }
+    } catch { /* ignore — locale is optional */ }
+  }
   if (!localeConfig) {
     localeConfig = { defaultLanguage: 'de', languages: [{ code: 'de', label: 'Deutsch' }] };
   }
-
-  // Resolve output path early so image processing writes into the build output dir.
-  let publishFolder = '';
-  try {
-    const projectConfig = readProjectConfig(projectRoot);
-    const absOutput = resolveBuildOutputPath({ projectRoot, config: projectConfig, environment });
-    publishFolder = path.relative(projectRoot, absOutput);
-  } catch { /* fallback to empty — images land in ./images/ */ }
 
   registerWithEleventy(eleventyConfig, { publishFolder, domain: '', localeConfig });
 
@@ -83,24 +85,10 @@ export default function (eleventyConfig) {
     headerMode: process.env.MARBAS_HEADER_MODE || 'globalData'
   });
 
-  const missingComponentWarnings = new Set();
   eleventyConfig.addFilter('componentTemplateExists', (filePath) => {
     const normalized = String(filePath || '').trim();
     if (!normalized) return false;
     return fs.existsSync(path.resolve(normalized));
-  });
-  eleventyConfig.addShortcode('renderMissingComponent', (componentType, placeholderName = '', pagePath = '', env = 'development') => {
-    const ct = String(componentType || '').trim() || 'UnknownComponent';
-    const key = [env, pagePath, placeholderName, ct].join('::');
-    if (!missingComponentWarnings.has(key)) {
-      missingComponentWarnings.add(key);
-      console.warn(`[missing-component] componentType=${ct} placeholder=${placeholderName || '-'} page=${pagePath || '-'} environment=${env}`);
-    }
-    if (env !== 'development') return '';
-    return `<div class="c-missing-component" data-missing-component="${escapeHtml(ct)}">
-  <strong>Fehlende Komponente: ${escapeHtml(ct)}</strong>
-  <p>Diese Komponente wurde im Projekt nicht gefunden und wird nur im Development als Platzhalter angezeigt.</p>
-</div>`;
   });
 
   // Project-first Nunjucks loader — resolves includes from project _includes/ before lib
@@ -113,14 +101,6 @@ export default function (eleventyConfig) {
 
   addLibAssetsPassthrough(eleventyConfig, { libRoot: LIB_ROOT });
   addComponentApiPassthrough(eleventyConfig, { projectRoot, libRoot: LIB_ROOT });
-
-  let outputDir;
-  try {
-    const config = readProjectConfig(projectRoot);
-    outputDir = resolveBuildOutputPath({ projectRoot, config, environment });
-  } catch {
-    outputDir = path.join(projectRoot, 'build', `public_${environment}`);
-  }
 
   return {
     dir: {

@@ -4,6 +4,7 @@ import { configureAriaFilters as _configureAria } from './filters/aria.js';
 import { configureLocaleFilters as _configureLocale } from './filters/locale.js';
 import { configureHtmlShortcodes as _configureShortcodes } from './shortcodes/html.js';
 import { registerSiteChromeShortcodes as _configureSiteChrome } from './shortcodes/site-chrome.js';
+import { registerMissingComponentShortcode as _configureMissingComponent } from './shortcodes/missing-component.js';
 
 export { configureLocalMediaFilters } from './filters/local-media.js';
 export { configureHtmlFilters } from './filters/html.js';
@@ -11,6 +12,8 @@ export { configureAriaFilters } from './filters/aria.js';
 export { configureLocaleFilters } from './filters/locale.js';
 export { configureHtmlShortcodes } from './shortcodes/html.js';
 export { registerSiteChromeShortcodes } from './shortcodes/site-chrome.js';
+export { registerMissingComponentShortcode } from './shortcodes/missing-component.js';
+export { escapeHtml } from './html-escape.js';
 export { shouldBypassEleventyImageProcessing, createFallbackImageHtml } from './image-processing.js';
 export { MediaExporter } from './media-exporter.js';
 export { createDir, copyRecursive } from './fs.js';
@@ -33,4 +36,5 @@ export function registerWithEleventy(eleventyConfig, { publishFolder = '', domai
   }
   _configureShortcodes(eleventyConfig, domain);
   _configureSiteChrome(eleventyConfig);
+  _configureMissingComponent(eleventyConfig);
 }
