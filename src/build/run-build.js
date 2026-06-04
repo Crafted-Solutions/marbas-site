@@ -16,15 +16,7 @@ import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
 const LIB_ROOT = getLibRoot();
 
 function runCliViaNode({ cliScriptPath, args = [], cwd, env = {}, logger }) {
-  const childProcessOptions = logger.getChildProcessOptions?.(cwd, env) || {
-    cwd,
-    env: {
-      ...process.env,
-      ...env
-    },
-    stdio: logger.shouldLog?.('verbose') ? 'inherit' : 'pipe',
-    windowsHide: true
-  };
+  const childProcessOptions = logger.getChildProcessOptions(cwd, env);
 
   const result = spawnSync(process.execPath, [cliScriptPath, ...args], {
     ...childProcessOptions,
@@ -67,7 +59,7 @@ export class BuildHandler {
       this.logLevel = process.env.LOG_LEVEL;
     }
 
-    this.logger.setLevel?.(this.logLevel);
+    this.logger.setLevel(this.logLevel);
 
     if (!envArg) {
       this.logger.error('❌ Environment is required!');
@@ -136,12 +128,12 @@ export class BuildHandler {
       this.logger.buildSuccess('✅', `Loaded ${Object.keys(privateEnvVars).length} private variables`);
     } else {
       this.logger.buildStep('📝', `No private environment file found: ${envLocalFile}`);
-      this.logger.verbose?.('   Private credentials should be in this file for security');
+      this.logger.verbose('   Private credentials should be in this file for security');
     }
 
     if (loadedFiles.length === 0) {
       this.logger.buildWarning('⚠️', `No environment files found for environment: ${this.environment}`);
-      this.logger.verbose?.('   Using default configuration');
+      this.logger.verbose('   Using default configuration');
     } else {
       this.logger.buildSuccess(
         '✅',
@@ -186,7 +178,7 @@ export class BuildHandler {
       environment: this.environment
     });
 
-    this.logger.webpackStart?.(path.basename(webpackConfigPath, '.js'));
+    this.logger.webpackStart(path.basename(webpackConfigPath, '.js'));
 
     try {
       const webpackCli = resolvePackageBin('webpack-cli', this.rootDir, 'webpack');
@@ -198,7 +190,7 @@ export class BuildHandler {
         logger: this.logger
       });
 
-      this.logger.webpackSuccess?.();
+      this.logger.webpackSuccess();
     } catch (error) {
       this.logger.buildError('❌', `Webpack build failed: ${error.message}`);
       process.exit(1);
@@ -206,7 +198,7 @@ export class BuildHandler {
   }
 
   buildEleventy() {
-    this.logger.eleventyStart?.(this.serve);
+    this.logger.eleventyStart(this.serve);
 
     try {
       const eleventyCli = resolvePackageBin('@11ty/eleventy', this.rootDir, 'eleventy');
@@ -223,7 +215,7 @@ export class BuildHandler {
       });
 
       if (!this.serve) {
-        this.logger.eleventySuccess?.();
+        this.logger.eleventySuccess();
       }
     } catch (error) {
       this.logger.buildError('❌', `Eleventy build failed: ${error.message}`);
@@ -232,7 +224,7 @@ export class BuildHandler {
   }
 
   logBuildSummary() {
-    this.logger.buildSummary?.({
+    this.logger.buildSummary({
       serve: this.serve,
       environment: this.environment,
       outputDir: `public_${this.environment}/`,
@@ -253,7 +245,7 @@ export class BuildHandler {
       projectRoot: this.rootDir,
       environment: this.environment,
       outputPath,
-      log: (msg) => this.logger.verbose?.(msg)
+      log: (msg) => this.logger.verbose(msg)
     });
   }
 
@@ -264,16 +256,16 @@ export class BuildHandler {
       environment: this.environment
     });
     if (result.copied) {
-      this.logger.buildStep?.('🎨', `Theme: ${result.themeId}`);
+      this.logger.buildStep('🎨', `Theme: ${result.themeId}`);
     } else if (result.error) {
-      this.logger.buildWarning?.('⚠️', `Theme copy failed: ${result.error}`);
+      this.logger.buildWarning('⚠️', `Theme copy failed: ${result.error}`);
     }
   }
 
   async run() {
-    if (this.logger.shouldLog?.('minimal') ?? true) {
-      this.logger.buildStart?.('Marbas Site Project - Universal Build Handler');
-      this.logger.envInfo?.(this.environment, {
+    if (this.logger.shouldLog('minimal') ?? true) {
+      this.logger.buildStart('Marbas Site Project - Universal Build Handler');
+      this.logger.envInfo(this.environment, {
         optimize: this.optimize,
         serve: this.serve
       });

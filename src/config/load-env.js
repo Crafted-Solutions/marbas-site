@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { withLogger } from '../logger.js';
 
 export function parseEnvFile(filePath) {
   const envVars = {};
@@ -28,6 +29,7 @@ export function loadEnvForEnvironment({
   apply = true,
   preserveExisting = false
 }) {
+  const log = withLogger(logger);
   const envFile = `.env.${environment}`;
   const envLocalFile = `.env.${environment}.local`;
   const envPath = path.join(rootDir, 'config', 'env', envFile);
@@ -69,7 +71,7 @@ export function loadEnvForEnvironment({
     });
   }
 
-  logger?.verbose?.(`Loaded environment files: ${loadedFiles.join(', ') || 'none'}`);
+  log.verbose(`Loaded environment files: ${loadedFiles.join(', ') || 'none'}`);
 
   return {
     envVars,

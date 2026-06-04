@@ -19,10 +19,10 @@ export class SimpleFTPDeployer {
     this.totalFiles = 0;
     this.uploadedFiles = 0;
 
-    this.client.ftp.verbose = this.logger.shouldLog?.('verbose') ?? false;
+    this.client.ftp.verbose = this.logger.shouldLog('verbose') ?? false;
     this.client.trackProgress((info) => {
       this.uploadedFiles++;
-      if (this.logger.shouldLog?.('normal')) {
+      if (this.logger.shouldLog('normal')) {
         const progress = Math.round((this.uploadedFiles / Math.max(1, this.totalFiles)) * 100);
         this.logger.info(`📤 [${progress}%] ${info.name}`);
       }
@@ -66,13 +66,13 @@ export class SimpleFTPDeployer {
     } = envResult;
 
     if (loadedFiles.some((file) => file.endsWith('.local'))) {
-      this.logger.verbose?.(`✅ Loaded private credentials: ${paths.envLocalPath}`);
+      this.logger.verbose(`✅ Loaded private credentials: ${paths.envLocalPath}`);
     } else {
       this.logger.buildWarning('⚠️', `Private config file not found: ${paths.envLocalPath}`);
       this.logger.buildWarning('⚠️', 'Create this file with your FTP credentials');
     }
 
-    this.logger.verbose?.(`✅ Loaded public config: ${paths.envPath}`);
+    this.logger.verbose(`✅ Loaded public config: ${paths.envPath}`);
 
     const merged = {
       ...publicEnvVars,
@@ -101,9 +101,9 @@ export class SimpleFTPDeployer {
     }
 
     this.logger.buildSuccess('✅', 'Configuration loaded successfully');
-    this.logger.verbose?.(`FTP Host: ${this.config.ftp.host}:${this.config.ftp.port}`);
-    this.logger.verbose?.(`FTP Path: ${this.config.ftp.rootPath}`);
-    this.logger.verbose?.(`FTP Secure: ${this.config.ftp.secure}`);
+    this.logger.verbose(`FTP Host: ${this.config.ftp.host}:${this.config.ftp.port}`);
+    this.logger.verbose(`FTP Path: ${this.config.ftp.rootPath}`);
+    this.logger.verbose(`FTP Secure: ${this.config.ftp.secure}`);
 
     return this.config;
   }
@@ -144,7 +144,7 @@ export class SimpleFTPDeployer {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         this.logger.buildStep('🔗', `Connecting to FTP server (attempt ${attempt}/${maxRetries})`);
-        this.logger.verbose?.(`Host: ${this.config.ftp.host}:${this.config.ftp.port}`);
+        this.logger.verbose(`Host: ${this.config.ftp.host}:${this.config.ftp.port}`);
 
         await this.client.access(this.config.ftp);
         this.logger.buildSuccess('✅', 'Connected to FTP server');
@@ -181,7 +181,7 @@ export class SimpleFTPDeployer {
       this.logger.buildStep('🗑️', `Deleting all files in remote directory: ${remotePath}`);
 
       const files = await this.client.list(remotePath);
-      this.logger.verbose?.(`Found ${files.length} items to delete`);
+      this.logger.verbose(`Found ${files.length} items to delete`);
 
       if (files.length === 0) {
         this.logger.buildSuccess('✅', 'Remote directory is already empty');
@@ -193,18 +193,18 @@ export class SimpleFTPDeployer {
 
       for (const file of filesToDelete) {
         await this.client.remove(`${remotePath}/${file.name}`);
-        this.logger.verbose?.(`Deleted file: ${file.name}`);
+        this.logger.verbose(`Deleted file: ${file.name}`);
       }
 
       for (const dir of dirsToDelete) {
         await this.client.removeDir(`${remotePath}/${dir.name}`);
-        this.logger.verbose?.(`Deleted directory: ${dir.name}`);
+        this.logger.verbose(`Deleted directory: ${dir.name}`);
       }
 
       this.logger.buildSuccess('✅', `Deleted ${files.length} items from remote directory`);
     } catch (error) {
       if (error.code === 550) {
-        this.logger.verbose?.(`Note: Remote directory might not exist or be empty: ${error.message}`);
+        this.logger.verbose(`Note: Remote directory might not exist or be empty: ${error.message}`);
       } else {
         this.logger.buildWarning('⚠️', `Warning during cleanup: ${error.message}`);
       }
@@ -302,11 +302,11 @@ export class SimpleFTPDeployer {
 
       const deployTime = Math.round((Date.now() - startTime) / 1000);
       this.logger.buildSuccess('🎉', 'Deployment completed successfully!');
-      this.logger.info?.('📊 Deployment Summary:');
-      this.logger.info?.(`   Environment: ${this.environment}`);
-      this.logger.info?.(`   Files uploaded: ${this.uploadedFiles}`);
-      this.logger.info?.(`   Deploy time: ${deployTime}s`);
-      this.logger.info?.(`   Target: ${this.config.ftp.host}${this.config.ftp.rootPath}`);
+      this.logger.info('📊 Deployment Summary:');
+      this.logger.info(`   Environment: ${this.environment}`);
+      this.logger.info(`   Files uploaded: ${this.uploadedFiles}`);
+      this.logger.info(`   Deploy time: ${deployTime}s`);
+      this.logger.info(`   Target: ${this.config.ftp.host}${this.config.ftp.rootPath}`);
     } catch (error) {
       this.logger.buildError('❌', `Deployment failed: ${error.message}`);
       throw error;
@@ -339,7 +339,7 @@ export async function runDeployFromCli({
     process.exit(1);
   }
 
-  safeLogger.buildStart?.(`FTP Deployment - ${environment.toUpperCase()}`);
+  safeLogger.buildStart(`FTP Deployment - ${environment.toUpperCase()}`);
 
   process.on('unhandledRejection', (reason, promise) => {
     safeLogger.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
