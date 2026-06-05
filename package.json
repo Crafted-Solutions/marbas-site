@@ -1,6 +1,6 @@
 {
   "name": "@crafted.solutions/marbas-site",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Marbas site runtime — build, preview, deploy, templates and CLI for Marbas websites",
   "license": "MIT",
   "author": "Timo Müller <timo.m@plurex.de>",
@@ -62,7 +62,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test test/**/*.test.js"
+    "test": "node --test $(find test -name '*.test.js' -not -path '*/node_modules/*')"
   },
   "dependencies": {
     "@11ty/eleventy": "^3.0.0",
