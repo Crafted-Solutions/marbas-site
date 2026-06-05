@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import { COMMANDS } from '../../src/cli/commands.js';
 import { printGlobalHelp, printCommandHelp } from '../../src/cli/help.js';
 
-const EXPECTED_COMMANDS = ['init', 'build', 'preview', 'deploy', 'eject', 'reset', 'doctor', 'envs', 'theme'];
+const EXPECTED_COMMANDS = ['init', 'reinit', 'build', 'preview', 'deploy', 'eject', 'reset', 'doctor', 'envs', 'theme'];
 
-test('COMMANDS registry contains all 9 commands', () => {
+test('COMMANDS registry contains all commands', () => {
   const names = COMMANDS.map((c) => c.name);
   for (const expected of EXPECTED_COMMANDS) {
     assert.ok(names.includes(expected), `Missing command: ${expected}`);
   }
-  assert.equal(COMMANDS.length, 9);
+  assert.equal(COMMANDS.length, EXPECTED_COMMANDS.length);
 });
 
 test('each command has required fields', () => {

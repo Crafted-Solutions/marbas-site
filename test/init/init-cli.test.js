@@ -59,10 +59,12 @@ test('marbas-site init passes --env flag', () => {
   fs.rmSync(tmp, { recursive: true });
 });
 
-test('marbas-site init exits with error when directory exists', () => {
+test('marbas-site init exits with error when already a Marbas project', () => {
   const tmp = makeTmpDir();
   const projectPath = path.join(tmp, 'dupe');
   fs.mkdirSync(projectPath);
+  // Guard triggers on an existing marbas-project.json, not on a mere directory.
+  fs.writeFileSync(path.join(projectPath, 'marbas-project.json'), '{}');
 
   const result = runInit([projectPath]);
 

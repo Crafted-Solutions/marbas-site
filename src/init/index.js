@@ -123,7 +123,7 @@ function copyStarterPages(targetPagesDir) {
  * Initialise a new Marbas project at projectPath.
  *
  * @param {object} options
- * @param {string} options.projectPath          Target directory (must not exist unless force)
+ * @param {string} options.projectPath          Target directory (may exist; refused only if it already contains marbas-project.json, unless force)
  * @param {string} [options.name]               Project name (defaults to directory basename)
  * @param {string} [options.description]        Optional description
  * @param {string} [options.defaultEnvironment] Default build environment (default: "development")
