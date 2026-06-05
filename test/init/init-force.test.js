@@ -9,10 +9,12 @@ function makeTmpDir() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-init-'));
 }
 
-test('initProject throws when directory exists without --force', () => {
+test('initProject throws when already a Marbas project without --force', () => {
   const tmp = makeTmpDir();
   const projectPath = path.join(tmp, 'existing');
   fs.mkdirSync(projectPath);
+  // Guard triggers on an existing marbas-project.json, not on a mere directory.
+  fs.writeFileSync(path.join(projectPath, 'marbas-project.json'), '{}');
 
   assert.throws(
     () => initProject({ projectPath }),
