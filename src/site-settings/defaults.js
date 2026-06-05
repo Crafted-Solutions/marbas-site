@@ -6,10 +6,6 @@ export function getDefaultSiteSettings(projectRoot) {
 
   return {
     title,
-    theme: {
-      id: 'theme-bloom',
-      cssMode: 'marbas'
-    },
     logo: {
       show: true,
       path: '/_assets/images/Logo.png'
