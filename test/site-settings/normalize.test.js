@@ -26,6 +26,11 @@ describe('getDefaultSiteSettings', () => {
     assert.equal(defaults._schema, undefined);
   });
 
+  it('does not include a theme block (theme lives in marbas-project.json)', () => {
+    const defaults = getDefaultSiteSettings('/project');
+    assert.equal(defaults.theme, undefined);
+  });
+
   it('sets correct header defaults', () => {
     const defaults = getDefaultSiteSettings('/project');
     assert.equal(defaults.header.preset, 'brand-nav');
@@ -190,5 +195,30 @@ describe('validateSiteSettings', () => {
       seo: { defaultImage: { alt: 'Logo', src: '/og.jpg' } }
     });
     assert.deepEqual(errors, []);
+  });
+});
+
+describe('normalizeSiteSettings — theme migration (Task 90)', () => {
+  it('drops a legacy theme field from existing site.json', () => {
+    const normalized = normalizeSiteSettings({
+      title: 'Legacy Site',
+      theme: { id: 'theme-bloom', cssMode: 'marbas' }
+    }, '/project');
+    assert.equal(normalized.theme, undefined, 'legacy theme must not survive normalization');
+  });
+
+  it('never emits a theme block for a clean input', () => {
+    const normalized = normalizeSiteSettings({ title: 'Clean Site' }, '/project');
+    assert.equal(normalized.theme, undefined);
+  });
+
+  it('preserves app-only passthrough fields (e.g. _schema) while dropping theme', () => {
+    const normalized = normalizeSiteSettings({
+      title: 'Site',
+      _schema: 'v2',
+      theme: { id: 'theme-atlas' }
+    }, '/project');
+    assert.equal(normalized._schema, 'v2', '_schema must still pass through');
+    assert.equal(normalized.theme, undefined, 'theme must be dropped');
   });
 });

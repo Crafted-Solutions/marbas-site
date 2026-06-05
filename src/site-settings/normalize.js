@@ -191,9 +191,15 @@ export function normalizeSiteSettings(input, projectRoot) {
   const sourceSeo = asObject(source.seo);
   const sourceDefaultImage = asObject(sourceSeo.defaultImage);
 
-  // Spread source first so app-only fields (e.g. _schema) pass through unchanged
+  // Spread source first so app-only fields (e.g. _schema) pass through unchanged.
+  // theme is intentionally dropped — it now lives solely in marbas-project.json
+  // (Task 90). A legacy `theme` field in an existing site.json must not survive
+  // normalization, otherwise it would be written back out.
+  const sourceWithoutTheme = { ...source };
+  delete sourceWithoutTheme.theme;
+
   return {
-    ...source,
+    ...sourceWithoutTheme,
     title: readString(source.title, fallback.title),
     logo: {
       ...fallback.logo,
