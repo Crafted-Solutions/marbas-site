@@ -1,34 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import { spawnSync } from 'child_process';
-import { resolvePackageBin } from './resolve-bin.js';
-import { runComponentBuildHooks } from '../component/build-hooks.js';
-import { readProjectConfig } from '../project/config.js';
-import { resolveBuildOutputPath } from '../env/output-paths.js';
-import { getLibRoot } from '../eject/index.js';
-import { resolveThemeFile } from '../theme/resolver.js';
-import { buildEnvVars } from '../env/build-env.js';
-import { resolveEnvironment } from '../env/resolve.js';
-import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
-
-const LIB_ROOT = getLibRoot();
-
-function spawnInProject(bin, args, { projectPath, environment, envVars = {}, onLog }) {
-  const result = spawnSync(process.execPath, [bin, ...args], {
-    cwd: projectPath,
-    env: { ...process.env, MARBAS_PUBLISH_ENVIRONMENT: environment, ...envVars },
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'pipe']
-  });
-
-  if (result.stdout) result.stdout.split('\n').filter(Boolean).forEach(onLog);
-  if (result.stderr) result.stderr.split('\n').filter(Boolean).forEach(onLog);
-
-  return result;
-}
+import { runPipeline } from './pipeline.js';
 
 /**
- * Run a full build for a Marbas project.
+ * Run a full build for a Marbas project (CLI entry point).
+ *
+ * Thin adapter over the shared {@link runPipeline} core — the CLI builds with
+ * no cleaning, no optimize and no serve. The public signature is unchanged so
+ * existing callers and tests keep working.
  *
  * @param {object} options
  * @param {string} options.projectPath   Absolute or relative path to project root
@@ -37,72 +14,5 @@ function spawnInProject(bin, args, { projectPath, environment, envVars = {}, onL
  * @param {Function} [options.onLog]     Receives log lines as strings
  */
 export async function build({ projectPath, environment = 'development', libRoot, onLog = () => {} } = {}) {
-  const absProject = path.resolve(projectPath);
-  const absLib = libRoot ? path.resolve(libRoot) : LIB_ROOT;
-
-  if (!fs.existsSync(absProject)) {
-    throw new Error(`Project path does not exist: ${absProject}`);
-  }
-
-  // Validate against the project's resolved environments (built-ins + custom).
-  // No silent fallback to development — unknown env is a clear error.
-  resolveEnvironment(environment, absProject);
-  const env = environment;
-
-  // Read config and output path early — needed for theme copy and component hooks
-  let config, outputPath;
-  try {
-    config = readProjectConfig(absProject);
-    outputPath = resolveBuildOutputPath({ projectRoot: absProject, config, environment: env });
-  } catch {
-    outputPath = path.join(absProject, 'build', `public_${env}`);
-  }
-
-  const envVars = buildEnvVars({ projectPath: absProject, environment: env, config });
-
-  onLog('[build] Running webpack…');
-  const webpackBin = resolvePackageBin('webpack-cli', absLib, 'webpack');
-  const webpackConfig = resolveWebpackConfigPath({ libRoot: absLib, projectRoot: absProject, environment: env });
-  const webpackResult = spawnInProject(webpackBin, ['--config', webpackConfig], {
-    projectPath: absProject, environment: env, envVars, onLog
-  });
-  if ((webpackResult.status ?? 1) !== 0) {
-    throw new Error(`Webpack failed with exit code ${webpackResult.status}`);
-  }
-
-  // Ensure custom.bundle.css always exists — webpack only emits it when CSS sources
-  // are present. An empty file prevents 404s when no project CSS has been authored yet.
-  const customCssDest = path.join(outputPath, '_assets', 'css', 'custom.bundle.css');
-  if (!fs.existsSync(customCssDest)) {
-    fs.mkdirSync(path.dirname(customCssDest), { recursive: true });
-    fs.writeFileSync(customCssDest, '');
-  }
-
-  const themeId = config?.theme?.id || null;
-  if (themeId) {
-    try {
-      const themeSrcPath = resolveThemeFile({ projectPath: absProject, themeId, libRoot: absLib });
-      const themeDestDir = path.join(outputPath, '_assets', 'css');
-      fs.mkdirSync(themeDestDir, { recursive: true });
-      fs.copyFileSync(themeSrcPath, path.join(themeDestDir, 'theme.css'));
-      onLog(`[build] Theme: ${themeId}`);
-    } catch (err) {
-      throw new Error(`Theme resolution failed: ${err.message}`);
-    }
-  }
-
-  onLog('[build] Running Eleventy…');
-  const eleventyBin = resolvePackageBin('@11ty/eleventy', absLib, 'eleventy');
-  const eleventyConfig = path.join(absLib, 'tm.eleventy.js');
-  const eleventyResult = spawnInProject(eleventyBin, ['--config', eleventyConfig], {
-    projectPath: absProject, environment: env, envVars, onLog
-  });
-  if ((eleventyResult.status ?? 1) !== 0) {
-    throw new Error(`Eleventy failed with exit code ${eleventyResult.status}`);
-  }
-
-  onLog('[build] Running component build hooks…');
-  await runComponentBuildHooks({ projectRoot: absProject, environment: env, outputPath, log: onLog });
-
-  onLog('[build] Done.');
+  await runPipeline({ projectPath, environment, libRoot, onLog });
 }

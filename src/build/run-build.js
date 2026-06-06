@@ -1,36 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-import { spawnSync } from 'child_process';
 import { loadEnvForEnvironment } from '../config/load-env.js';
 import { buildEnvVars } from '../env/build-env.js';
 import { withLogger } from '../logger.js';
-import { runComponentBuildHooks } from '../component/build-hooks.js';
-import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { readProjectConfig } from '../project/config.js';
-import { getLibRoot } from '../eject/index.js';
-import { resolvePackageBin } from './resolve-bin.js';
-import { copyThemeToOutput } from '../theme/copy.js';
+import { runPipeline } from './pipeline.js';
 import { listEnvironments, isValidEnvironment } from '../env/resolve.js';
-import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
-
-const LIB_ROOT = getLibRoot();
-
-function runCliViaNode({ cliScriptPath, args = [], cwd, env = {}, logger }) {
-  const childProcessOptions = logger.getChildProcessOptions(cwd, env);
-
-  const result = spawnSync(process.execPath, [cliScriptPath, ...args], {
-    ...childProcessOptions,
-    windowsHide: true
-  });
-
-  if (result.error) {
-    throw result.error;
-  }
-
-  if ((result.status ?? 1) !== 0) {
-    throw new Error(`Command failed (${path.basename(cliScriptPath)}), exit code ${result.status}`);
-  }
-}
 
 export class BuildHandler {
   constructor({ rootDir, args, logger }) {
@@ -158,71 +131,6 @@ export class BuildHandler {
     }
   }
 
-  cleanOutputDirectory() {
-    const outputDir = `public_${this.environment}`;
-    const absoluteOutputDir = path.join(this.rootDir, outputDir);
-    this.logger.buildStep('🧹', `Cleaning output directory: ${outputDir}`);
-
-    try {
-      fs.rmSync(absoluteOutputDir, { recursive: true, force: true });
-      this.logger.buildSuccess('✅', 'Output directory cleaned');
-    } catch (error) {
-      this.logger.buildWarning('⚠️', `Warning: Could not clean output directory: ${error.message}`);
-    }
-  }
-
-  buildWebpack() {
-    const webpackConfigPath = resolveWebpackConfigPath({
-      libRoot: LIB_ROOT,
-      projectRoot: this.rootDir,
-      environment: this.environment
-    });
-
-    this.logger.webpackStart(path.basename(webpackConfigPath, '.js'));
-
-    try {
-      const webpackCli = resolvePackageBin('webpack-cli', this.rootDir, 'webpack');
-
-      runCliViaNode({
-        cliScriptPath: webpackCli,
-        args: ['--config', webpackConfigPath],
-        cwd: this.rootDir,
-        logger: this.logger
-      });
-
-      this.logger.webpackSuccess();
-    } catch (error) {
-      this.logger.buildError('❌', `Webpack build failed: ${error.message}`);
-      process.exit(1);
-    }
-  }
-
-  buildEleventy() {
-    this.logger.eleventyStart(this.serve);
-
-    try {
-      const eleventyCli = resolvePackageBin('@11ty/eleventy', this.rootDir, 'eleventy');
-
-      const eleventyConfigPath = path.join(LIB_ROOT, 'tm.eleventy.js');
-      const args = ['--config', eleventyConfigPath];
-      if (this.serve) args.push('--serve');
-
-      runCliViaNode({
-        cliScriptPath: eleventyCli,
-        args,
-        cwd: this.rootDir,
-        logger: this.logger
-      });
-
-      if (!this.serve) {
-        this.logger.eleventySuccess();
-      }
-    } catch (error) {
-      this.logger.buildError('❌', `Eleventy build failed: ${error.message}`);
-      process.exit(1);
-    }
-  }
-
   logBuildSummary() {
     this.logger.buildSummary({
       serve: this.serve,
@@ -232,34 +140,23 @@ export class BuildHandler {
     });
   }
 
-  async runBuildHooks() {
-    let outputPath;
-    try {
-      const config = readProjectConfig(this.rootDir);
-      outputPath = resolveBuildOutputPath({ projectRoot: this.rootDir, config, environment: this.environment });
-    } catch {
-      outputPath = path.join(this.rootDir, 'build', `public_${this.environment}`);
-    }
-
-    await runComponentBuildHooks({
-      projectRoot: this.rootDir,
-      environment: this.environment,
-      outputPath,
-      log: (msg) => this.logger.verbose(msg)
-    });
-  }
-
-  copyTheme() {
-    const result = copyThemeToOutput({
-      projectRoot: this.rootDir,
-      libRoot: LIB_ROOT,
-      environment: this.environment
-    });
-    if (result.copied) {
-      this.logger.buildStep('🎨', `Theme: ${result.themeId}`);
-    } else if (result.error) {
-      this.logger.buildWarning('⚠️', `Theme copy failed: ${result.error}`);
-    }
+  /**
+   * Structured lifecycle callbacks that map the shared pipeline's phases onto
+   * this handler's logger so the app keeps its progress messages.
+   */
+  pipelineHooks() {
+    return {
+      cleaning: (outputPath) => this.logger.buildStep('🧹', `Cleaning output directory: ${outputPath}`),
+      cleanFailed: (message) => this.logger.buildWarning('⚠️', `Warning: Could not clean output directory: ${message}`),
+      webpackStart: () => this.logger.webpackStart(this.environment),
+      webpackDone: () => this.logger.webpackSuccess(),
+      theme: (themeId) => this.logger.buildStep('🎨', `Theme: ${themeId}`),
+      themeFailed: (error) => this.logger.buildWarning('⚠️', `Theme copy failed: ${error}`),
+      eleventyStart: (serve) => this.logger.eleventyStart(serve),
+      eleventyDone: () => {
+        if (!this.serve) this.logger.eleventySuccess();
+      }
+    };
   }
 
   async run() {
@@ -272,11 +169,16 @@ export class BuildHandler {
     }
 
     this.loadEnvironmentVariables();
-    this.cleanOutputDirectory();
-    this.buildWebpack();
-    this.copyTheme();
-    this.buildEleventy();
-    await this.runBuildHooks();
+
+    await runPipeline({
+      projectPath: this.rootDir,
+      environment: this.environment,
+      optimize: this.optimize,
+      serve: this.serve,
+      clean: true,
+      onLog: (msg) => this.logger.verbose(msg),
+      hooks: this.pipelineHooks()
+    });
 
     if (!this.serve) {
       this.logBuildSummary();
