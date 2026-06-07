@@ -16,6 +16,15 @@ function normalizeLevel(value) {
   return 'normal';
 }
 
+// Level table — which method emits at which minimum level:
+//   error / warn        → always (even silent)
+//   info                → minimal+
+//   buildStart/Step/
+//   Success/webpackStart/
+//   webpackSuccess/
+//   eleventyStart/
+//   eleventySuccess     → normal+
+//   verbose             → verbose only
 export function createConsoleLogger() {
   let currentLevel = 'normal';
 
@@ -24,19 +33,19 @@ export function createConsoleLogger() {
   return {
     error: (...args) => console.error(...args),
     warn: (...args) => console.warn(...args),
-    info: (...args) => console.log(...args),
-    verbose: (...args) => console.debug(...args),
-    buildStart: (...args) => console.log(...args),
-    buildStep: (_emoji, message) => console.log(message),
-    buildSuccess: (_emoji, message) => console.log(message),
+    info: (...args) => { if (shouldLog('minimal')) console.log(...args); },
+    verbose: (...args) => { if (shouldLog('verbose')) console.debug(...args); },
+    buildStart: (...args) => { if (shouldLog('normal')) console.log(...args); },
+    buildStep: (_emoji, message) => { if (shouldLog('normal')) console.log(message); },
+    buildSuccess: (_emoji, message) => { if (shouldLog('normal')) console.log(message); },
     buildWarning: (_emoji, message) => console.warn(message),
     buildError: (_emoji, message) => console.error(message),
     envInfo: noop,
     buildSummary: noop,
-    webpackStart: (_name) => console.log('Building assets...'),
-    webpackSuccess: () => console.log('Webpack build completed'),
-    eleventyStart: () => console.log('Building site...'),
-    eleventySuccess: () => console.log('Eleventy build completed'),
+    webpackStart: (_name) => { if (shouldLog('normal')) console.log('Building assets...'); },
+    webpackSuccess: () => { if (shouldLog('normal')) console.log('Webpack build completed'); },
+    eleventyStart: () => { if (shouldLog('normal')) console.log('Building site...'); },
+    eleventySuccess: () => { if (shouldLog('normal')) console.log('Eleventy build completed'); },
     shouldLog,
     getChildProcessOptions: (cwd, env = {}) => ({
       cwd,

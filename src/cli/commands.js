@@ -73,7 +73,7 @@ export const COMMANDS = [
     description: 'Build the project for an environment',
     usage: 'marbas-site build <path> --env=<name>',
     positionals: ['path'],
-    flags: ['--env=<name>', '--quiet'],
+    flags: ['--env=<name>', '--quiet', '--log-level=silent|minimal|normal|verbose'],
     run({ projectPath, flags }) {
       if (!projectPath) {
         process.stderr.write('Usage: marbas-site build <path> --env=<name>\n');
@@ -90,7 +90,7 @@ export const COMMANDS = [
     description: 'Start the live-preview server',
     usage: 'marbas-site preview <path> --env=<name> [--port=<n>]',
     positionals: ['path'],
-    flags: ['--env=<name>', '--port=<n>', '--quiet'],
+    flags: ['--env=<name>', '--port=<n>', '--quiet', '--log-level=silent|minimal|normal|verbose'],
     run({ projectPath, flags }) {
       if (!projectPath) {
         process.stderr.write('Usage: marbas-site preview <path> --env=<name>\n');
