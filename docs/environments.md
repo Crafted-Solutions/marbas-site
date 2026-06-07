@@ -247,3 +247,33 @@ marbas-site doctor my-project --json
   }
 }
 ```
+
+---
+
+## Custom Webpack Configuration (power users)
+
+By default each environment uses the built-in webpack base that matches its `mode` (`development.js` or `production.js`). If you need to customise webpack for a specific environment — extra loaders, aliases, plugins — place a file at:
+
+```
+<project>/_webpack/<environment>.js
+```
+
+The resolver picks this file up automatically before falling back to the lib. The file must be an ES module with a default export:
+
+```js
+// _webpack/staging.js
+import path from 'path';
+import { merge } from 'webpack-merge';
+import { getBaseConfig } from '@crafted.solutions/marbas-site/build';
+
+// outputPath must point to the _assets sub-directory inside your env's output folder
+const outputPath = path.resolve(process.cwd(), 'build', 'public_staging', '_assets');
+
+const base = getBaseConfig({ mode: 'production', outputPath });
+
+export default merge(base, {
+  // your additions
+});
+```
+
+> **Note:** Built-in environment names (`development`, `production`) are excluded from project-local lookup — place overrides only for custom environments. The `_webpack/` directory also holds auto-generated runtime entry files (`lib-entry.js`, `custom-js-entry.js`); these names and `app`/`main` are reserved and cannot be used as environment names.
