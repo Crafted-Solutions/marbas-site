@@ -11,6 +11,7 @@ import { runReset } from './run/reset.js';
 import { runDoctorCommand } from './run/doctor.js';
 import { runTheme } from './run/theme.js';
 import { runEnvs } from './run/envs.js';
+import { runEnvAdd, runEnvRemove } from './run/env.js';
 
 export const COMMANDS = [
   {
@@ -187,6 +188,26 @@ export const COMMANDS = [
     flags: [],
     run({ projectPath }) {
       runEnvs({ projectPath });
+    }
+  },
+  {
+    name: 'env',
+    description: 'Manage environments (add / remove)',
+    usage: 'marbas-site env add <path> <key> [--mode=development|production] [--output=<name>]\n       marbas-site env remove <path> <key>',
+    positionals: ['sub-command', 'path', 'key'],
+    flags: ['--mode=development|production', '--output=<name>'],
+    run({ projectPath: sub, extras, flags }) {
+      // argv layout: env <sub> <path> <key>
+      // projectPath slot holds the sub-command; path and key are in extras
+      const [envPath, key] = extras;
+      if (sub === 'add') {
+        runEnvAdd({ projectPath: envPath, key, flags });
+      } else if (sub === 'remove') {
+        runEnvRemove({ projectPath: envPath, key });
+      } else {
+        process.stderr.write('Usage: marbas-site env add|remove <path> <key>\n');
+        process.exit(1);
+      }
     }
   }
 ];
