@@ -66,4 +66,38 @@ describe('resolveWebpackConfigPath', () => {
     assert.ok(!fs.existsSync(path.join(webpackDir, 'local_test.js')));
     assert.ok(!fs.existsSync(path.join(webpackDir, 'staging.js')));
   });
+
+  it('prefers project-local _webpack/<env>.js over lib config', () => {
+    const localDir = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-wpresolve-local-'));
+    try {
+      fs.mkdirSync(path.join(localDir, '_webpack'));
+      const localConfig = path.join(localDir, '_webpack', 'staging.js');
+      fs.writeFileSync(localConfig, 'export default {};');
+      const p = resolveWebpackConfigPath({ libRoot: LIB_ROOT, projectRoot: localDir, environment: 'staging' });
+      assert.equal(p, localConfig);
+    } finally {
+      fs.rmSync(localDir, { recursive: true, force: true });
+    }
+  });
+
+  it('falls back to lib when no project-local _webpack/<env>.js exists', () => {
+    let localDir;
+    try {
+      localDir = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-wpresolve-nlocal-'));
+      fs.writeFileSync(
+        path.join(localDir, 'marbas-project.json'),
+        JSON.stringify({ name: 'test', paths: { buildDir: './build' }, defaultEnvironment: 'development', environments: { development: {}, staging: { mode: 'production' } } }, null, 2)
+      );
+      const p = resolveWebpackConfigPath({ libRoot: LIB_ROOT, projectRoot: localDir, environment: 'staging' });
+      assert.equal(path.basename(p), 'production.js');
+      assert.ok(p.startsWith(LIB_ROOT));
+    } finally {
+      if (localDir) fs.rmSync(localDir, { recursive: true, force: true });
+    }
+  });
+
+  it('works without projectRoot (no crash, falls back to mode)', () => {
+    const p = resolveWebpackConfigPath({ libRoot: LIB_ROOT, environment: 'development' });
+    assert.equal(path.basename(p), 'development.js');
+  });
 });
