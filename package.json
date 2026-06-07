@@ -1,6 +1,6 @@
 {
   "name": "@crafted.solutions/marbas-site",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "Marbas site runtime — build, preview, deploy, templates and CLI for Marbas websites",
   "license": "MIT",
   "author": "Timo Müller <timo.m@plurex.de>",

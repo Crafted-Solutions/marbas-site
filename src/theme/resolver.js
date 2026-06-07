@@ -22,6 +22,26 @@ function validateThemeId(themeId) {
 }
 
 /**
+ * Returns true when the theme is present as a local project file
+ * (`<projectPath>/_theme/<themeId>.css`), i.e. it was ejected or created by
+ * the user. Returns false for lib-bundled themes or on any error.
+ *
+ * @param {object} opts
+ * @param {string} opts.projectPath  Absolute path to the project root
+ * @param {string} opts.themeId      Theme ID, e.g. "theme-atlas"
+ * @returns {boolean}
+ */
+export function isCustomTheme({ projectPath, themeId } = {}) {
+  if (!projectPath || !themeId) return false;
+  try {
+    const validId = validateThemeId(themeId);
+    return fs.existsSync(path.join(projectPath, '_theme', `${validId}.css`));
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Resolves the absolute path to a theme CSS file.
  * Priority: project _theme/ > lib _assets/css/ > (throws if not found)
  *
