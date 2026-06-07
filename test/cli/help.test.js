@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { COMMANDS } from '../../src/cli/commands.js';
 import { printGlobalHelp, printCommandHelp } from '../../src/cli/help.js';
 
-const EXPECTED_COMMANDS = ['init', 'reinit', 'build', 'preview', 'deploy', 'eject', 'reset', 'doctor', 'envs', 'theme'];
+const EXPECTED_COMMANDS = ['init', 'reinit', 'build', 'preview', 'deploy', 'eject', 'reset', 'doctor', 'envs', 'theme', 'env'];
 
 test('COMMANDS registry contains all commands', () => {
   const names = COMMANDS.map((c) => c.name);
