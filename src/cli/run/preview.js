@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import { startPreview } from '../../preview/orchestrator.js';
 import { readProjectConfig } from '../../project/config.js';
 import { buildEnvVars } from '../../env/build-env.js';
+import { createConsoleLogger } from '../../logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const LIB_ROOT = path.resolve(path.dirname(__filename), '../../..');
@@ -10,10 +11,14 @@ const LIB_ROOT = path.resolve(path.dirname(__filename), '../../..');
 export async function runPreview({ projectPath, flags }) {
   const environment = flags.env || 'development';
   const port = flags.port ? parseInt(flags.port, 10) : 3001;
-  const quiet = Boolean(flags.quiet);
+  const logLevel = flags.quiet ? 'silent' : (flags['log-level'] || 'normal');
   const absProject = path.resolve(projectPath);
 
-  const onLog = quiet ? () => {} : (line) => process.stdout.write(line + '\n');
+  const logger = createConsoleLogger();
+  logger.setLevel(logLevel);
+  process.env.LOG_LEVEL = logLevel;
+
+  const onLog = (line) => { if (logger.shouldLog('minimal')) process.stdout.write(line + '\n'); };
 
   let extraEnv = {};
   try {

@@ -83,3 +83,97 @@ test('provided specific method takes precedence over fallback', () => {
   assert.equal(stepCalled, true, 'own buildStep must be used');
   assert.equal(infoCalled, false, 'must not fall back to info when buildStep exists');
 });
+
+// ── Level-Gating ─────────────────────────────────────────────────────────────
+
+function captureConsole(fn) {
+  const logs = [];
+  const debugs = [];
+  const warns = [];
+  const errors = [];
+  const origLog = console.log;
+  const origDebug = console.debug;
+  const origWarn = console.warn;
+  const origError = console.error;
+  console.log = (...a) => logs.push(a.join(' '));
+  console.debug = (...a) => debugs.push(a.join(' '));
+  console.warn = (...a) => warns.push(a.join(' '));
+  console.error = (...a) => errors.push(a.join(' '));
+  try { fn(); } finally {
+    console.log = origLog;
+    console.debug = origDebug;
+    console.warn = origWarn;
+    console.error = origError;
+  }
+  return { logs, debugs, warns, errors };
+}
+
+test('verbose() only emits at level verbose', () => {
+  const log = createConsoleLogger();
+
+  log.setLevel('silent');
+  const silent = captureConsole(() => log.verbose('v-silent'));
+  assert.equal(silent.debugs.length, 0, 'verbose must be silent at level=silent');
+
+  log.setLevel('normal');
+  const normal = captureConsole(() => log.verbose('v-normal'));
+  assert.equal(normal.debugs.length, 0, 'verbose must be silent at level=normal');
+
+  log.setLevel('verbose');
+  const verbose = captureConsole(() => log.verbose('v-verbose'));
+  assert.equal(verbose.debugs.length, 1, 'verbose must emit at level=verbose');
+  assert.ok(verbose.debugs[0].includes('v-verbose'));
+});
+
+test('buildStep() only emits at level normal+', () => {
+  const log = createConsoleLogger();
+
+  log.setLevel('silent');
+  const silent = captureConsole(() => log.buildStep('🎨', 'step-silent'));
+  assert.equal(silent.logs.length, 0, 'buildStep must be silent at level=silent');
+
+  log.setLevel('normal');
+  const normal = captureConsole(() => log.buildStep('🎨', 'step-normal'));
+  assert.equal(normal.logs.length, 1, 'buildStep must emit at level=normal');
+  assert.ok(normal.logs[0].includes('step-normal'));
+});
+
+test('error() always emits regardless of level', () => {
+  const log = createConsoleLogger();
+  log.setLevel('silent');
+  const result = captureConsole(() => log.error('fatal'));
+  assert.equal(result.errors.length, 1, 'error must always emit');
+  assert.ok(result.errors[0].includes('fatal'));
+});
+
+test('warn() always emits regardless of level', () => {
+  const log = createConsoleLogger();
+  log.setLevel('silent');
+  const result = captureConsole(() => log.warn('attention'));
+  assert.equal(result.warns.length, 1, 'warn must always emit');
+  assert.ok(result.warns[0].includes('attention'));
+});
+
+test('info() emits at minimal+ but not at silent', () => {
+  const log = createConsoleLogger();
+
+  log.setLevel('silent');
+  const silent = captureConsole(() => log.info('info-silent'));
+  assert.equal(silent.logs.length, 0, 'info must be silent at level=silent');
+
+  log.setLevel('minimal');
+  const minimal = captureConsole(() => log.info('info-minimal'));
+  assert.equal(minimal.logs.length, 1, 'info must emit at level=minimal');
+});
+
+test('webpackStart()/eleventyStart() are gated at normal+', () => {
+  const log = createConsoleLogger();
+
+  log.setLevel('silent');
+  const silent = captureConsole(() => { log.webpackStart('x'); log.eleventyStart(); });
+  assert.equal(silent.logs.length, 0);
+
+  log.setLevel('normal');
+  const normal = captureConsole(() => { log.webpackStart('x'); log.eleventyStart(); });
+  assert.equal(normal.logs.length, 2);
+});
