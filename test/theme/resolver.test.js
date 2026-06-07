@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { fileURLToPath } from 'url';
-import { resolveThemeFile } from '../../src/theme/resolver.js';
+import { resolveThemeFile, isCustomTheme } from '../../src/theme/resolver.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const libRoot = path.join(__dirname, '../..');
@@ -66,5 +66,29 @@ describe('resolveThemeFile', () => {
   it('resolves correctly with no projectPath', () => {
     const result = resolveThemeFile({ themeId: 'theme-bloom', libRoot });
     assert.ok(fs.existsSync(result));
+  });
+});
+
+describe('isCustomTheme', () => {
+  it('returns true when _theme/<id>.css exists in project', () => {
+    const projectDir = fs.mkdtempSync(path.join(tmpDir, 'proj-custom-'));
+    const themeDir = path.join(projectDir, '_theme');
+    fs.mkdirSync(themeDir);
+    fs.writeFileSync(path.join(themeDir, 'theme-bloom.css'), '/* custom */', 'utf8');
+
+    assert.equal(isCustomTheme({ projectPath: projectDir, themeId: 'theme-bloom' }), true);
+  });
+
+  it('returns false when _theme/<id>.css does not exist', () => {
+    const projectDir = fs.mkdtempSync(path.join(tmpDir, 'proj-lib-'));
+    assert.equal(isCustomTheme({ projectPath: projectDir, themeId: 'theme-bloom' }), false);
+  });
+
+  it('returns false when projectPath is missing', () => {
+    assert.equal(isCustomTheme({ themeId: 'theme-bloom' }), false);
+  });
+
+  it('returns false when themeId is invalid (does not throw)', () => {
+    assert.equal(isCustomTheme({ projectPath: tmpDir, themeId: 'bad-id' }), false);
   });
 });
