@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-09-27
+
 ### Added
 
 - Localized `site.json` values: texts and links can be objects per language
@@ -70,6 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   produces an invalid `tel:030/47378115`; the `(0)` trunk prefix is dropped.
 
 ## [0.12.1] - 2026-09-27
+
+*Not published to npm — contained in 0.13.0.*
 
 ### Fixed
 
