@@ -53,12 +53,17 @@
 <meta name="copyright" content="{{ _copyright | safe }}"/>
 {% endif %}
 
-{% set languages = page.url | localeUrls %}
-
-{% for lang in languages %}
-  {% if lang.code != pageLanguage %}
-  <meta property="og:locale:alternate" content="{{ lang.code }}"/>
+{# Alternates only for language versions that exist (Task 109) #}
+{% set _alternates = collections.all | languageAlternates(page) %}
+{% set _existing = _alternates | selectattr("url") %}
+{% if _existing | length > 1 %}
+{% for alt in _existing %}
+  {% if alt.code != pageLanguage %}
+  <meta property="og:locale:alternate" content="{{ alt.code }}"/>
   {% endif %}
-  {% set path = lang.path | getDomainWithPath %}
-  <link rel="alternate" hreflang="{{ lang.code }}" href="{{ path }}">
+  <link rel="alternate" hreflang="{{ alt.code }}" href="{{ alt.url | getDomainWithPath }}">
+  {% if alt.code == defaultLanguage %}
+  <link rel="alternate" hreflang="x-default" href="{{ alt.url | getDomainWithPath }}">
+  {% endif %}
 {% endfor %}
+{% endif %}

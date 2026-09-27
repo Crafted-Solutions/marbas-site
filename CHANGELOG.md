@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Front matter `translationKey` links translations with different slugs
+  (`/ueber-uns/` ↔ `/en/about-us/`); CMS page ids (`marbasCmsI18n.sourcePageId`) are used as well.
+
 - Built-in components render their block `id` as HTML `id` — blocks can be linked as anchors
   (`/page/#services`).
 - Block flag `providesH1: true`: a custom component that renders the page's `<h1>` suppresses the
@@ -35,6 +38,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Mobile navigation, submenu toggles and the announcement dismiss button did nothing on
+  CLI-built sites: the base layout loaded `/_assets/js/full.js` and `/_assets/js/languageSwitcher.js`,
+  but the build ships them under `/_assets/js/_lib/` (404).
+- Language switcher: links to the actual translation (same path, `translationKey` or CMS link);
+  pages without a translation lead to the start page of the target language instead of a 404 and
+  are marked "not translated"; slugs starting with a language code (`/design/`) are no longer
+  mangled; language labels were empty (`label` vs. `name`); debug logging removed; the switcher is
+  only rendered when more than one language is configured.
+- `hreflang` / `og:locale:alternate` are only written for language versions that exist (plus
+  `x-default`); previously every configured language was listed.
 - Footer social links now show their platform icon (they rendered an empty box). Icons for
   X/Twitter, Instagram, GitHub, Facebook, YouTube, TikTok and Xing come from Simple Icons (CC0),
   LinkedIn from the theme library; unknown platforms get a neutral link icon. See

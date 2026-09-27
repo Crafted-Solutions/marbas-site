@@ -224,6 +224,20 @@ The available languages are configured in `pages/_data/site.json` under `locale`
 }
 ```
 
+**Translated slugs:** pages in different languages belong together when they have the same path
+below their language folder (`/ueber-uns/` ↔ `/en/ueber-uns/`). If the slugs differ, link them with
+the same `translationKey` (pages edited in the Marbas CMS are linked automatically):
+
+```yaml
+# pages/ueber-uns.md                # pages/en/about-us.md
+translationKey: about               translationKey: about
+```
+
+The **language switcher** (shown when `locale` has more than one language and
+`marbas-project.json → theme.languageSwitcher` is `true`) links to the matching page. If a page has no
+version in a language, that entry is marked "not translated" and leads to the start page of that
+language. `hreflang` alternates are written only for language versions that exist.
+
 Navigation keys are per language: each language variant needs its own `navigation`/`eleventyNavigation` block, and `parent` refers to a key in the same language. Links in components (`/contact/`) automatically get the language prefix (`/en/contact/`) on non-default-language pages.
 
 ## Markdown body

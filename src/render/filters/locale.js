@@ -15,6 +15,55 @@ export function defaultLinkText(lang) {
   return DEFAULT_LINK_TEXTS[primary] || DEFAULT_LINK_TEXTS.en;
 }
 
+function stripLanguagePrefix(url, code, defaultLanguage) {
+  const value = String(url || '');
+  if (!code || code === defaultLanguage) return value;
+  if (value === `/${code}` || value === `/${code}/`) return '/';
+  return value.startsWith(`/${code}/`) ? value.slice(code.length + 1) : value;
+}
+
+function translationGroup(data = {}) {
+  if (data.translationKey) return `key:${data.translationKey}`;
+  const sourceId = data.marbasCmsI18n?.sourcePageId || data.pageId;
+  return sourceId ? `id:${sourceId}` : null;
+}
+
+/**
+ * Language variants of the current page, one entry per configured language.
+ * Pages belong together when they share a `translationKey`, a CMS page id
+ * (`marbasCmsI18n.sourcePageId` → `pageId`) or — without explicit link — the same path
+ * below their language folder (`/about/` ↔ `/en/about/`).
+ *
+ * @param {Array<{url:string, data:object}>} pages   e.g. collections.all
+ * @param {{url:string, data:object}} current
+ * @param {{defaultLanguage:string, languages:Array<{code:string,label?:string}>}} localeConfig
+ * @returns {Array<{code:string, label:string, url:string|null, current:boolean}>}
+ */
+export function computeAlternates(pages, current, localeConfig) {
+  const defaultLanguage = localeConfig.defaultLanguage;
+  const currentLanguage = current?.data?.pageLanguage || defaultLanguage;
+  const currentGroup = translationGroup(current?.data);
+  const currentBase = stripLanguagePrefix(current?.url, currentLanguage, defaultLanguage);
+  const candidates = (pages || []).filter((item) => typeof item?.url === 'string' && item.url && item.data?.pageLanguage);
+
+  return localeConfig.languages.map(({ code, label, name }) => {
+    if (code === currentLanguage) {
+      return { code, label: label || name || code, url: current?.url || null, current: true };
+    }
+    const inLanguage = candidates.filter((item) => item.data.pageLanguage === code);
+    let match = currentGroup ? inLanguage.find((item) => translationGroup(item.data) === currentGroup) : null;
+    if (!match) {
+      match = inLanguage.find((item) => {
+        const group = translationGroup(item.data);
+        // an explicitly linked page belongs to its own group, not to a same-path page
+        if (group && currentGroup && group !== currentGroup) return false;
+        return stripLanguagePrefix(item.url, code, defaultLanguage) === currentBase;
+      });
+    }
+    return { code, label: label || name || code, url: match ? match.url : null, current: false };
+  });
+}
+
 export function configureLocaleFilters(eleventyConfig, localeConfig) {
     
     const configuredLanguages = JSON.stringify(localeConfig.languages);
@@ -56,6 +105,15 @@ export function configureLocaleFilters(eleventyConfig, localeConfig) {
       return collection.filter(item => item.data && item.data.pageLanguage === language);
     });
     
+    // Add languageAlternates filter — {% set alternates = collections.all | languageAlternates(page) %}
+    eleventyConfig.addFilter('languageAlternates', function (pages, currentPage) {
+      const current = (pages || []).find((item) => item.url === currentPage?.url && item.inputPath === currentPage?.inputPath)
+        || { url: currentPage?.url, data: { pageLanguage: this.ctx?.pageLanguage, translationKey: this.ctx?.translationKey, pageId: this.ctx?.pageId, marbasCmsI18n: this.ctx?.marbasCmsI18n } };
+      return computeAlternates(pages, current, localeConfig);
+    });
+
+    eleventyConfig.addGlobalData('websiteLanguageCount', localeConfig.languages.length);
+
     // Add defaultLinkText filter — {{ data.linkText or (lang | defaultLinkText) }}
     eleventyConfig.addFilter('defaultLinkText', (lang) => defaultLinkText(lang || localeConfig.defaultLanguage));
 
