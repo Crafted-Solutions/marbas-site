@@ -133,6 +133,35 @@ your own files under the same names.
 
 ---
 
+## Localized values
+
+On multi-language sites, texts and links in `site.json` can be given per language. Use an object
+with language codes instead of a plain string — a plain string still applies to all languages:
+
+```json
+"actions": [
+  { "label": { "de": "Termin buchen", "en": "Book appointment" },
+    "href":  { "de": "/kontakt/",     "en": "/en/contact/" } }
+],
+"copyright": { "de": "© 2026 Praxis Muster", "en": "© 2026 Muster Practice" }
+```
+
+The value for the page language is used (then its primary language, then `locale.defaultLanguage`,
+then the first entry). Supported for: `title`, `header.announcement` (text, label, href),
+`header.actions`, `header.utilityLinks`, `footer.companyName`, `footer.intro`, `footer.copyright`,
+`footer.groups` (title, links), `footer.bottomLinks`, `footer.ctaBlock`, `footer.socialLinks`
+(label, ariaLabel, href), `seo.siteName`, `seo.defaultCopyright`, `seo.defaultImage.alt`.
+Links are not prefixed automatically — give per-language `href`s where the targets differ.
+
+> The Marbas CMS site-settings form does not support localized values yet (it would overwrite them) —
+> edit these values in `site.json` directly until it does.
+
+Built-in interface texts (skip link, navigation and screen-reader labels) follow the page language
+(German for `de`, English otherwise). Footer groups and bottom links with `source: "tagCollection"`
+list only pages of the current language.
+
+---
+
 ## `logo`
 
 Controls the logo displayed in the header.

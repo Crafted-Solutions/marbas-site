@@ -20,6 +20,19 @@ function readString(value, fallback = '') {
   return fallback;
 }
 
+// Text that may be localized per language: "text" or { de: "…", en: "…" } (see the `t` filter).
+function readText(value, fallback = '') {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    const localized = Object.fromEntries(
+      Object.entries(value)
+        .filter(([key, text]) => /^[a-z]{2}(-[a-z]{2})?$/i.test(key) && typeof text === 'string')
+        .map(([key, text]) => [key, text.trim()])
+    );
+    return Object.keys(localized).length > 0 ? localized : fallback;
+  }
+  return readString(value, fallback);
+}
+
 function readBoolean(value, fallback = false) {
   if (typeof value === 'boolean') {
     return value;
@@ -78,11 +91,11 @@ function normalizeFooterPreset(value) {
 function normalizeLink(value) {
   const source = asObject(value);
   const link = {
-    label: readString(source.label),
-    href: readString(source.href)
+    label: readText(source.label),
+    href: readText(source.href)
   };
-  if (source.description !== undefined) link.description = readString(source.description);
-  if (source.ariaLabel !== undefined) link.ariaLabel = readString(source.ariaLabel);
+  if (source.description !== undefined) link.description = readText(source.description);
+  if (source.ariaLabel !== undefined) link.ariaLabel = readText(source.ariaLabel);
   if (source.external !== undefined) link.external = Boolean(source.external);
   return link;
 }
@@ -90,8 +103,8 @@ function normalizeLink(value) {
 function normalizeActionLink(value) {
   const source = asObject(value);
   return {
-    label: readString(source.label),
-    href: readString(source.href),
+    label: readText(source.label),
+    href: readText(source.href),
     style: VALID_ACTION_STYLES.includes(source.style) ? source.style : 'primary'
   };
 }
@@ -100,10 +113,10 @@ function normalizeSocialLink(value) {
   const source = asObject(value);
   const social = {
     platform: readString(source.platform),
-    label: readString(source.label),
-    href: readString(source.href)
+    label: readText(source.label),
+    href: readText(source.href)
   };
-  if (source.ariaLabel !== undefined) social.ariaLabel = readString(source.ariaLabel);
+  if (source.ariaLabel !== undefined) social.ariaLabel = readText(source.ariaLabel);
   return social;
 }
 
@@ -131,7 +144,7 @@ function normalizeFooterGroup(value) {
 
   if (sourceType === 'tagCollection') {
     return {
-      title: readString(source.title),
+      title: readText(source.title),
       source: 'tagCollection',
       tags: Array.isArray(source.tags) ? source.tags.filter(t => typeof t === 'string') : [],
       limit: Number.isInteger(source.limit) && source.limit > 0 ? source.limit : 10
@@ -139,7 +152,7 @@ function normalizeFooterGroup(value) {
   }
 
   return {
-    title: readString(source.title),
+    title: readText(source.title),
     source: 'manual',
     links: Array.isArray(source.links) ? source.links.map(normalizeLink) : []
   };
@@ -200,7 +213,7 @@ export function normalizeSiteSettings(input, projectRoot) {
 
   return {
     ...sourceWithoutTheme,
-    title: readString(source.title, fallback.title),
+    title: readText(source.title, fallback.title),
     logo: {
       ...fallback.logo,
       ...sourceLogo,
@@ -218,9 +231,9 @@ export function normalizeSiteSettings(input, projectRoot) {
       announcement: {
         enabled: readBoolean(sourceAnnouncement.enabled, false),
         id: readString(sourceAnnouncement.id),
-        text: readString(sourceAnnouncement.text),
-        label: readString(sourceAnnouncement.label),
-        href: readString(sourceAnnouncement.href)
+        text: readText(sourceAnnouncement.text),
+        label: readText(sourceAnnouncement.label),
+        href: readText(sourceAnnouncement.href)
       },
       utilityLinks: normalizeLinkSource(sourceHeader.utilityLinks, []),
       actions: sourceActions.slice(0, 2).map(normalizeActionLink),
@@ -235,8 +248,8 @@ export function normalizeSiteSettings(input, projectRoot) {
       ...(({ links: _l, address: _a, ...rest }) => rest)(sourceFooter),
       preset: normalizeFooterPreset(sourceFooter.preset),
       variant: normalizeFooterVariant(sourceFooter.variant, fallback.footer.variant),
-      companyName: readString(sourceFooter.companyName, fallback.footer.companyName),
-      intro: readString(sourceFooter.intro),
+      companyName: readText(sourceFooter.companyName, fallback.footer.companyName),
+      intro: readText(sourceFooter.intro),
       groups: sourceGroups.slice(0, 4).map(normalizeFooterGroup),
       contact: {
         address: {
@@ -251,27 +264,27 @@ export function normalizeSiteSettings(input, projectRoot) {
       socialLinks: sourceSocialLinks.slice(0, 8).map(normalizeSocialLink),
       ctaBlock: {
         enabled: readBoolean(sourceCtaBlock.enabled, false),
-        title: readString(sourceCtaBlock.title),
-        text: readString(sourceCtaBlock.text),
-        label: readString(sourceCtaBlock.label),
-        href: readString(sourceCtaBlock.href)
+        title: readText(sourceCtaBlock.title),
+        text: readText(sourceCtaBlock.text),
+        label: readText(sourceCtaBlock.label),
+        href: readText(sourceCtaBlock.href)
       },
       bottomLinks: bottomLinksNormalized,
-      copyright: readString(sourceFooter.copyright, fallback.footer.copyright)
+      copyright: readText(sourceFooter.copyright, fallback.footer.copyright)
     },
     seo: {
       ...fallback.seo,
       ...sourceSeo,
       defaultAuthor: readString(sourceSeo.defaultAuthor, fallback.seo.defaultAuthor),
-      defaultCopyright: readString(sourceSeo.defaultCopyright, fallback.seo.defaultCopyright),
-      siteName: readString(sourceSeo.siteName, fallback.seo.siteName),
+      defaultCopyright: readText(sourceSeo.defaultCopyright, fallback.seo.defaultCopyright),
+      siteName: readText(sourceSeo.siteName, fallback.seo.siteName),
       twitterSiteHandle: readString(sourceSeo.twitterSiteHandle, fallback.seo.twitterSiteHandle),
       defaultTwitterCreatorHandle: readString(sourceSeo.defaultTwitterCreatorHandle, fallback.seo.defaultTwitterCreatorHandle),
       defaultImage: {
         ...fallback.seo.defaultImage,
         ...sourceDefaultImage,
         src: readString(sourceDefaultImage.src, fallback.seo.defaultImage.src),
-        alt: readString(sourceDefaultImage.alt, fallback.seo.defaultImage.alt),
+        alt: readText(sourceDefaultImage.alt, fallback.seo.defaultImage.alt),
         width: readString(sourceDefaultImage.width, fallback.seo.defaultImage.width),
         height: readString(sourceDefaultImage.height, fallback.seo.defaultImage.height),
         type: readString(sourceDefaultImage.type, fallback.seo.defaultImage.type)
@@ -283,7 +296,8 @@ export function normalizeSiteSettings(input, projectRoot) {
 export function validateSiteSettings(site) {
   const errors = [];
 
-  if (!readString(site?.title)) {
+  const title = readText(site?.title);
+  if (!(typeof title === 'string' ? title : Object.values(title || {}).find(Boolean))) {
     errors.push('Site-Titel ist erforderlich.');
   }
 

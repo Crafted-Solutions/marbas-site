@@ -1,3 +1,4 @@
+import { textValue } from './text.js';
 import { VALID_FOOTER_PRESETS } from './presets.js';
 
 const FOOTER_VARIANTS = new Set(['default', 'compact', 'accent', 'contrast']);
@@ -35,9 +36,9 @@ export function resolveFooterConfig(siteSettings, themeDefaults = {}) {
   return {
     preset: normalizedPreset,
     variant: resolvedVariant,
-    companyName: String(footer.companyName || '').trim(),
-    intro: String(footer.intro || '').trim(),
-    copyright: String(footer.copyright || '').trim(),
+    companyName: textValue(footer.companyName),
+    intro: textValue(footer.intro),
+    copyright: textValue(footer.copyright),
     groups: Array.isArray(footer.groups) ? footer.groups.slice(0, 4) : [],
     contact: {
       address: {
@@ -52,10 +53,10 @@ export function resolveFooterConfig(siteSettings, themeDefaults = {}) {
     socialLinks: Array.isArray(footer.socialLinks) ? footer.socialLinks.slice(0, 8) : [],
     ctaBlock: {
       enabled: ctaBlock.enabled === true,
-      title: String(ctaBlock.title || '').trim(),
-      text: String(ctaBlock.text || '').trim(),
-      label: String(ctaBlock.label || '').trim(),
-      href: String(ctaBlock.href || '').trim()
+      title: textValue(ctaBlock.title),
+      text: textValue(ctaBlock.text),
+      label: textValue(ctaBlock.label),
+      href: textValue(ctaBlock.href)
     },
     bottomLinks: footer.bottomLinks ?? { source: 'manual', links: [] }
   };

@@ -1,5 +1,5 @@
 {%- set _variant = site.header.variant | default("default") -%}
-<a class="c-skip-link" href="#main-content">Zum Inhalt springen</a>
+<a class="c-skip-link" href="#main-content">{{ "skipLink" | uiText(pageLanguage) }}</a>
 {% include "header/slots/announcement.njk" %}
 <div class="c-header-utility-bar">
   <div class="c-container c-header-utility-bar__inner">
@@ -10,7 +10,7 @@
   <div class="c-container c-header__inner">
     {% include "header/slots/brand.njk" %}
     {% include "header/slots/nav.njk" %}
-    <button class="c-nav-toggle" type="button" aria-label="Navigation öffnen" aria-expanded="false" aria-controls="main-nav">
+    <button class="c-nav-toggle" type="button" aria-label="{{ "navOpen" | uiText(pageLanguage) }}" aria-expanded="false" aria-controls="main-nav">
       <span class="c-nav-toggle__icon" aria-hidden="true"></span>
     </button>
   </div>

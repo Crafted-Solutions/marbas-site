@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Localized `site.json` values: texts and links can be objects per language
+  (`{ "de": "…", "en": "…" }`); new filters `t` and `uiText`. The normalizer keeps them (it
+  previously turned any non-string into `""`).
+
 - Front matter `translationKey` links translations with different slugs
   (`/ueber-uns/` ↔ `/en/about-us/`); CMS page ids (`marbasCmsI18n.sourcePageId`) are used as well.
 
@@ -38,6 +42,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Built-in interface texts (skip link, "open/close navigation", main/service navigation,
+  submenu, announcement, legal navigation) were always German; they now follow the page language.
+- Footer groups and bottom links with `source: "tagCollection"` never showed any link (Nunjucks
+  `slice(0, n)` returns groups, not the first n items) and did not filter by language.
+- `init` without `--starter`: the start page now has `pageLanguage` (menus and footer lists filter
+  by it) and a title in the project language.
 - Mobile navigation, submenu toggles and the announcement dismiss button did nothing on
   CLI-built sites: the base layout loaded `/_assets/js/full.js` and `/_assets/js/languageSwitcher.js`,
   but the build ships them under `/_assets/js/_lib/` (404).

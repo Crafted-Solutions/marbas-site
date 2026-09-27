@@ -2,32 +2,32 @@
 <div class="c-footer-bottom">
   <div class="c-container c-footer-bottom__inner">
     {%- if site.footer.copyright %}
-    <small class="c-footer-bottom__copyright">{{ site.footer.copyright }}</small>
+    <small class="c-footer-bottom__copyright">{{ site.footer.copyright | t(pageLanguage) }}</small>
     {%- endif %}
     {%- if _bottomLinks.source == "tagCollection" %}
     {%- set _bottomPages = [] %}
     {%- for tag in _bottomLinks.tags %}
-      {%- set _tagPages = collections[tag] | default([]) %}
+      {%- set _tagPages = collections[tag] | default([]) | filterCollectionByLanguage(pageLanguage) %}
       {%- set _bottomPages = (_bottomPages.concat(_tagPages)) %}
     {%- endfor %}
     {%- if (_bottomPages | length) > 0 %}
-    <nav class="c-footer-bottom__nav" aria-label="Rechtliches">
+    <nav class="c-footer-bottom__nav" aria-label="{{ "legal" | uiText(pageLanguage) }}">
       <ul class="c-footer-bottom__list">
-        {%- for item in _bottomPages | slice(0, _bottomLinks.limit | default(10)) %}
+        {%- for item in _bottomPages %}{% if loop.index <= (_bottomLinks.limit | default(10)) %}
         <li><a class="c-footer-bottom__link" href="{{ item.url }}">{{ item.data.title | default(item.fileSlug) }}</a></li>
-        {%- endfor %}
+        {%- endif %}{% endfor %}
       </ul>
     </nav>
     {%- endif %}
     {%- elif _bottomLinks.links and (_bottomLinks.links | length) > 0 %}
-    <nav class="c-footer-bottom__nav" aria-label="Rechtliches">
+    <nav class="c-footer-bottom__nav" aria-label="{{ "legal" | uiText(pageLanguage) }}">
       <ul class="c-footer-bottom__list">
         {%- for link in _bottomLinks.links %}
         <li>
           <a class="c-footer-bottom__link"
-             href="{{ link.href }}"
-             {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel }}"{% endif %}
-             {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+             href="{{ link.href | t(pageLanguage) }}"
+             {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel | t(pageLanguage) }}"{% endif %}
+             {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label | t(pageLanguage) }}</a>
         </li>
         {%- endfor %}
       </ul>

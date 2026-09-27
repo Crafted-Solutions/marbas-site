@@ -1,3 +1,4 @@
+import { textValue } from './text.js';
 const VALID_ACTION_STYLES = new Set(['primary', 'secondary', 'outline']);
 
 function normalizeActionStyle(style) {
@@ -16,8 +17,8 @@ export function resolveActions(actionsInput) {
   return actionsInput.slice(0, 2).map(item => {
     const src = item && typeof item === 'object' ? item : {};
     return {
-      label: String(src.label || '').trim(),
-      href: String(src.href || '').trim(),
+      label: textValue(src.label),
+      href: textValue(src.href),
       style: normalizeActionStyle(src.style)
     };
   });

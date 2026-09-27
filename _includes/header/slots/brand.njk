@@ -4,6 +4,6 @@
   <img class="c-brand__mark" alt="Logo" src="{{ _logoPath }}" height="40"/>
   {%- endif %}
   {%- if site.header.showCompanyName %}
-  <span class="c-brand__name">{{ site.title | default("Marbas") }}</span>
+  <span class="c-brand__name">{{ (site.title | t(pageLanguage)) or "Marbas" }}</span>
   {%- endif %}
 </a>
