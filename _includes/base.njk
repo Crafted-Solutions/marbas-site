@@ -19,9 +19,10 @@
 
   <body class="c-page">
     <div class="c-container">
-      {% if buildConfig.useLanguageSwitcher %}
+      {% if buildConfig.useLanguageSwitcher and websiteLanguageCount > 1 %}
+      {% set _alternates = collections.all | languageAlternates(page) %}
       <div class="c-language-switcher">
-        <language-switcher default-language="{{dlang}}" languages='{{websiteLanguages}}'></language-switcher>
+        <language-switcher default-language="{{dlang}}" languages='{{websiteLanguages}}' alternates='{{ _alternates | dump }}'></language-switcher>
       </div>
       {% endif %}
 
