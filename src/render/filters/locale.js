@@ -22,7 +22,8 @@ export function configureLocaleFilters(eleventyConfig, localeConfig) {
     // Add custom locale_url filter that handles root default language
     eleventyConfig.addFilter('locale_url', function(url, locale) {
       const defaultLang = localeConfig.defaultLanguage;
-      const targetLang = locale || this.ctx.pageLanguage || defaultLang;
+      // Components are rendered with an isolated context that carries the page language as `lang`.
+      const targetLang = locale || this.ctx.pageLanguage || this.ctx.lang || defaultLang;
       
       // If target language is the default language, return URL as-is (root level)
       if (targetLang === defaultLang) {

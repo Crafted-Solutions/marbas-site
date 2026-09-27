@@ -17,16 +17,39 @@ Every component block requires:
 
 All other fields are component-specific (see below).
 
-> **Important:** Pages that use components must include `templateEngineOverride: njk,md` in their front matter. Without it, the placeholders will not render.
+> **Convention:** Set `templateEngineOverride: njk,md` in the front matter of every page. Placeholders render without it (the layout is Nunjucks), but the Markdown body would be processed with Liquid.
 
 ### Common fields on all components
 
 | Field | Description |
 |---|---|
-| `classes` | Additional CSS classes appended to the component's root element. |
+| `classes` | CSS classes appended to the component's root element — this is where the **style variant** goes (see below). |
 | `titleCulture` / `textCulture` | Language code of the content (e.g. `de`, `en`). Set automatically by the CMS editor; safe to omit when editing files manually. |
 
-**`themeStyleClass`** controls the visual variant of components that support it (TextMedia, TitleText, Video). The default value `c-component--main` applies the standard section styling. Other common values: `c-component--light`, `c-component--dark`, `c-component--accent` — the available variants depend on the active theme.
+### Style variants
+
+The visual variant of a component is set through `classes`. Exactly these variants exist; their look is defined by the active theme:
+
+| Class | Effect |
+|---|---|
+| `c-component--main` | Standard section styling (applied automatically when `classes` is empty) |
+| `c-component--secondary` | Subtly set-off surface |
+| `c-component--special` | Accent-tinted surface |
+| `c-component--dark` | Inverted (dark) surface |
+| `c-component--framed` | Modifier: bordered frame / card look |
+| `c-component--mobile-media-bottom` | Modifier (TextMedia, image left/right): image below the text on mobile |
+
+```yaml
+- componentType: TextMedia
+  id: approach
+  classes: "c-component--secondary c-component--framed"
+```
+
+Use one variant per block. The CMS editor shows the variant as the fields `themeStyleClass`, `framed` and `mobileMediaBottom` and writes them into `classes` when saving — the templates do not read `themeStyleClass` or `framed`, so in hand-written front matter always use `classes`.
+
+### Link labels
+
+When a component has a `link` but no `linkText`, the label defaults to the page language: `weitere Informationen` for German, `More information` for English and all other languages (filter `defaultLinkText`).
 
 ### Image fields
 
@@ -34,10 +57,10 @@ Components with images share a common image structure:
 
 | Field | Description |
 |---|---|
-| `image.src` | Path to the image. Use `/_media/` for project-uploaded media or `/_assets/images/` for lib-provided images. |
+| `image.src` | Path to a **local** image file, starting with `/`. Use `/_media/` for project media or `/_assets/images/` for images shipped with marbas-site. Resolved in the project first, then in the package. Remote URLs and missing files render no image (the build logs `Error processing local image`). |
 | `image.alt` | Alt text for accessibility. |
 | `image.caption` | Optional caption shown below the image. |
-| `image.originalId` | Base filename used when the build generates responsive image variants (e.g. `my-image` → `my-image-800w.webp`). Set automatically by the CMS; when writing front matter manually, use a short slug without extension. |
+| `image.originalId` | Base filename used when the build generates responsive image variants (e.g. `my-image` → `my-image-800w.webp`). Set automatically by the CMS; when writing front matter manually, use a short slug without extension and keep it **unique per image file** — two different images with the same `originalId` overwrite each other. Without `originalId`, a name is derived from the source path. |
 
 ## Placeholder availability per layout
 
@@ -56,7 +79,7 @@ Components with images share a common image structure:
 
 ### Banner
 
-A full-width image banner, optionally linked.
+A full-width image banner, optionally linked. The Banner renders **only the image and the link** — it has no title or text; use a Hero or TextMedia for that.
 
 **Allowed in:** `Placeholder_Main`, `Placeholder_Aside_1`, `Placeholder_Aside_2`
 
@@ -109,7 +132,7 @@ A grid of teaser cards with optional headline.
 | `image.src` | string | Card image path |
 | `image.alt` | string | Card image alt text |
 | `link` | string | Card link URL |
-| `linkText` | string | Link label |
+| `linkText` | string | Link label (default: [language-dependent](#link-labels)) |
 | `linkAriaLabel` | string | Screen-reader label for the link |
 | `linkAsCta` | boolean | Render the link as a call-to-action button (default: `false`) |
 
@@ -183,11 +206,11 @@ A text block with optional image, positioned above, below, left, or right of the
 | `image.alt` | string | | Image alt text |
 | `image.originalId` | string | | Base filename for responsive image variants (slug without extension). |
 | `link` | string | | Optional link URL |
-| `linkText` | string | | Link label |
+| `linkText` | string | | Link label (default: [language-dependent](#link-labels)) |
 | `linkAsCta` | boolean | | Render link as CTA button (default: `false`) |
 | `mobileMediaBottom` | boolean | | On mobile, push image below text (default: `false`) |
-| `themeStyleClass` | string | | Theme style variant (default: `c-component--main`) |
-| `framed` | boolean | | Wrap in a bordered frame (default: `false`) |
+| `themeStyleClass` | string | | CMS editor field, not read by the template — put the variant into `classes` ([Style variants](#style-variants)) |
+| `framed` | boolean | | CMS editor field, not read by the template — use `c-component--framed` in `classes` |
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
@@ -220,10 +243,10 @@ A simple heading + text block with optional link. Use for section introductions 
 | `title` | string | | Heading text |
 | `text` | string | | Body text. Supports inline HTML. |
 | `link` | string | | Optional link URL |
-| `linkText` | string | | Link label |
+| `linkText` | string | | Link label (default: [language-dependent](#link-labels)) |
 | `linkAsCta` | boolean | | Render link as CTA button (default: `false`) |
-| `themeStyleClass` | string | | Theme style variant |
-| `framed` | boolean | | Bordered frame (default: `false`) |
+| `themeStyleClass` | string | | CMS editor field, not read by the template — put the variant into `classes` ([Style variants](#style-variants)) |
+| `framed` | boolean | | CMS editor field, not read by the template — use `c-component--framed` in `classes` |
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
@@ -261,9 +284,9 @@ Four components that combine a title, text, link, and image in a fixed two-colum
 | `image.originalId` | string | | Base filename for responsive image variants (slug without extension). |
 | `variantName` | string | | `wide_image` or `slim_image` (left/right only, default: `wide_image`) |
 | `link` | string | | Optional link URL |
-| `linkText` | string | | Link label |
+| `linkText` | string | | Link label (default: [language-dependent](#link-labels)) |
 | `linkAsCta` | boolean | | Render link as CTA button (default: `false`) |
-| `mobileMediaBottom` | boolean | | Push image below text on mobile (default: `false`) |
+| `mobileMediaBottom` | boolean | | CMS editor field, not read by this template — use `c-component--mobile-media-bottom` in `classes` |
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
@@ -329,8 +352,8 @@ An embedded HTML5 video player with optional headline.
 | `autoplay` | boolean | | Auto-play on load (default: `false`) |
 | `muted` | boolean | | Mute audio (default: `false`). Required for autoplay in most browsers. |
 | `loop` | boolean | | Loop playback (default: `false`) |
-| `themeStyleClass` | string | | Theme style variant |
-| `framed` | boolean | | Bordered frame (default: `false`) |
+| `themeStyleClass` | string | | CMS editor field, not read by the template — put the variant into `classes` ([Style variants](#style-variants)) |
+| `framed` | boolean | | CMS editor field, not read by the template — use `c-component--framed` in `classes` |
 | `classes` | string | | Additional CSS classes |
 
 ```yaml
@@ -353,7 +376,7 @@ You can add your own components alongside the built-in ones. A component is a Nu
 
 See **[Custom Components](custom-components.md)** for the full guide, including:
 - Template structure and the `data` variable
-- Accessing `site`, `page`, and `env` in templates
+- The variables available in a component template (`data`, `lang`, `placeholder_sizes`, `page`)
 - CSS and JavaScript bundling
 - Server-side files (`_api/`) and build hooks
 - Ejecting and customising built-in components

@@ -4,6 +4,7 @@ title: ""
 seoTitle: "Marbas Basic Example"
 seoDescription: "Beispielprojekt für marbas-site — eine vollständige Marbas-Website."
 pageLanguage: de
+templateEngineOverride: njk,md
 navigation:
   key: home
   title: Startseite

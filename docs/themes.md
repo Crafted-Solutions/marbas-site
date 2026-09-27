@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 18 ready-to-use themes. Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field in `site.json`.
+Marbas ships 18 ready-to-use themes. Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -138,7 +138,7 @@ Create `_theme/theme-<name>.css` in your project root. The file must define all 
 }
 ```
 
-Activate it by setting `"theme": { "id": "theme-acme" }` in `site.json`.
+Activate it by setting `"theme": { "id": "theme-acme" }` in `marbas-project.json` (or run `marbas-site theme <project> theme-acme`). A `theme` block in `site.json` is ignored.
 
 ---
 
