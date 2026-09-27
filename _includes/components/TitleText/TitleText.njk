@@ -7,7 +7,7 @@
 {% set styleClasses = data.classes | default('') | trim %}
 {% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
 
-<article class="c-component c-component--full-width {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--full-width {{ themeClasses | safe }}">
     {% if data.title %}
     <h2 class="c-component__headline" {{ lang | getLangAttribute(data.titleCulture) }}>
         {{ data.title | safe }}

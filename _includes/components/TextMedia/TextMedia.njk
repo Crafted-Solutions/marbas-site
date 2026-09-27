@@ -37,13 +37,13 @@
 
 {% if imagePosition == "none" %}
 
-<article class="c-component c-component--full-width {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--full-width {{ themeClasses | safe }}">
     {{ bodyContent() }}
 </article>
 
 {% elif imagePosition == "top" %}
 
-<article class="c-component c-component--media-top {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--media-top {{ themeClasses | safe }}">
     <div class="c-component__media">
         {{ imageData.html | safe }}
     </div>
@@ -54,7 +54,7 @@
 
 {% elif imagePosition == "bottom" %}
 
-<article class="c-component c-component--media-bottom {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--media-bottom {{ themeClasses | safe }}">
     <div class="c-component__body">
         {{ bodyContent() }}
     </div>
@@ -65,7 +65,7 @@
 
 {% elif imagePosition == "left" %}
 
-<article class="c-component c-component--media-left {{ splitClass }}{{ mobileBottomClass }} {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--media-left {{ splitClass }}{{ mobileBottomClass }} {{ themeClasses | safe }}">
     <div class="c-component__layout">
         <div class="c-component__media">
             {{ imageData.html | safe }}
@@ -78,7 +78,7 @@
 
 {% elif imagePosition == "right" %}
 
-<article class="c-component c-component--media-right {{ splitClass }}{{ mobileBottomClass }} {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--media-right {{ splitClass }}{{ mobileBottomClass }} {{ themeClasses | safe }}">
     <div class="c-component__layout">
         <div class="c-component__body">
             {{ bodyContent() }}

@@ -7,7 +7,7 @@
 {% set imageData1 = data.image1 | processLocalImage({"sizes":[12,12,12,6,6,6], "placeholder_sizes":placeholder_sizes}) %}
 {% set imageData2 = data.image2 | processLocalImage({"sizes":[12,12,12,6,6,6], "placeholder_sizes":placeholder_sizes}) %}
 
-<div class="c-cols-1 c-cols-md-2 {{ data.classes | default('') | safe }}">
+<div {{ "id" | htmlAttribute(data.id) | safe }} class="c-cols-1 c-cols-md-2 {{ data.classes | default('') | safe }}">
     <article class="c-component c-component--media-top">
         <div class="c-component__media">
             {{ imageData1.html | safe }}

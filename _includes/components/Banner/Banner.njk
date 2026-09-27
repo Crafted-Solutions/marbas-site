@@ -6,7 +6,7 @@
 {# Process local image file #}
 {% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
 
-<section class="c-banner {{ data.classes | default('') | safe }}">
+<section {{ "id" | htmlAttribute(data.id) | safe }} class="c-banner {{ data.classes | default('') | safe }}">
     {% if data.link %}
     <a href="{{ data.link | locale_url }}" {{ "aria-label" | htmlAttribute(data.linkAriaLabel) | safe }} class="c-banner__link">
         <div class="c-banner__media">

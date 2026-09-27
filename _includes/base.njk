@@ -27,41 +27,15 @@
 
       {% siteHeader %}
 
+      {# A page gets its <h1> from a Hero (or any block with providesH1: true); otherwise the page title becomes the <h1>. #}
       {% set hasHeroInPage = false %}
-      {% set hasHeroAsFirstInHero = false %}
-      {% if Placeholder_Hero and (Placeholder_Hero | length) > 0 %}
-        {% if Placeholder_Hero[0].componentType == "Hero" %}
-          {% set hasHeroAsFirstInHero = true %}
-        {% endif %}
-        {% for item in Placeholder_Hero %}
-          {% if item.componentType == "Hero" %}
+      {% for _placeholder in [Placeholder_Hero, Placeholder_Main, Placeholder_Aside_1, Placeholder_Aside_2] %}
+        {% for item in (_placeholder or []) %}
+          {% if item.componentType == "Hero" or item.providesH1 %}
             {% set hasHeroInPage = true %}
           {% endif %}
         {% endfor %}
-      {% endif %}
-      {% if not hasHeroInPage %}
-        {% if Placeholder_Main and (Placeholder_Main | length) > 0 %}
-          {% for item in Placeholder_Main %}
-            {% if item.componentType == "Hero" %}
-              {% set hasHeroInPage = true %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-        {% if Placeholder_Aside_1 and (Placeholder_Aside_1 | length) > 0 %}
-          {% for item in Placeholder_Aside_1 %}
-            {% if item.componentType == "Hero" %}
-              {% set hasHeroInPage = true %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-        {% if Placeholder_Aside_2 and (Placeholder_Aside_2 | length) > 0 %}
-          {% for item in Placeholder_Aside_2 %}
-            {% if item.componentType == "Hero" %}
-              {% set hasHeroInPage = true %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      {% endif %}
+      {% endfor %}
       <main id="main-content" class="c-main">
         <div class="c-container">
           {% set hasPageTitle = (title | default('') | trim) != '' %}

@@ -47,6 +47,13 @@ The visual variant of a component is set through `classes`. Exactly these varian
 
 Use one variant per block. The CMS editor shows the variant as the fields `themeStyleClass`, `framed` and `mobileMediaBottom` and writes them into `classes` when saving — the templates do not read `themeStyleClass` or `framed`, so in hand-written front matter always use `classes`.
 
+### Anchors
+
+Every built-in component renders its block `id` as the HTML `id` of its root element, so a block
+can be linked directly: a Cards block with `id: services` on `/leistungen/` is reachable at
+`/leistungen/#services` (or `#services` on the same page). Use URL-safe ids (lowercase, `-`), and
+avoid ids the layout uses itself: `main-content`, `main-nav`.
+
 ### Link labels
 
 When a component has a `link` but no `linkText`, the label defaults to the page language: `weitere Informationen` for German, `More information` for English and all other languages (filter `defaultLinkText`).
