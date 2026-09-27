@@ -64,6 +64,11 @@ test('English-default site: no /en/ prefix, no German hreflang', { timeout: 360_
 test('de+en site: language switcher and prefixes use site.json locale', { timeout: 360_000 }, () => {
   const { tmp, projectPath, out } = setup({ defaultLanguage: 'de', languages: [{ code: 'de', label: 'Deutsch' }, { code: 'en', label: 'English' }] });
   try {
+    // init disables the switcher for single-language projects — enable it for this two-language site
+    const configPath = path.join(projectPath, 'marbas-project.json');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    config.theme.languageSwitcher = true;
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
     fs.writeFileSync(path.join(projectPath, 'pages', 'index.md'), page('de'));
     fs.mkdirSync(path.join(projectPath, 'pages', 'en'));
     fs.writeFileSync(path.join(projectPath, 'pages', 'en', 'index.md'), page('en'));

@@ -1,6 +1,6 @@
 {
   "name": "@crafted.solutions/marbas-site",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "Marbas site runtime — build, preview, deploy, templates and CLI for Marbas websites",
   "license": "MIT",
   "author": "Timo Müller <timo.m@plurex.de>",
@@ -56,7 +56,8 @@
     "tm.eleventy.js",
     "webpack.config.js",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "engines": {
     "node": ">=18"

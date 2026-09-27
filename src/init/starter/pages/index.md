@@ -48,33 +48,24 @@ Placeholder_Main:
           src: /_assets/images/starter-card-content.svg
           alt: Leistung 1
           originalId: starter-card-1
-        link: "#"
-        linkText: Mehr erfahren
-        linkAsCta: false
       - headline: Leistung 2
         body: Beschreiben Sie hier Ihre zweite Leistung oder Ihr zweites Angebot.
         image:
           src: /_assets/images/starter-card-content.svg
           alt: Leistung 2
           originalId: starter-card-2
-        link: "#"
-        linkText: Mehr erfahren
-        linkAsCta: false
       - headline: Leistung 3
         body: Beschreiben Sie hier Ihre dritte Leistung oder Ihr drittes Angebot.
         image:
           src: /_assets/images/starter-card-content.svg
           alt: Leistung 3
           originalId: starter-card-3
-        link: "#"
-        linkText: Mehr erfahren
-        linkAsCta: false
   - componentType: Banner
     id: cta-banner
     image:
       src: /_assets/images/starter-feature-right.jpg
       alt: Banner-Bild
       originalId: starter-feature-right
-    link: "#"
-    linkAriaLabel: Zum Kontakt
+    link: /ueber-uns/
+    linkAriaLabel: Mehr über uns
 ---

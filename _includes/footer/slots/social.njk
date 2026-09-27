@@ -4,12 +4,12 @@
     {%- for social in site.footer.socialLinks %}
     <li class="c-footer-social__item">
       <a class="c-footer-social__link c-footer-social__link--{{ social.platform }}"
-         href="{{ social.href }}"
-         aria-label="{{ social.ariaLabel | default(social.label) }}"
+         href="{{ social.href | t(pageLanguage) }}"
+         aria-label="{{ (social.ariaLabel | t(pageLanguage)) or (social.label | t(pageLanguage)) }}"
          target="_blank"
          rel="noopener noreferrer">
-        <span class="c-footer-social__icon" aria-hidden="true"></span>
-        <span class="u-sr-only">{{ social.ariaLabel | default(social.label) }}</span>
+        {{ social.platform | socialIcon | safe }}
+        <span class="u-sr-only">{{ (social.ariaLabel | t(pageLanguage)) or (social.label | t(pageLanguage)) }}</span>
       </a>
     </li>
     {%- endfor %}

@@ -7,7 +7,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-09-27
+
+### Added
+
+- Localized `site.json` values: texts and links can be objects per language
+  (`{ "de": "…", "en": "…" }`); new filters `t` and `uiText`. The normalizer keeps them (it
+  previously turned any non-string into `""`).
+
+- Front matter `translationKey` links translations with different slugs
+  (`/ueber-uns/` ↔ `/en/about-us/`); CMS page ids (`marbasCmsI18n.sourcePageId`) are used as well.
+
+- Built-in components render their block `id` as HTML `id` — blocks can be linked as anchors
+  (`/page/#services`).
+- Block flag `providesH1: true`: a custom component that renders the page's `<h1>` suppresses the
+  page-title `<h1>` (previously only `componentType: Hero` did).
+
+- `marbas-site init` options `--lang=<code>` (default language; writes `locale` to `site.json`,
+  non-German languages get an English starter: Home, About us, Imprint, Privacy) and
+  `--theme=<id>` (activates the theme incl. its header/nav/footer variants).
+- New projects get `_assets/favicons/favicon.ico` and `apple-touch-icon.png` (the base layout
+  links both; they were missing → 404).
+
+### Changed
+
+- `init --name` now also sets `site.json` title, `footer.companyName`, `footer.copyright` and
+  `seo.siteName` (previously the folder name).
+- New projects have `theme.languageSwitcher: false` (one language). Enable it when you add
+  languages to `locale`.
+- `marbas-site theme` applies the theme's variant defaults to `site.json` where the site still
+  uses `default` (same as the Marbas editor); hand-set variants are kept.
+- Project `.gitignore` covers `.cache/` and the generated `_webpack/lib-entry.js` /
+  `_webpack/custom-js-entry.js`.
+- German starter: no `"#"` links (cards without links, banner links to `/ueber-uns/`); legal
+  pages no longer repeat their title as a second heading.
+
+### Fixed
+
+- Built-in interface texts (skip link, "open/close navigation", main/service navigation,
+  submenu, announcement, legal navigation) were always German; they now follow the page language.
+- Footer groups and bottom links with `source: "tagCollection"` never showed any link (Nunjucks
+  `slice(0, n)` returns groups, not the first n items) and did not filter by language.
+- `init` without `--starter`: the start page now has `pageLanguage` (menus and footer lists filter
+  by it) and a title in the project language.
+- Mobile navigation, submenu toggles and the announcement dismiss button did nothing on
+  CLI-built sites: the base layout loaded `/_assets/js/full.js` and `/_assets/js/languageSwitcher.js`,
+  but the build ships them under `/_assets/js/_lib/` (404).
+- Language switcher: links to the actual translation (same path, `translationKey` or CMS link);
+  pages without a translation lead to the start page of the target language instead of a 404 and
+  are marked "not translated"; slugs starting with a language code (`/design/`) are no longer
+  mangled; language labels were empty (`label` vs. `name`); debug logging removed; the switcher is
+  only rendered when more than one language is configured.
+- `hreflang` / `og:locale:alternate` are only written for language versions that exist (plus
+  `x-default`); previously every configured language was listed.
+- Footer social links now show their platform icon (they rendered an empty box). Icons for
+  X/Twitter, Instagram, GitHub, Facebook, YouTube, TikTok and Xing come from Simple Icons (CC0),
+  LinkedIn from the theme library; unknown platforms get a neutral link icon. See
+  `THIRD_PARTY_NOTICES.md`.
+- Footer presets `columns`, `columns-social` and `columns-cta` now render `footer.contact`
+  (it was silently dropped). Sites using these presets with contact data will show it after
+  updating.
+- Footer address lines are separated (street, postcode/city, country were run together).
+- `tel:` links keep only `+` and digits (new filter `telHref`): `030 / 4737 8115` no longer
+  produces an invalid `tel:030/47378115`; the `(0)` trunk prefix is dropped.
+
 ## [0.12.1] - 2026-09-27
+
+*Not published to npm — contained in 0.13.0.*
 
 ### Fixed
 

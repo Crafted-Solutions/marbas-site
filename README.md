@@ -75,6 +75,9 @@ marbas-site init my-site
 # Or with example pages and components to explore right away
 marbas-site init my-site --starter
 
+# English site with a name and a theme
+marbas-site init my-site --starter --name="Acme Inc" --lang=en --theme=theme-slate
+
 # Build it
 marbas-site build my-site --env=development
 
@@ -101,7 +104,7 @@ The build output lands in `my-site/build/public_development/` (or `public_<env>/
 
 | Command | Description |
 |---------|-------------|
-| `marbas-site init <path>` | Create a new project at `<path>`. Add `--starter` for example pages and components. |
+| `marbas-site init <path>` | Create a new project at `<path>`. Options: `--starter` (example pages and components), `--name="<Site name>"` (title, company name, copyright), `--lang=<code>` (default language, default `de`; non-German languages get the English starter), `--theme=<id>` (activate a theme incl. its header/nav/footer variants). |
 | `marbas-site build <path> --env=<name>` | Build the project for the given environment |
 | `marbas-site preview <path> --env=<name>` | Start a live-preview server (Eleventy + Webpack watch) |
 | `marbas-site deploy <path> --env=<name>` | Deploy to the configured target for the given environment |

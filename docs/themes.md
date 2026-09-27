@@ -12,7 +12,7 @@ Marbas ships 18 ready-to-use themes. Every theme is a single CSS file that defin
 marbas-site theme my-project theme-bloom
 ```
 
-This writes `theme.id` to `marbas-project.json` and validates that the theme exists. Run `marbas-site build` afterwards to apply it.
+This writes `theme.id` to `marbas-project.json`, validates that the theme exists and — like the Marbas editor — applies the theme's recommended header, navigation and footer variants to `site.json` wherever they are still `default` (variants you set yourself are kept). Run `marbas-site build` afterwards to apply it. `marbas-site init --theme=<id>` does the same for a new project.
 
 ### Via marbas-project.json
 

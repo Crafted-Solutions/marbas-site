@@ -3,30 +3,30 @@
   {%- for group in site.footer.groups %}
   <div class="c-footer-group">
     {%- if group.title %}
-    <p class="c-footer-group__title">{{ group.title }}</p>
+    <p class="c-footer-group__title">{{ group.title | t(pageLanguage) }}</p>
     {%- endif %}
     {%- if group.source == "tagCollection" %}
     {%- set _groupPages = [] %}
     {%- for tag in group.tags %}
-      {%- set _tagPages = collections[tag] | default([]) %}
+      {%- set _tagPages = collections[tag] | default([]) | filterCollectionByLanguage(pageLanguage) %}
       {%- set _groupPages = (_groupPages.concat(_tagPages)) %}
     {%- endfor %}
-    <nav aria-label="{{ group.title }}">
+    <nav aria-label="{{ group.title | t(pageLanguage) }}">
       <ul class="c-footer-group__list">
-        {%- for item in _groupPages | slice(0, group.limit | default(10)) %}
+        {%- for item in _groupPages %}{% if loop.index <= (group.limit | default(10)) %}
         <li><a class="c-footer-group__link" href="{{ item.url }}">{{ item.data.title | default(item.fileSlug) }}</a></li>
-        {%- endfor %}
+        {%- endif %}{% endfor %}
       </ul>
     </nav>
     {%- elif group.links and (group.links | length) > 0 %}
-    <nav aria-label="{{ group.title }}">
+    <nav aria-label="{{ group.title | t(pageLanguage) }}">
       <ul class="c-footer-group__list">
         {%- for link in group.links %}
         <li>
           <a class="c-footer-group__link"
-             href="{{ link.href }}"
-             {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel }}"{% endif %}
-             {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label }}</a>
+             href="{{ link.href | t(pageLanguage) }}"
+             {%- if link.ariaLabel %} aria-label="{{ link.ariaLabel | t(pageLanguage) }}"{% endif %}
+             {%- if link.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ link.label | t(pageLanguage) }}</a>
         </li>
         {%- endfor %}
       </ul>

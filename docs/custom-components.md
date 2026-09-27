@@ -98,6 +98,21 @@ Global data files (`pages/_data/*.json`, including `site.json`) remain available
 | `{{ "aria-label" \| htmlAttribute(data.ariaLabel) \| safe }}` | Renders an escaped attribute only when the value is set |
 | `{{ lang \| getLangAttribute(data.titleCulture) }}` | `lang="…"` when a text differs from the page language |
 
+Render the block `id` on the root element (`<section id="{{ data.id }}" …>`) so the block can be
+used as an anchor (`/page/#<id>`), like the built-ins do.
+
+**Custom hero / own `<h1>`:** the page title is rendered as `<h1>` unless the page contains a `Hero`.
+If your component outputs the page's `<h1>` itself, set `providesH1: true` on the block — otherwise
+the page has two `<h1>`s:
+
+```yaml
+Placeholder_Hero:
+  - componentType: SplitHero
+    id: hero
+    providesH1: true
+    title: Support your customers
+```
+
 To pick up the theme's style variants, reuse the built-in markup: a root element with `c-component` plus the variant from `data.classes` (default `c-component--main`), headings with `c-component__headline`, rich text in `c-richtext`, buttons with `c-btn`.
 
 ---

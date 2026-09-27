@@ -25,7 +25,7 @@
 {% set styleClasses = data.classes | default('') | trim %}
 {% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
 
-<article class="c-component {{ themeClasses | safe }}" {{ "aria-label" | htmlAttribute(data.ariaLabelHeadline) | safe }}>
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component {{ themeClasses | safe }}" {{ "aria-label" | htmlAttribute(data.ariaLabelHeadline) | safe }}>
     {% if data.videoHeadline %}
     <h2 class="c-component__headline" {{ lang | getLangAttribute(data.videoHeadlineCulture) }}>
         {{ data.videoHeadline | safe }}

@@ -11,7 +11,7 @@
 {%- endif -%}
 
 {%- set _ogImageSrc = seoImage.src if (seoImage and seoImage.src) else site.seo.defaultImage.src -%}
-{%- set _ogImageAlt = seoImage.alt if (seoImage and seoImage.alt) else site.seo.defaultImage.alt -%}
+{%- set _ogImageAlt = seoImage.alt if (seoImage and seoImage.alt) else site.seo.defaultImage.alt | t(pageLanguage) -%}
 {%- set _ogImageWidth = seoImage.width if (seoImage and seoImage.width) else site.seo.defaultImage.width -%}
 {%- set _ogImageHeight = seoImage.height if (seoImage and seoImage.height) else site.seo.defaultImage.height -%}
 {%- set _ogImageType = seoImage.type if (seoImage and seoImage.type) else site.seo.defaultImage.type -%}
@@ -23,7 +23,7 @@
   url=seoCanonicalUrl or urlWithPath,
   name=seoAuthor or site.seo.defaultAuthor,
   locale=pageLanguage,
-  site_name=site.seo.siteName or site.title,
+  site_name=(site.seo.siteName | t(pageLanguage)) or (site.title | t(pageLanguage)),
   img=_ogImageAbsolute,
   img_alt=_ogImageAlt,
   img_width=_ogImageWidth,
@@ -48,17 +48,22 @@
   {% endif %}
 {% endif %}
 
-{%- set _copyright = seoCopyright or site.seo.defaultCopyright -%}
+{%- set _copyright = seoCopyright or (site.seo.defaultCopyright | t(pageLanguage)) -%}
 {% if _copyright %}
 <meta name="copyright" content="{{ _copyright | safe }}"/>
 {% endif %}
 
-{% set languages = page.url | localeUrls %}
-
-{% for lang in languages %}
-  {% if lang.code != pageLanguage %}
-  <meta property="og:locale:alternate" content="{{ lang.code }}"/>
+{# Alternates only for language versions that exist (Task 109) #}
+{% set _alternates = collections.all | languageAlternates(page) %}
+{% set _existing = _alternates | selectattr("url") %}
+{% if _existing | length > 1 %}
+{% for alt in _existing %}
+  {% if alt.code != pageLanguage %}
+  <meta property="og:locale:alternate" content="{{ alt.code }}"/>
   {% endif %}
-  {% set path = lang.path | getDomainWithPath %}
-  <link rel="alternate" hreflang="{{ lang.code }}" href="{{ path }}">
+  <link rel="alternate" hreflang="{{ alt.code }}" href="{{ alt.url | getDomainWithPath }}">
+  {% if alt.code == defaultLanguage %}
+  <link rel="alternate" hreflang="x-default" href="{{ alt.url | getDomainWithPath }}">
+  {% endif %}
 {% endfor %}
+{% endif %}

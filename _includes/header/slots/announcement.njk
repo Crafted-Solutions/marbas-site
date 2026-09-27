@@ -1,13 +1,13 @@
 {%- if site.header.announcement.enabled and site.header.announcement.text -%}
-<div class="c-announcement" role="region" aria-label="Ankündigung" data-announcement-id="{{ site.header.announcement.id }}">
+<div class="c-announcement" role="region" aria-label="{{ "announcement" | uiText(pageLanguage) }}" data-announcement-id="{{ site.header.announcement.id }}">
   <div class="c-container c-announcement__inner">
     <p class="c-announcement__text">
-      {{ site.header.announcement.text }}
+      {{ site.header.announcement.text | t(pageLanguage) }}
       {%- if site.header.announcement.label and site.header.announcement.href %}
-      <a class="c-announcement__link" href="{{ site.header.announcement.href }}">{{ site.header.announcement.label }}</a>
+      <a class="c-announcement__link" href="{{ site.header.announcement.href | t(pageLanguage) }}">{{ site.header.announcement.label | t(pageLanguage) }}</a>
       {%- endif %}
     </p>
-    <button class="c-announcement__dismiss" type="button" aria-label="Ankündigung schließen">
+    <button class="c-announcement__dismiss" type="button" aria-label="{{ "announcementClose" | uiText(pageLanguage) }}">
       <span aria-hidden="true">×</span>
     </button>
   </div>

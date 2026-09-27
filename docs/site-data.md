@@ -125,6 +125,43 @@ Set `pageLanguage` in each page's front matter to match its language code. See [
 
 ---
 
+## Favicons
+
+Files in `<project>/_assets/favicons/` are copied to the root of the built site. New projects get a
+neutral `favicon.ico` and `apple-touch-icon.png` (referenced by the base layout) — replace them with
+your own files under the same names.
+
+---
+
+## Localized values
+
+On multi-language sites, texts and links in `site.json` can be given per language. Use an object
+with language codes instead of a plain string — a plain string still applies to all languages:
+
+```json
+"actions": [
+  { "label": { "de": "Termin buchen", "en": "Book appointment" },
+    "href":  { "de": "/kontakt/",     "en": "/en/contact/" } }
+],
+"copyright": { "de": "© 2026 Praxis Muster", "en": "© 2026 Muster Practice" }
+```
+
+The value for the page language is used (then its primary language, then `locale.defaultLanguage`,
+then the first entry). Supported for: `title`, `header.announcement` (text, label, href),
+`header.actions`, `header.utilityLinks`, `footer.companyName`, `footer.intro`, `footer.copyright`,
+`footer.groups` (title, links), `footer.bottomLinks`, `footer.ctaBlock`, `footer.socialLinks`
+(label, ariaLabel, href), `seo.siteName`, `seo.defaultCopyright`, `seo.defaultImage.alt`.
+Links are not prefixed automatically — give per-language `href`s where the targets differ.
+
+> The Marbas CMS site-settings form does not support localized values yet (it would overwrite them) —
+> edit these values in `site.json` directly until it does.
+
+Built-in interface texts (skip link, navigation and screen-reader labels) follow the page language
+(German for `de`, English otherwise). Footer groups and bottom links with `source: "tagCollection"`
+list only pages of the current language.
+
+---
+
 ## `logo`
 
 Controls the logo displayed in the header.
@@ -273,7 +310,7 @@ Up to eight social media links. The `platform` value is used to render the match
 
 | Field | Type | Description |
 |---|---|---|
-| `platform` | string | Platform key, e.g. `"twitter"`, `"instagram"`, `"linkedin"`, `"github"`, `"facebook"`, `"youtube"`, `"tiktok"`, `"xing"` |
+| `platform` | string | Platform key with a built-in icon: `"x"` (alias `"twitter"`), `"instagram"`, `"linkedin"`, `"github"`, `"facebook"`, `"youtube"`, `"tiktok"`, `"xing"`. Other values get a neutral link icon. |
 | `label` | string | Accessible label |
 | `href` | string | Profile URL |
 | `ariaLabel` | string | Screen-reader label (optional, falls back to `label`) |
@@ -310,11 +347,24 @@ Links in the thin bar at the very bottom of the footer (imprint, privacy, etc.).
 
 | Preset | Description |
 |---|---|
-| `simple` | Single row with company name, optional contact details, and bottom links. |
-| `columns` | Multi-column layout: contact block on the left, link groups in the remaining columns. |
-| `columns-social` | Like `columns` with a social icon row added. |
-| `columns-cta` | Like `columns` with a CTA panel replacing one column. |
-| `editorial` | Rich layout with intro text, link groups, CTA block, social icons, and a full bottom bar. |
+| `simple` | Company name/intro and contact details in one row, plus bottom links. |
+| `columns` | Brand column (company name, intro, contact) next to the link groups. |
+| `columns-social` | Like `columns` with social icons in the brand column. |
+| `columns-cta` | Like `columns` with a CTA panel above the columns. |
+| `editorial` | Rich layout: intro, social icons, contact, link groups and a full bottom bar. |
+
+Which `footer` data each preset shows:
+
+| Preset | intro | contact | groups | socialLinks | ctaBlock | bottomLinks |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+| `simple` | ✓ | ✓ | – | – | – | ✓ |
+| `columns` | ✓ | ✓ | ✓ | – | – | ✓ |
+| `columns-social` | ✓ | ✓ | ✓ | ✓ | – | ✓ |
+| `columns-cta` | ✓ | ✓ | ✓ | – | ✓ | ✓ |
+| `editorial` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+Phone numbers are shown as written; the `tel:` link keeps only `+` and digits (`030 / 4737 8115` →
+`tel:03047378115`, `+49 (0)30 …` → `tel:+4930…`).
 
 ---
 

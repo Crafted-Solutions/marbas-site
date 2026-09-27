@@ -1,11 +1,49 @@
 import path from 'path';
 
-export function getDefaultSiteSettings(projectRoot) {
-  const title = path.basename(String(projectRoot || '').trim()) || 'Marbas';
+const LANGUAGE_LABELS = {
+  de: 'Deutsch',
+  en: 'English',
+  fr: 'Français',
+  es: 'Español',
+  it: 'Italiano',
+  nl: 'Nederlands'
+};
+
+// Legal bottom links of the starter pages, per language (non-German → English starter).
+const LEGAL_LINKS = {
+  de: [
+    { label: 'Impressum', href: '/impressum/' },
+    { label: 'Datenschutz', href: '/datenschutz/' }
+  ],
+  en: [
+    { label: 'Imprint', href: '/imprint/' },
+    { label: 'Privacy', href: '/privacy/' }
+  ]
+};
+
+const primaryLanguage = (code) => String(code || '').toLowerCase().split('-')[0];
+
+export function languageLabel(code) {
+  return LANGUAGE_LABELS[code] || LANGUAGE_LABELS[primaryLanguage(code)] || String(code).toUpperCase();
+}
+
+/**
+ * Default site.json for a new project.
+ * @param {string} projectRoot
+ * @param {object} [options]
+ * @param {string} [options.title]  Site/company name (default: folder name)
+ * @param {string} [options.lang]   Default language code (default: "de")
+ */
+export function getDefaultSiteSettings(projectRoot, { title: explicitTitle, lang = 'de' } = {}) {
+  const title = String(explicitTitle || '').trim() || path.basename(String(projectRoot || '').trim()) || 'Marbas';
   const year = new Date().getFullYear();
 
   return {
     title,
+    locale: {
+      defaultLanguage: lang,
+      languages: [{ code: lang, label: languageLabel(lang) }]
+    },
     logo: {
       show: true,
       path: '/_assets/images/Logo.svg'
@@ -60,10 +98,7 @@ export function getDefaultSiteSettings(projectRoot) {
       },
       bottomLinks: {
         source: 'manual',
-        links: [
-          { label: 'Impressum', href: '/impressum/' },
-          { label: 'Datenschutz', href: '/datenschutz/' }
-        ]
+        links: (LEGAL_LINKS[primaryLanguage(lang)] || LEGAL_LINKS.en).map((link) => ({ ...link }))
       },
       copyright: `© ${year} ${title}`
     },

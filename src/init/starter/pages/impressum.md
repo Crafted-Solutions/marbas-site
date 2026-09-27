@@ -10,7 +10,6 @@ Placeholder_Hero: []
 Placeholder_Main:
   - componentType: TextMedia
     id: impressum-text
-    title: Impressum
     text: "<p>Bitte rechtliche Angaben für dieses Projekt ergänzen.</p>"
     imagePosition: none
 ---

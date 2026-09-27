@@ -3,13 +3,13 @@
 <div class="c-footer-cta">
   <div class="c-container c-footer-cta__inner">
     <div class="c-footer-cta__content">
-      <p class="c-footer-cta__title">{{ _cta.title }}</p>
+      <p class="c-footer-cta__title">{{ _cta.title | t(pageLanguage) }}</p>
       {%- if _cta.text %}
-      <p class="c-footer-cta__text">{{ _cta.text }}</p>
+      <p class="c-footer-cta__text">{{ _cta.text | t(pageLanguage) }}</p>
       {%- endif %}
     </div>
     {%- if _cta.label and _cta.href %}
-    <a class="c-btn c-btn--primary c-footer-cta__btn" href="{{ _cta.href }}">{{ _cta.label }}</a>
+    <a class="c-btn c-btn--primary c-footer-cta__btn" href="{{ _cta.href | t(pageLanguage) }}">{{ _cta.label | t(pageLanguage) }}</a>
     {%- endif %}
   </div>
 </div>

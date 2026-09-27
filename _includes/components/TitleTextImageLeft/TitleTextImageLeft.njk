@@ -20,7 +20,7 @@
 {% set styleClasses = data.classes | default('') | trim %}
 {% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
 
-<article class="c-component c-component--media-left {{ splitClass }} {{ themeClasses | safe }}">
+<article {{ "id" | htmlAttribute(data.id) | safe }} class="c-component c-component--media-left {{ splitClass }} {{ themeClasses | safe }}">
     <div class="c-component__layout">
         <div class="c-component__media">
             {{ imageData.html | safe }}

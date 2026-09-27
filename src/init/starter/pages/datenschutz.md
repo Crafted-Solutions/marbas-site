@@ -10,7 +10,6 @@ Placeholder_Hero: []
 Placeholder_Main:
   - componentType: TextMedia
     id: datenschutz-text
-    title: Datenschutzerklärung
     text: "<p>Bitte Datenschutzhinweise für dieses Projekt ergänzen.</p>"
     imagePosition: none
 ---

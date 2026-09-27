@@ -1,6 +1,21 @@
 // lib/filters/html.js
 // SIMPLIFIED VERSION - Removed filters that are no longer needed with embedded data
 
+import { socialIcon } from './social-icons.js';
+
+/**
+ * Phone number for a tel: href — keeps a leading "+" and digits only.
+ * "030 / 4737 8115" → "03047378115", "+49 (0)30 123-45" → "+493012345".
+ * The "(0)" trunk prefix used in international notation is dropped.
+ */
+export function telHref(value) {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  const withoutTrunk = raw.replace(/\(\s*0\s*\)/g, '');
+  const digits = withoutTrunk.replace(/[^\d+]/g, '');
+  return digits.startsWith('+') ? '+' + digits.slice(1).replace(/\+/g, '') : digits.replace(/\+/g, '');
+}
+
 function escapeAttributeValue(value) {
   return String(value)
     .replace(/&(?!(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);)/g, "&amp;")
@@ -37,6 +52,9 @@ export function configureHtmlFilters(eleventyConfig) {
       // Return formatted attribute — value escaped, callers output it with `| safe`
       return `${attributeName}="${escapeAttributeValue(processedValue)}"`;
     });
+
+    eleventyConfig.addFilter("telHref", (value) => telHref(value));
+    eleventyConfig.addFilter("socialIcon", (platform) => socialIcon(platform));
 
     // KEEP: stringify filter for debugging
     eleventyConfig.addFilter('stringify', (data) => {
