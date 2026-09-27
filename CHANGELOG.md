@@ -35,6 +35,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Footer social links now show their platform icon (they rendered an empty box). Icons for
+  X/Twitter, Instagram, GitHub, Facebook, YouTube, TikTok and Xing come from Simple Icons (CC0),
+  LinkedIn from the theme library; unknown platforms get a neutral link icon. See
+  `THIRD_PARTY_NOTICES.md`.
 - Footer presets `columns`, `columns-social` and `columns-cta` now render `footer.contact`
   (it was silently dropped). Sites using these presets with contact data will show it after
   updating.

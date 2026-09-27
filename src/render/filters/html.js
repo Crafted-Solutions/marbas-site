@@ -1,6 +1,8 @@
 // lib/filters/html.js
 // SIMPLIFIED VERSION - Removed filters that are no longer needed with embedded data
 
+import { socialIcon } from './social-icons.js';
+
 /**
  * Phone number for a tel: href — keeps a leading "+" and digits only.
  * "030 / 4737 8115" → "03047378115", "+49 (0)30 123-45" → "+493012345".
@@ -52,6 +54,7 @@ export function configureHtmlFilters(eleventyConfig) {
     });
 
     eleventyConfig.addFilter("telHref", (value) => telHref(value));
+    eleventyConfig.addFilter("socialIcon", (platform) => socialIcon(platform));
 
     // KEEP: stringify filter for debugging
     eleventyConfig.addFilter('stringify', (data) => {
