@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Built-in components render their block `id` as HTML `id` — blocks can be linked as anchors
+  (`/page/#services`).
+- Block flag `providesH1: true`: a custom component that renders the page's `<h1>` suppresses the
+  page-title `<h1>` (previously only `componentType: Hero` did).
+
 - `marbas-site init` options `--lang=<code>` (default language; writes `locale` to `site.json`,
   non-German languages get an English starter: Home, About us, Imprint, Privacy) and
   `--theme=<id>` (activates the theme incl. its header/nav/footer variants).

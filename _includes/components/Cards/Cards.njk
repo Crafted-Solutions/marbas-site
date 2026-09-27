@@ -2,7 +2,7 @@
    Displays a responsive grid of cards with headline, image, body, and link
 #}
 
-<section class="c-cards {{ data.classes | default('') | safe }}" {{ "aria-label" | htmlAttribute(data.ariaLabelHeadline) | safe }}>
+<section {{ "id" | htmlAttribute(data.id) | safe }} class="c-cards {{ data.classes | default('') | safe }}" {{ "aria-label" | htmlAttribute(data.ariaLabelHeadline) | safe }}>
 
     {# Optional section headline #}
     {% if data.headline %}

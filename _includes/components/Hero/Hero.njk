@@ -9,7 +9,7 @@
   {% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
 {% endif %}
 
-<section class="c-hero c-hero--bleed c-hero--edge{% if data.flushNav %} c-hero--flush-nav{% endif %}{% if data.invertTextColor %} c-hero--text-invert{% endif %}{% if data.showContentBox %} c-hero--content-box{% endif %}{% if data.classes %} {{ data.classes | safe }}{% endif %}">
+<section {{ "id" | htmlAttribute(data.id) | safe }} class="c-hero c-hero--bleed c-hero--edge{% if data.flushNav %} c-hero--flush-nav{% endif %}{% if data.invertTextColor %} c-hero--text-invert{% endif %}{% if data.showContentBox %} c-hero--content-box{% endif %}{% if data.classes %} {{ data.classes | safe }}{% endif %}">
     <div class="c-hero__media">
         {{ (imageData.html if imageData else "") | safe }}
     </div>
