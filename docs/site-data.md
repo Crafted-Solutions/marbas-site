@@ -127,7 +127,7 @@ Controls the logo displayed in the header.
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `show` | boolean | `true` | Whether to show the logo image. |
-| `path` | string | `/_assets/images/Logo.png` | Path to the logo file, relative to the built output root. |
+| `path` | string | `/_assets/images/Logo.svg` | Path to the logo file, relative to the built output root. The default is a neutral placeholder shipped with marbas-site (also available as `Logo.png`). |
 
 ```json
 "logo": {

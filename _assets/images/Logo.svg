@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Logo">
+  <!-- Neutral placeholder logo shipped with marbas-site. Replace via site.json → logo.path -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#334155"/>
+  <path d="M16 46V20l16 14 16-14v26" fill="none" stroke="#f8fafc" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

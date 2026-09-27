@@ -6,7 +6,7 @@
 {# Process local image file #}
 {% set imageData = data.image | processLocalImage({"sizes":[12,12,12,12,12,12], "placeholder_sizes":placeholder_sizes}) %}
 
-{% set linkText = data.linkText | default("weitere Informationen") %}
+{% set linkText = data.linkText or (lang | defaultLinkText) %}
 {% set linkAsCta = data.linkAsCta | default(false) %}
 {% set styleClasses = data.classes | default('') | trim %}
 {% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
@@ -26,7 +26,7 @@
         </div>
         {% if data.link %}
         <div class="c-component__actions" {{ lang | getLangAttribute(data.linkTextCulture) }}>
-            <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %}>{{ linkText }}</a>
+            <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %} {{ "aria-label" | htmlAttribute(data.linkAriaLabel) | safe }}>{{ linkText }}</a>
         </div>
         {% endif %}
     </div>
