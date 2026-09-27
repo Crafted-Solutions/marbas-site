@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-05-05T18:38:00.198Z */
+/* Build time: 2026-09-27T19:48:48.278Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -37,6 +37,19 @@
 
   --lh-body: 1.65;
   --lh-heading: 1.2;
+
+  /* Colors — neutral defaults so pages without a theme stay usable (themes override all of them).
+     Values match the fallbacks used throughout the base modules. */
+  --t-bg: #fcfcfd;
+  --t-surface: #fff;
+  --t-text: #121316;
+  --t-muted: #5a616b;
+  --t-border: #e6e8ee;
+  --t-accent: #1f6feb;
+  --t-surface-invert: #0f1117;
+  --t-text-invert: #f3f4f6;
+  --t-muted-invert: #b2bac6;
+  --t-border-invert: #2a3142;
 
   /* Radii (themes may override) */
   --t-radius-sm: 0.5rem;
@@ -1493,6 +1506,9 @@ hr {
     width: min(20rem, 85vw);
     flex-direction: column;
     align-items: stretch;
+    /* reset the desktop row alignment from layout/page.css (flex-end + wrap would push the list to the bottom) */
+    justify-content: flex-start;
+    flex-wrap: nowrap;
     gap: 0;
     background: var(--t-nav-mobile-panel-bg, var(--t-surface));
     border-left: 1px solid var(--t-nav-mobile-border, var(--t-border));
@@ -2060,6 +2076,38 @@ hr {
   .c-footer__bottom-link,
   .c-footer-bottom__link {
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Footer inner layout ----------
+   .c-footer__inner is a flex row (shared with the header). Without an explicit size the link-group
+   grid shrinks to its min-content width and auto-fit collapses to a single column. */
+
+.c-footer__inner {
+  align-items: flex-start;
+}
+
+.c-footer__inner > .c-footer__brand,
+.c-footer__inner > .c-footer-intro {
+  flex: 0 1 22rem;
+  min-width: 0;
+}
+
+.c-footer__inner > .c-footer-groups {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .c-footer__inner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .c-footer__inner > .c-footer__brand,
+  .c-footer__inner > .c-footer-intro,
+  .c-footer__inner > .c-footer-groups {
+    flex: none;
   }
 }
 
