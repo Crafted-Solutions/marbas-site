@@ -8,7 +8,7 @@ export function getDefaultSiteSettings(projectRoot) {
     title,
     logo: {
       show: true,
-      path: '/_assets/images/Logo.png'
+      path: '/_assets/images/Logo.svg'
     },
     header: {
       preset: 'brand-nav',

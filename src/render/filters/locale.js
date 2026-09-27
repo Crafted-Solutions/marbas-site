@@ -1,3 +1,20 @@
+// Fallback link labels when a component has a link but no explicit linkText.
+// Keyed by primary language subtag; unknown languages fall back to English.
+const DEFAULT_LINK_TEXTS = {
+  de: 'weitere Informationen',
+  en: 'More information'
+};
+
+/**
+ * Default link label for a page language ("de", "de-AT", "en", …).
+ * @param {string} [lang]
+ * @returns {string}
+ */
+export function defaultLinkText(lang) {
+  const primary = String(lang ?? '').trim().toLowerCase().split(/[-_]/)[0];
+  return DEFAULT_LINK_TEXTS[primary] || DEFAULT_LINK_TEXTS.en;
+}
+
 export function configureLocaleFilters(eleventyConfig, localeConfig) {
     
     const configuredLanguages = JSON.stringify(localeConfig.languages);
@@ -38,6 +55,9 @@ export function configureLocaleFilters(eleventyConfig, localeConfig) {
       return collection.filter(item => item.data && item.data.pageLanguage === language);
     });
     
+    // Add defaultLinkText filter — {{ data.linkText or (lang | defaultLinkText) }}
+    eleventyConfig.addFilter('defaultLinkText', (lang) => defaultLinkText(lang || localeConfig.defaultLanguage));
+
     // Add getLangAttribute filter
     eleventyConfig.addFilter("getLangAttribute", (pageLang, contentLang) => {
       const normalizedContentLang = normalizeLanguageCode(contentLang);

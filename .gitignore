@@ -12,3 +12,6 @@ test/fixtures/**/.page-versions/
 
 # Private backlog (not committed to public OSS repo)
 backlog/
+
+# Written by the marbas-cms app runtime probe (app/src/main/runtime/run-core-task.js)
+.sharp-probe-cache.json
