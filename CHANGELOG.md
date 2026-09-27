@@ -7,7 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-09-27
+
+### Fixed
+
+- Footer link groups sat in one narrow column: the flex row of the footer gave the group grid no
+  width. Groups now fill the remaining space next to the brand/contact column (single column on
+  mobile).
+- Mobile navigation: menu entries were pushed to the bottom of the panel (the desktop
+  `justify-content: flex-end` / `wrap` applied to the vertical panel).
+- Pages without a theme: the base now defines neutral colour tokens (`--t-bg`, `--t-surface`,
+  `--t-text`, `--t-muted`, `--t-border`, `--t-accent` and the invert set) — the mobile menu panel
+  was transparent. Themes override them as before.
+- `base.full.css` is again generated from the theme library sources (hero radius variables were
+  only present in the shipped file).
+
 ## [0.13.0] - 2026-09-27
+
+*Not published to npm — contained in 0.13.1.*
 
 ### Added
 
