@@ -98,13 +98,21 @@ _webpack/lib-entry.js
 _webpack/custom-js-entry.js
 `;
 
-const INDEX_PAGE = `---
+// Minimal start page for projects created without --starter.
+function indexPage(lang) {
+  const german = String(lang).split('-')[0] === 'de';
+  const title = german ? 'Willkommen' : 'Welcome';
+  const heading = german ? 'Willkommen bei deinem neuen Marbas-Projekt' : 'Welcome to your new Marbas project';
+  return `---
 layout: base
-title: Willkommen
+title: ${title}
+pageLanguage: ${lang}
+templateEngineOverride: njk,md
 ---
 
-# Willkommen bei deinem neuen Marbas-Projekt
+# ${heading}
 `;
+}
 
 const STARTER_PAGES_DIR = path.join(__dirname, 'starter', 'pages');
 const STARTER_PAGES_EN_DIR = path.join(__dirname, 'starter', 'pages-en');
@@ -234,7 +242,7 @@ export function initProject({
   if (starter) {
     copyStarterPages(path.join(absPath, 'pages'), language);
   } else {
-    fs.writeFileSync(path.join(absPath, 'pages', 'index.md'), INDEX_PAGE);
+    fs.writeFileSync(path.join(absPath, 'pages', 'index.md'), indexPage(language));
   }
 
   // _assets/favicons → copied to the web root by the build (favicon.ico, apple-touch-icon.png)

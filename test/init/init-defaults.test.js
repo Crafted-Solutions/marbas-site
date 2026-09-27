@@ -114,3 +114,15 @@ test('regional German code (de-at) gets the German starter and legal links', () 
     assert.ok(fs.existsSync(path.join(projectPath, 'pages', 'impressum.md')));
   } finally { fs.rmSync(tmp, { recursive: true }); }
 });
+
+test('minimal init (no starter) writes an index page with pageLanguage', () => {
+  for (const lang of ['de', 'en']) {
+    const { tmp, projectPath } = tmpProject();
+    try {
+      initProject({ projectPath, lang });
+      const index = fs.readFileSync(path.join(projectPath, 'pages', 'index.md'), 'utf8');
+      assert.match(index, new RegExp(`pageLanguage: ${lang}`));
+      assert.match(index, lang === 'de' ? /title: Willkommen/ : /title: Welcome/);
+    } finally { fs.rmSync(tmp, { recursive: true }); }
+  }
+});

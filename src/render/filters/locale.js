@@ -5,6 +5,63 @@ const DEFAULT_LINK_TEXTS = {
   en: 'More information'
 };
 
+// Built-in UI texts of header/footer templates (screen-reader labels, skip link).
+// Keyed by primary language subtag; unknown languages fall back to English. {name} is replaced.
+const UI_TEXTS = {
+  de: {
+    skipLink: 'Zum Inhalt springen',
+    navOpen: 'Navigation öffnen',
+    navClose: 'Navigation schließen',
+    navigation: 'Navigation',
+    mainNav: 'Hauptnavigation',
+    serviceNav: 'Service-Navigation',
+    submenu: 'Unterseiten von {name} anzeigen',
+    announcement: 'Ankündigung',
+    announcementClose: 'Ankündigung schließen',
+    legal: 'Rechtliches'
+  },
+  en: {
+    skipLink: 'Skip to content',
+    navOpen: 'Open navigation',
+    navClose: 'Close navigation',
+    navigation: 'Navigation',
+    mainNav: 'Main navigation',
+    serviceNav: 'Service navigation',
+    submenu: 'Show subpages of {name}',
+    announcement: 'Announcement',
+    announcementClose: 'Dismiss announcement',
+    legal: 'Legal'
+  }
+};
+
+const primaryLanguage = (lang) => String(lang ?? '').trim().toLowerCase().split(/[-_]/)[0];
+
+/**
+ * Built-in UI text for a page language.
+ * @param {string} key   e.g. "navOpen"
+ * @param {string} [lang]
+ * @param {string} [name] replaces {name}
+ */
+export function uiText(key, lang, name = '') {
+  const table = UI_TEXTS[primaryLanguage(lang)] || UI_TEXTS.en;
+  const text = table[key] ?? UI_TEXTS.en[key] ?? key;
+  return text.replace('{name}', String(name ?? ''));
+}
+
+/**
+ * Resolves a value that may be localized per language: { de: "…", en: "…" } → string for `lang`
+ * (then its primary subtag, then `defaultLanguage`, then the first string). Plain values pass through.
+ */
+export function localize(value, lang, defaultLanguage) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+  const candidates = [lang, primaryLanguage(lang), defaultLanguage, primaryLanguage(defaultLanguage)];
+  for (const key of candidates) {
+    if (key && typeof value[key] === 'string') return value[key];
+  }
+  const first = Object.values(value).find((v) => typeof v === 'string');
+  return first ?? '';
+}
+
 /**
  * Default link label for a page language ("de", "de-AT", "en", …).
  * @param {string} [lang]
@@ -113,6 +170,11 @@ export function configureLocaleFilters(eleventyConfig, localeConfig) {
     });
 
     eleventyConfig.addGlobalData('websiteLanguageCount', localeConfig.languages.length);
+
+    // Localized values from site.json — {{ site.footer.copyright | t(pageLanguage) }}
+    eleventyConfig.addFilter('t', (value, lang) => localize(value, lang || localeConfig.defaultLanguage, localeConfig.defaultLanguage));
+    // Built-in UI texts — {{ "navOpen" | uiText(pageLanguage) }}
+    eleventyConfig.addFilter('uiText', (key, lang, name) => uiText(key, lang || localeConfig.defaultLanguage, name));
 
     // Add defaultLinkText filter — {{ data.linkText or (lang | defaultLinkText) }}
     eleventyConfig.addFilter('defaultLinkText', (lang) => defaultLinkText(lang || localeConfig.defaultLanguage));
