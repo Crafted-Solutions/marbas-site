@@ -1,8 +1,8 @@
 ---
 layout: content_1col.njk
-title: Startseite
-seoDescription: Startseite — Überblick über Leistungen und Angebot.
-pageLanguage: de
+title: Home
+seoDescription: Home — an overview of our services and what we offer.
+pageLanguage: en
 templateEngineOverride: njk,md
 topNavigation: true
 tags:
@@ -18,11 +18,11 @@ eleventyNavigation:
 Placeholder_Hero:
   - componentType: Hero
     id: hero-start
-    title: Willkommen
-    text: "<p>Das ist Ihre neue Website. Passen Sie Inhalte, Komponenten und Theme nach Ihren Wünschen an.</p>"
+    title: Welcome
+    text: "<p>This is your new website. Adapt content, components and theme to your needs.</p>"
     image:
       src: /_assets/images/starter-hero.jpg
-      alt: Willkommensbild
+      alt: Welcome image
       originalId: starter-hero
     flushNav: false
     invertTextColor: false
@@ -30,42 +30,42 @@ Placeholder_Hero:
 Placeholder_Main:
   - componentType: TextMedia
     id: intro-1
-    title: Über dieses Projekt
-    text: "Dies ist ein Starter-Projekt mit Marbas. Hier finden Sie vorgefertigte Seiten und Komponenten als Ausgangspunkt für Ihre Website."
+    title: About this project
+    text: "This is a starter project built with Marbas. It contains ready-made pages and components as a starting point for your website."
     imagePosition: right
     image:
       src: /_assets/images/starter-feature-left.jpg
-      alt: Feature-Bild
+      alt: Feature image
       originalId: starter-feature-left
   - componentType: Cards
-    id: leistungen
-    headline: Unsere Leistungen
+    id: services
+    headline: Our services
     columns: 3
     cards:
-      - headline: Leistung 1
-        body: Beschreiben Sie hier Ihre erste Leistung oder Ihr erstes Angebot.
+      - headline: Service 1
+        body: Describe your first service or offer here.
         image:
           src: /_assets/images/starter-card-content.svg
-          alt: Leistung 1
+          alt: Service 1
           originalId: starter-card-1
-      - headline: Leistung 2
-        body: Beschreiben Sie hier Ihre zweite Leistung oder Ihr zweites Angebot.
+      - headline: Service 2
+        body: Describe your second service or offer here.
         image:
           src: /_assets/images/starter-card-content.svg
-          alt: Leistung 2
+          alt: Service 2
           originalId: starter-card-2
-      - headline: Leistung 3
-        body: Beschreiben Sie hier Ihre dritte Leistung oder Ihr drittes Angebot.
+      - headline: Service 3
+        body: Describe your third service or offer here.
         image:
           src: /_assets/images/starter-card-content.svg
-          alt: Leistung 3
+          alt: Service 3
           originalId: starter-card-3
   - componentType: Banner
     id: cta-banner
     image:
       src: /_assets/images/starter-feature-right.jpg
-      alt: Banner-Bild
+      alt: Banner image
       originalId: starter-feature-right
-    link: /ueber-uns/
-    linkAriaLabel: Mehr über uns
+    link: /about-us/
+    linkAriaLabel: More about us
 ---

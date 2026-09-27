@@ -78,3 +78,43 @@ test('marbas theme — preserves existing theme fields', () => {
 
   fs.rmSync(tmp, { recursive: true });
 });
+
+test('marbas theme — applies variant defaults to site.json, keeps hand-set variants and locale', async () => {
+  const { initProject } = await import('../../src/init/index.js');
+  const tmp = makeTmpDir();
+  const projectPath = path.join(tmp, 'site');
+  initProject({ projectPath });
+  const sitePath = path.join(projectPath, 'pages', '_data', 'site.json');
+  const siteJson = JSON.parse(fs.readFileSync(sitePath, 'utf8'));
+  siteJson.footer.variant = 'compact';   // hand-set, must survive
+  fs.writeFileSync(sitePath, JSON.stringify(siteJson, null, 2));
+
+  const result = spawnSync(process.execPath, [BIN, 'theme', projectPath, 'theme-atlas'], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /header\.variant=line/);
+
+  const after = JSON.parse(fs.readFileSync(sitePath, 'utf8'));
+  assert.equal(after.header.variant, 'line');
+  assert.equal(after.header.navigationVariant, 'underline');
+  assert.equal(after.footer.variant, 'compact');
+  assert.deepEqual(after.locale, siteJson.locale);
+
+  fs.rmSync(tmp, { recursive: true });
+});
+
+test('marbas theme — does not normalize or fill omitted sections of site.json', () => {
+  const tmp = makeTmpDir();
+  const projectPath = makeProject(tmp);
+  fs.mkdirSync(path.join(projectPath, 'pages', '_data'), { recursive: true });
+  const sitePath = path.join(projectPath, 'pages', '_data', 'site.json');
+  fs.writeFileSync(sitePath, JSON.stringify({ title: 'Acme', locale: { defaultLanguage: 'en', languages: [{ code: 'en', label: 'English' }] } }));
+
+  const result = spawnSync(process.execPath, [BIN, 'theme', projectPath, 'theme-atlas'], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  const after = JSON.parse(fs.readFileSync(sitePath, 'utf8'));
+  assert.deepEqual(Object.keys(after).sort(), ['footer', 'header', 'locale', 'title']);
+  assert.deepEqual(after.footer, { variant: 'contrast' });
+  assert.equal(after.header.variant, 'line');
+
+  fs.rmSync(tmp, { recursive: true });
+});
