@@ -125,6 +125,14 @@ Set `pageLanguage` in each page's front matter to match its language code. See [
 
 ---
 
+## Favicons
+
+Files in `<project>/_assets/favicons/` are copied to the root of the built site. New projects get a
+neutral `favicon.ico` and `apple-touch-icon.png` (referenced by the base layout) — replace them with
+your own files under the same names.
+
+---
+
 ## `logo`
 
 Controls the logo displayed in the header.

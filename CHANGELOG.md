@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `marbas-site init` options `--lang=<code>` (default language; writes `locale` to `site.json`,
+  non-German languages get an English starter: Home, About us, Imprint, Privacy) and
+  `--theme=<id>` (activates the theme incl. its header/nav/footer variants).
+- New projects get `_assets/favicons/favicon.ico` and `apple-touch-icon.png` (the base layout
+  links both; they were missing → 404).
+
+### Changed
+
+- `init --name` now also sets `site.json` title, `footer.companyName`, `footer.copyright` and
+  `seo.siteName` (previously the folder name).
+- New projects have `theme.languageSwitcher: false` (one language). Enable it when you add
+  languages to `locale`.
+- `marbas-site theme` applies the theme's variant defaults to `site.json` where the site still
+  uses `default` (same as the Marbas editor); hand-set variants are kept.
+- Project `.gitignore` covers `.cache/` and the generated `_webpack/lib-entry.js` /
+  `_webpack/custom-js-entry.js`.
+- German starter: no `"#"` links (cards without links, banner links to `/ueber-uns/`); legal
+  pages no longer repeat their title as a second heading.
+
 ### Fixed
 
 - Footer presets `columns`, `columns-social` and `columns-cta` now render `footer.contact`
