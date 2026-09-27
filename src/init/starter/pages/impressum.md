@@ -1,6 +1,7 @@
 ---
 layout: content_1col.njk
 title: Impressum
+seoDescription: Impressum — Anbieterkennzeichnung und rechtliche Angaben.
 pageLanguage: de
 templateEngineOverride: njk,md
 topNavigation: false

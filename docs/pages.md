@@ -11,6 +11,7 @@ pages/services/web.md   → /services/web/
 ```
 
 Folder nesting is unlimited. Every page is a standalone Markdown file — no routing config required.
+Pages in a language folder (`pages/en/…`) are language variants — see [Language variants](#language-variants).
 
 ## Front matter reference
 
@@ -20,10 +21,10 @@ All fields are optional unless marked **required**.
 
 | Field | Type | Default | Description |
 |---|---|---|---|
-| `layout` | string | `content_1col.njk` | Page layout template. See [Layouts](#layouts). |
+| `layout` | string | — | Page layout template. See [Layouts](#layouts). **Always set it** — there is no default: a page without `layout` is written as bare HTML without header, footer or CSS. |
 | `title` | string | — | Page title. Used in the `<title>` tag and navigation unless overridden. **Required** for meaningful output. |
-| `pageLanguage` | string | `de` | BCP 47 language code for this page (`de`, `en`, `fr`, …). |
-| `templateEngineOverride` | string | — | Must be set to `njk,md` on every page that uses components. Without this, Nunjucks shortcodes inside the layout will not execute. |
+| `pageLanguage` | string | — | BCP 47 language code for this page (`de`, `en`, `fr`, …). **Always set it** — the navigation menus only list pages whose `pageLanguage` matches the current page. Must match the language folder (see [Language variants](#language-variants)). |
+| `templateEngineOverride` | string | — | Set to `njk,md` (convention, written by the CMS and the starter). Controls how the **Markdown body** is processed: with it, Nunjucks; without it, Liquid. Placeholders render either way, because the layout is always Nunjucks. |
 | `permalink` | string | derived from file path | Override the output URL. Example: `/custom-path/`. |
 
 ### SEO
@@ -63,8 +64,8 @@ seoImage:
 
 | Field | Type | Default | Description |
 |---|---|---|---|
-| `topNavigation` | boolean | `false` | Include this page in the top navigation bar. |
-| `tags` | array | `[]` | Must include `menu` for the page to appear in the navigation. |
+| `topNavigation` | boolean | `false` | Marks the page as a menu page in the CMS editor. Has **no effect on the build by itself** — the menu is built from `tags: [menu]`. |
+| `tags` | array | `[]` | Must include `menu` for the page to appear in the top navigation, `footer` for the footer navigation. |
 | `navigation.key` | string | — | Unique key for this page in the navigation tree. Used as `parent` reference by child pages. |
 | `navigation.title` | string | value of `title` | Navigation label. Overrides the page title in menus. |
 | `navigation.parent` | string | — | `key` of the parent page. Creates a nested navigation item. |
@@ -74,7 +75,14 @@ seoImage:
 | `eleventyNavigation.parent` | string | — | Same as `navigation.parent`. |
 | `eleventyNavigation.order` | number | `0` | Same as `navigation.order`. |
 
-To show a page in the top navigation, set **all three**: `topNavigation: true`, `tags: [menu]`, and `eleventyNavigation`. The `navigation` and `eleventyNavigation` blocks hold the same values — `navigation` is used by the CMS editor, `eleventyNavigation` by the Eleventy Navigation plugin at build time.
+The header menu is built from all pages tagged `menu` whose `pageLanguage` equals the current page's language, arranged by `eleventyNavigation`. To show a page in the top navigation, set:
+
+1. `tags: [menu]` — puts the page into the menu collection
+2. `eleventyNavigation` with at least `key` — pages without a key are skipped
+3. `pageLanguage` — must match the language the menu is rendered for
+4. `topNavigation: true` and a `navigation` block with the **same values** as `eleventyNavigation` — the CMS editor reads and writes these; keep them mirrored so the CMS does not drop the `menu` tag on the next save
+
+The menu renders **two levels**: top-level entries and their direct children (dropdown). Deeper `parent` chains are not displayed.
 
 ```yaml
 topNavigation: true
@@ -116,6 +124,9 @@ The `layout` field controls which column structure is used and which placeholder
 | `content_2col_main_left.njk` | 2 (main left, aside right) | `Placeholder_Hero`, `Placeholder_Main`, `Placeholder_Aside_1` |
 | `content_2col_main_right.njk` | 2 (aside left, main right) | `Placeholder_Hero`, `Placeholder_Main`, `Placeholder_Aside_1` |
 | `content_3col_main_center.njk` | 3 (aside, main, aside) | `Placeholder_Hero`, `Placeholder_Main`, `Placeholder_Aside_1`, `Placeholder_Aside_2` |
+| `base.njk` | 1 | none — renders the Markdown body (see [Markdown body](#markdown-body)) |
+
+A placeholder that the chosen layout does not list is silently not rendered.
 
 ## Placeholders and components in front matter
 
@@ -175,39 +186,56 @@ Placeholder_Aside_1:
 The Markdown body is rendered as free text — it does not interact with placeholder components.
 ```
 
-> **Note:** `templateEngineOverride: njk,md` is required on every page that uses components — without it, the component placeholders will not render.
+> **Note:** Set `templateEngineOverride: njk,md` on every page (convention). Placeholders render without it, but the Markdown body would be processed with Liquid instead of Nunjucks.
 
-> **Note:** The `id` field on every component block must be unique per page. The `originalId` on images is used as the base filename for responsive image variants generated by the build.
+> **Note:** The `id` field on every component block must be unique per page. The `originalId` on images is used as the base filename for responsive image variants generated by the build — set it on every image and keep it unique per image file. Image `src` must be a local file with a leading `/` (project first, then the marbas-site package); remote URLs are not processed.
 
 ## Language variants
 
-To provide a page in multiple languages, create one file per language using a language-code suffix:
+Pages of the default language live at the root of `pages/`. Every other language gets its **own folder** named after the language code, mirroring the default-language structure:
 
 ```
-pages/about.md       → /about/        (default language, e.g. German)
-pages/about.en.md    → /en/about/     (English variant)
+pages/about.md            → /about/          (default language, e.g. German)
+pages/en/about.md         → /en/about/       (English variant)
+pages/en/services/web.md  → /en/services/web/
 ```
 
-Set `pageLanguage` in each file to the corresponding BCP 47 code:
+Set `pageLanguage` in each file to the code of its folder (root files: the default language):
 
 ```yaml
-# about.en.md
+# pages/en/about.md
 ---
 title: About us
 pageLanguage: en
 ---
 ```
 
-The available languages are configured in `pages/_data/site.json` under `i18n`.
+> A language suffix in the file name (`about.en.md`) is **not** a language variant — it is published as `/about.en/`.
+
+The available languages are configured in `pages/_data/site.json` under `locale` (see [Global Site Data → `locale`](site-data.md#locale)):
+
+```json
+"locale": {
+  "defaultLanguage": "de",
+  "languages": [
+    { "code": "de", "label": "Deutsch" },
+    { "code": "en", "label": "English" }
+  ]
+}
+```
+
+Navigation keys are per language: each language variant needs its own `navigation`/`eleventyNavigation` block, and `parent` refers to a key in the same language. Links in components (`/contact/`) automatically get the language prefix (`/en/contact/`) on non-default-language pages.
 
 ## Markdown body
 
-The Markdown body below the front matter is free-form content. It renders as plain HTML without any component wrappers. Use it for simple text pages (legal notices, error pages) that do not need the component system.
+The Markdown body below the front matter is free-form content. It is rendered **only with `layout: base.njk`** (header, footer and the page title as `<h1>`, no placeholders). The `content_*` layouts render placeholders only and ignore the body. Use it for simple text pages (legal notices, error pages) that do not need the component system — or use a `TextMedia` block with `imagePosition: none` in a `content_*` layout instead.
 
 ```markdown
 ---
 title: Privacy Policy
-layout: content_1col.njk
+layout: base.njk
+pageLanguage: de
+templateEngineOverride: njk,md
 ---
 
 ## Data we collect
@@ -216,6 +244,8 @@ We collect the minimum necessary data to operate this service…
 ```
 
 ## Complete example
+
+`pages/about.md` of a site whose default language is English (`locale.defaultLanguage: en`):
 
 ```yaml
 ---

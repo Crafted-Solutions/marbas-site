@@ -1,6 +1,7 @@
 ---
 layout: content_1col.njk
 title: Startseite
+seoDescription: Startseite — Überblick über Leistungen und Angebot.
 pageLanguage: de
 templateEngineOverride: njk,md
 topNavigation: true
@@ -70,8 +71,6 @@ Placeholder_Main:
         linkAsCta: false
   - componentType: Banner
     id: cta-banner
-    title: Bereit loszulegen?
-    text: Kontaktieren Sie uns oder erfahren Sie mehr über unser Angebot.
     image:
       src: /_assets/images/starter-feature-right.jpg
       alt: Banner-Bild

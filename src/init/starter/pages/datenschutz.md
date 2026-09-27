@@ -1,6 +1,7 @@
 ---
 layout: content_1col.njk
 title: Datenschutz
+seoDescription: Datenschutzerklärung — wie wir mit Ihren Daten umgehen.
 pageLanguage: de
 templateEngineOverride: njk,md
 topNavigation: false

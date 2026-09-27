@@ -13,37 +13,26 @@ my-project/
 
 ---
 
-## Using site data in components
+## Where site data is available
 
-Every component template has access to the full `site` object. Use dot-notation to reach any nested field:
+`site` (and every other file in `pages/_data/`) is available in **layouts, the header and the footer** — for example the footer preset reads `site.footer.contact`, the header reads `site.logo`. If you eject a layout or a header/footer slot, you can use it there:
 
 ```nunjucks
-{# Render contact details from site.json #}
-<p>{{ site.title }}</p>
+{# e.g. in an ejected _includes/footer/slots/contact.njk #}
 <p>{{ site.footer.contact.phone }}</p>
 <a href="mailto:{{ site.footer.contact.email }}">{{ site.footer.contact.email }}</a>
 ```
 
-This is useful for components that display brand information, contact details, or any other site-wide content without repeating it in every page's front matter.
+**Components do not receive `site`** or other global data — they are purely data-driven and render only from their own block fields (`data`). Pass contact details or other site-wide values into the block instead. See [Custom Components → Available variables](custom-components.md#available-variables).
 
 ### Additional global data files
 
-`site.json` is not the only global data source. Any JSON file placed in `pages/_data/` becomes a global variable available in all templates under the file's base name:
+`site.json` is not the only global data source. Any JSON file placed in `pages/_data/` becomes a global variable in layouts and partials under the file's base name:
 
 ```
 pages/_data/site.json    →  site
 pages/_data/team.json    →  team
 pages/_data/pricing.json →  pricing
-```
-
-```nunjucks
-{# TeamGrid.njk — data from pages/_data/team.json #}
-{% for member in team %}
-  <div class="c-team-card">
-    <img src="{{ member.photo }}" alt="{{ member.name }}">
-    <strong>{{ member.name }}</strong>
-  </div>
-{% endfor %}
 ```
 
 See the [Eleventy global data documentation](https://www.11ty.dev/docs/data-global/) for the full spec, including JavaScript data files and computed data.
@@ -61,31 +50,45 @@ See the [Eleventy global data documentation](https://www.11ty.dev/docs/data-glob
 
 ## Navigation
 
-The header navigation is **driven by page front matter**, not by a list in `site.json`. Any page with `topNavigation: true` in its front matter appears in the top navigation bar.
+The header navigation is **driven by page front matter**, not by a list in `site.json`. A page appears in the top navigation when it is tagged `menu`, has an `eleventyNavigation.key` and its `pageLanguage` matches the language being rendered. `topNavigation` and `navigation` are the CMS editor's mirror of the same data — keep them in sync:
 
 ```yaml
 ---
 title: About Us
+pageLanguage: en
 topNavigation: true
+tags: [menu]
 navigation:
   key: about
   title: About        # label shown in the nav (defaults to title)
   order: 2            # sort position — lower numbers appear first
+eleventyNavigation:
+  key: about
+  title: About
+  order: 2
 ---
 ```
 
-For nested navigation, use `parent` to reference the `key` of the parent page:
+For nested navigation (dropdown), add `parent` with the `key` of the parent page to **both** blocks. The menu shows two levels (entries and their direct children):
 
 ```yaml
 ---
 title: Web Design
+pageLanguage: en
 topNavigation: true
+tags: [menu]
 navigation:
   key: services-design
   parent: services    # key of the parent page
   order: 1
+eleventyNavigation:
+  key: services-design
+  parent: services
+  order: 1
 ---
 ```
+
+Pages tagged `footer` form the footer navigation (same language rule).
 
 See [Pages & Frontmatter](pages.md#navigation) for the full navigation field reference.
 
@@ -113,8 +116,10 @@ Enables multi-language support. When defined, the build pipeline activates langu
 
 With this config:
 - `pages/about.md` → `/about/` (default language, English)
-- `pages/about.de.md` → `/de/about/`
-- `pages/about.fr.md` → `/fr/about/`
+- `pages/de/about.md` → `/de/about/`
+- `pages/fr/about.md` → `/fr/about/`
+
+Language variants are **folders**, not file-name suffixes — `about.de.md` would be published as `/about.de/`.
 
 Set `pageLanguage` in each page's front matter to match its language code. See [Pages & Frontmatter — Language variants](pages.md#language-variants).
 

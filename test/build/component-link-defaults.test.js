@@ -74,6 +74,8 @@ test('component links: language defaults, aria-label, images without originalId'
     assert.equal((de.match(/>\s*weitere Informationen\s*</g) || []).length, 2, 'de: TextMedia + Cards default link text');
     assert.equal((en.match(/>\s*More information\s*</g) || []).length, 2, 'en: TextMedia + Cards default link text');
     assert.ok(!/>\s*More\s*</.test(de), 'old English "More" default is gone');
+    assert.ok(en.includes('href="/en/kontakt/"'), 'component links get the language prefix on en pages');
+    assert.ok(de.includes('href="/kontakt/"'), 'no prefix on default-language pages');
 
     assert.ok(de.includes('src="/_assets/images/Logo.svg"'), 'header uses the shipped default logo');
     assert.ok(fs.existsSync(path.join(out, '_assets', 'images', 'Logo.svg')), 'default logo is copied to the output');

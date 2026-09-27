@@ -1,6 +1,7 @@
 ---
 layout: content_1col.njk
 title: Über uns
+seoDescription: Über uns — lernen Sie unser Team, unsere Werte und unsere Mission kennen.
 pageLanguage: de
 templateEngineOverride: njk,md
 topNavigation: true
