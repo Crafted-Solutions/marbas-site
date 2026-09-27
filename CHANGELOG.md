@@ -7,7 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-09-27
+
+### Fixed
+
+- The build ignored `locale` from `pages/_data/site.json` and always assumed a German-only
+  site: the language switcher offered only German, `hreflang` listed German on English-only
+  sites, and — together with the component-link fix in 0.12.0 — component links on sites
+  whose default language is not German got a bogus language prefix (`/en/contact/` on an
+  English-only site). `tm.eleventy.js` now reads `site.locale`; a missing `defaultLanguage`
+  falls back to the first configured language.
+
 ## [0.12.0] - 2026-09-27
+
+*Not published to npm — superseded by 0.12.1 (regression for non-German default languages).*
 
 ### Added
 
