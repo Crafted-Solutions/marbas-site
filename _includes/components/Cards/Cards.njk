@@ -40,7 +40,7 @@
                 {% if card.link %}
                 <div class="c-component__actions">
                     <a href="{{ card.link | locale_url }}"{% if card.linkAsCta %} class="c-btn"{% endif %} {{ "aria-label" | htmlAttribute(card.linkAriaLabel) | safe }} {{ lang | getLangAttribute(card.linkCulture) }}>
-                        {{ card.linkText | default("More") | safe }}
+                        {{ (card.linkText or (lang | defaultLinkText)) | safe }}
                     </a>
                 </div>
                 {% endif %}

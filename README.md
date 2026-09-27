@@ -18,7 +18,7 @@ marbas-site adds a complete, opinionated layer on top:
 
 **A ready-to-use component library.** Eight built-in components cover the most common content patterns. Drop them into any page immediately. Build custom components by adding a single `.njk` file — no registration, no config.
 
-**18 production-ready themes.** Switch themes with one line in `site.json`. Every theme is a CSS custom properties file — eject it, tweak it, or build your own from scratch.
+**18 production-ready themes.** Switch themes with one line in `marbas-project.json` (or `marbas-site theme <project> <id>`). Every theme is a CSS custom properties file — eject it, tweak it, or build your own from scratch.
 
 **Multi-environment builds out of the box.** Define named environments (`development`, `staging`, `production`) with separate output directories and per-environment variables. No custom Eleventy config needed.
 

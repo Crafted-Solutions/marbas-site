@@ -2,7 +2,7 @@
    Data is now in flat format from YAML front matter
 #}
 
-{% set linkText = data.linkText | default("weitere Informationen") %}
+{% set linkText = data.linkText or (lang | defaultLinkText) %}
 {% set linkAsCta = data.linkAsCta | default(false) %}
 {% set styleClasses = data.classes | default('') | trim %}
 {% set themeClasses = styleClasses if styleClasses else 'c-component--main' %}
@@ -18,7 +18,7 @@
     </div>
     {% if data.link %}
     <div class="c-component__actions" {{ lang | getLangAttribute(data.linkTextCulture) }}>
-        <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %}>{{ linkText }}</a>
+        <a href="{{ data.link | locale_url }}"{% if linkAsCta %} class="c-btn"{% endif %} {{ "aria-label" | htmlAttribute(data.linkAriaLabel) | safe }}>{{ linkText }}</a>
     </div>
     {% endif %}
 </article>

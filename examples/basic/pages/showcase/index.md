@@ -4,6 +4,7 @@ title: ""
 seoTitle: "Komponenten Demo"
 seoDescription: "Beispielseite mit allen verfügbaren Komponenten."
 pageLanguage: de
+templateEngineOverride: njk,md
 permalink: /showcase/
 navigation:
   key: showcase

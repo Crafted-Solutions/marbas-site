@@ -1,6 +1,14 @@
 // lib/filters/html.js
 // SIMPLIFIED VERSION - Removed filters that are no longer needed with embedded data
 
+function escapeAttributeValue(value) {
+  return String(value)
+    .replace(/&(?!(?:[a-zA-Z]+|#\d+|#x[0-9a-fA-F]+);)/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 export function configureHtmlFilters(eleventyConfig) {
     // KEEP: htmlAttribute filter - used in component templates
     eleventyConfig.addFilter("htmlAttribute", (attributeName, attributeValue) => {
@@ -26,8 +34,8 @@ export function configureHtmlFilters(eleventyConfig) {
         return "";
       }
 
-      // Return formatted attribute
-      return `${attributeName}="${processedValue}"`;
+      // Return formatted attribute — value escaped, callers output it with `| safe`
+      return `${attributeName}="${escapeAttributeValue(processedValue)}"`;
     });
 
     // KEEP: stringify filter for debugging

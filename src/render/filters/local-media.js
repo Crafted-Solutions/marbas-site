@@ -1,6 +1,7 @@
 // lib/filters/local-media.js
 // Process local media files with eleventy-img
 
+import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import Image from "@11ty/eleventy-img";
@@ -13,6 +14,28 @@ function resolveImageSrc(src) {
   const libPath = path.join(getLibRoot(), src);
   if (fs.existsSync(libPath)) return libPath;
   return projectPath;
+}
+
+/**
+ * Output file name for one responsive image variant.
+ * Uses `originalId` when set; otherwise derives a stable, source-unique name so that
+ * images without `originalId` do not all collide as "undefined-<w>w.<fmt>".
+ * @param {Object} imageData - Image metadata from YAML ({ src, originalId })
+ * @param {number} width
+ * @param {string} format
+ * @returns {string}
+ */
+export function buildImageFilename(imageData, width, format) {
+  const originalId = String(imageData?.originalId ?? "").trim();
+  if (originalId) return `${originalId}-${width}w.${format}`;
+
+  const src = String(imageData?.src ?? "");
+  const base = path.basename(src, path.extname(src))
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "image";
+  const hash = crypto.createHash("sha1").update(src).digest("hex").slice(0, 8);
+  return `${base}-${hash}-${width}w.${format}`;
 }
 
 /**
@@ -67,9 +90,7 @@ export function configureLocalMediaFilters(eleventyConfig, publishFolder = "") {
             formats: ['webp', 'jpeg'],
             urlPath: "/images/",
             outputDir: outputDir,
-            filenameFormat: (id, src, width, format) => {
-                return `${imageData.originalId}-${width}w.${format}`;
-            }
+            filenameFormat: (id, src, width, format) => buildImageFilename(imageData, width, format)
         };
 
         try {

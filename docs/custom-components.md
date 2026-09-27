@@ -45,68 +45,60 @@ Every field declared in the page front matter block is available on `data`. Ther
 
 ---
 
-## Accessing global data
+## Available variables
 
-Component templates have access to all global Eleventy data alongside `data`:
+Components are **purely data-driven**: a template renders only from its own block, so the same block always produces the same output, whichever page it is placed on. These variables are available — and only these:
 
 | Variable | Type | Description |
 |---|---|---|
 | `data` | object | The component block's own front matter fields |
-| `site` | object | The full `pages/_data/site.json` object |
-| `page` | object | Current page data: `page.url`, `page.fileSlug`, `page.date`, … |
-| `env` | object | Build environment: `env.environment`, `env.isProd` |
+| `lang` | string | Language of the page (`pageLanguage`) |
+| `placeholder_sizes` | array | Column widths of the placeholder the block sits in — pass it to `processLocalImage` for correct responsive sizes |
+| `page` | object | Current page: `page.url`, `page.fileSlug`, `page.inputPath`, … |
 
-### Using `site` data in a component
+`site`, `env`, `collections`, other files in `pages/_data/` and page front matter fields such as `title` are **not** available inside components. This is intentional — it keeps components independent of the site configuration and free of name clashes with page fields.
 
-Any field from `site.json` is accessible. This is useful for contact details, branding, or site-wide configuration:
+### Site-wide data such as contact details
+
+Pass everything a component needs as block fields:
+
+```yaml
+Placeholder_Aside_1:
+  - componentType: ContactCard
+    id: contact
+    phone: "+49 30 123456"
+    email: hello@example.com
+    address:
+      street: Musterstraße 1
+      zip: "10115"
+      city: Berlin
+```
 
 ```nunjucks
-{# ContactCard.njk — renders data from site.json #}
+{# ContactCard.njk #}
 <div class="c-contact-card">
-  <p>{{ site.footer.contact.phone }}</p>
-  <p><a href="mailto:{{ site.footer.contact.email }}">{{ site.footer.contact.email }}</a></p>
+  <p><a href="tel:{{ data.phone | replace(' ', '') }}">{{ data.phone }}</a></p>
+  <p><a href="mailto:{{ data.email }}">{{ data.email }}</a></p>
   <address>
-    {{ site.footer.contact.address.street }}<br>
-    {{ site.footer.contact.address.zip }} {{ site.footer.contact.address.city }}
+    {{ data.address.street }}<br>
+    {{ data.address.zip }} {{ data.address.city }}
   </address>
 </div>
 ```
 
-### Using `page` and `env`
+Global data files (`pages/_data/*.json`, including `site.json`) remain available in **layouts, header and footer** — for example the footer's contact block reads `site.footer.contact`.
 
-```nunjucks
-{# Only render in production #}
-{% if env.isProd %}
-  <script async src="https://analytics.example.com/a.js"></script>
-{% endif %}
+### Helpers you can use
 
-{# Link back to the current page's canonical URL #}
-<link rel="canonical" href="{{ page.url | url }}">
-```
+| Helper | Use |
+|---|---|
+| `{{ data.link \| locale_url }}` | Adds the language prefix to internal links on non-default-language pages |
+| `{{ data.linkText or (lang \| defaultLinkText) }}` | Language-dependent fallback link label (`weitere Informationen` / `More information`) |
+| `{% set img = data.image \| processLocalImage({"sizes": [12,12,12,6,6,6], "placeholder_sizes": placeholder_sizes}) %}{{ img.html \| safe }}` | Responsive image processing for a local image (`src`, `alt`, `originalId`) |
+| `{{ "aria-label" \| htmlAttribute(data.ariaLabel) \| safe }}` | Renders an escaped attribute only when the value is set |
+| `{{ lang \| getLangAttribute(data.titleCulture) }}` | `lang="…"` when a text differs from the page language |
 
-### Additional global data files
-
-Beyond `site.json`, you can place any JSON file in `pages/_data/` and it becomes a global variable in all templates — including component templates. The variable name is the file name without the extension:
-
-```
-pages/_data/team.json    →  available as  team
-pages/_data/pricing.json →  available as  pricing
-```
-
-```nunjucks
-{# TeamGrid.njk — uses pages/_data/team.json #}
-<ul class="c-team-grid">
-  {% for member in team %}
-    <li class="c-team-grid__item">
-      <img src="{{ member.photo }}" alt="{{ member.name }}">
-      <strong>{{ member.name }}</strong>
-      <span>{{ member.role }}</span>
-    </li>
-  {% endfor %}
-</ul>
-```
-
-See the [Eleventy global data documentation](https://www.11ty.dev/docs/data-global/) for the full spec.
+To pick up the theme's style variants, reuse the built-in markup: a root element with `c-component` plus the variant from `data.classes` (default `c-component--main`), headings with `c-component__headline`, rich text in `c-richtext`, buttons with `c-btn`.
 
 ---
 
