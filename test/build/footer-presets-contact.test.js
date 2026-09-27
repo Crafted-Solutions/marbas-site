@@ -42,6 +42,9 @@ test('all footer presets render contact with a clean tel: link', { timeout: 600_
       assert.match(html, /<span>Musterstr\. 1<\/span><br><span>10115 Berlin<\/span>/, `${preset}: address lines separated`);
       assert.ok(html.includes('href="tel:03047378115"'), `${preset}: clean tel: link`);
       assert.ok(html.includes('href="mailto:praxis@example.com"'), `${preset}: mailto link`);
+      if (['columns-social', 'editorial'].includes(preset)) {
+        assert.match(html, /c-footer-social__link--instagram"[\s\S]*?<svg viewBox="0 0 24 24"/, `${preset}: social link has an icon`);
+      }
     }
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });

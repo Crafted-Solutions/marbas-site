@@ -281,7 +281,7 @@ Up to eight social media links. The `platform` value is used to render the match
 
 | Field | Type | Description |
 |---|---|---|
-| `platform` | string | Platform key, e.g. `"twitter"`, `"instagram"`, `"linkedin"`, `"github"`, `"facebook"`, `"youtube"`, `"tiktok"`, `"xing"` |
+| `platform` | string | Platform key with a built-in icon: `"x"` (alias `"twitter"`), `"instagram"`, `"linkedin"`, `"github"`, `"facebook"`, `"youtube"`, `"tiktok"`, `"xing"`. Other values get a neutral link icon. |
 | `label` | string | Accessible label |
 | `href` | string | Profile URL |
 | `ariaLabel` | string | Screen-reader label (optional, falls back to `label`) |
