@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Footer presets `columns`, `columns-social` and `columns-cta` now render `footer.contact`
+  (it was silently dropped). Sites using these presets with contact data will show it after
+  updating.
+- Footer address lines are separated (street, postcode/city, country were run together).
+- `tel:` links keep only `+` and digits (new filter `telHref`): `030 / 4737 8115` no longer
+  produces an invalid `tel:030/47378115`; the `(0)` trunk prefix is dropped.
+
 ## [0.12.1] - 2026-09-27
 
 ### Fixed

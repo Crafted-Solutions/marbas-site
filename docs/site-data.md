@@ -310,11 +310,24 @@ Links in the thin bar at the very bottom of the footer (imprint, privacy, etc.).
 
 | Preset | Description |
 |---|---|
-| `simple` | Single row with company name, optional contact details, and bottom links. |
-| `columns` | Multi-column layout: contact block on the left, link groups in the remaining columns. |
-| `columns-social` | Like `columns` with a social icon row added. |
-| `columns-cta` | Like `columns` with a CTA panel replacing one column. |
-| `editorial` | Rich layout with intro text, link groups, CTA block, social icons, and a full bottom bar. |
+| `simple` | Company name/intro and contact details in one row, plus bottom links. |
+| `columns` | Brand column (company name, intro, contact) next to the link groups. |
+| `columns-social` | Like `columns` with social icons in the brand column. |
+| `columns-cta` | Like `columns` with a CTA panel above the columns. |
+| `editorial` | Rich layout: intro, social icons, contact, link groups and a full bottom bar. |
+
+Which `footer` data each preset shows:
+
+| Preset | intro | contact | groups | socialLinks | ctaBlock | bottomLinks |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|
+| `simple` | ✓ | ✓ | – | – | – | ✓ |
+| `columns` | ✓ | ✓ | ✓ | – | – | ✓ |
+| `columns-social` | ✓ | ✓ | ✓ | ✓ | – | ✓ |
+| `columns-cta` | ✓ | ✓ | ✓ | – | ✓ | ✓ |
+| `editorial` | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+Phone numbers are shown as written; the `tel:` link keeps only `+` and digits (`030 / 4737 8115` →
+`tel:03047378115`, `+49 (0)30 …` → `tel:+4930…`).
 
 ---
 

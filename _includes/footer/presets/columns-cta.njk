@@ -2,7 +2,10 @@
 <footer role="contentinfo" class="c-footer c-footer--columns-cta{% if _variant and _variant != 'default' %} c-footer--{{ _variant }}{% endif %}">
   {% include "footer/slots/cta-block.njk" %}
   <div class="c-container c-footer__inner">
-    {% include "footer/slots/intro.njk" %}
+    <div class="c-footer__brand">
+      {% include "footer/slots/intro.njk" %}
+      {% include "footer/slots/contact.njk" %}
+    </div>
     {% include "footer/slots/groups.njk" %}
   </div>
   {% include "footer/slots/bottom.njk" %}
