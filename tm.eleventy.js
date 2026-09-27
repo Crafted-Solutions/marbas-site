@@ -48,9 +48,13 @@ export default function (eleventyConfig) {
   let localeConfig = null;
   if (configOk) {
     try {
-      const siteSettings = readSiteSettings(projectRoot, projectConfig);
-      if (siteSettings?.locale?.languages?.length) {
-        localeConfig = siteSettings.locale;
+      // readSiteSettings() returns { ok, site } — the locale lives in site.locale.
+      const { ok, site } = readSiteSettings(projectRoot, projectConfig) || {};
+      if (ok && site?.locale?.languages?.length) {
+        localeConfig = {
+          ...site.locale,
+          defaultLanguage: site.locale.defaultLanguage || site.locale.languages[0].code
+        };
       }
     } catch { /* ignore — locale is optional */ }
   }
