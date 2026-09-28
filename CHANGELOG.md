@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-09-28
+
 ### Added
 
 - Built-in themes ship their web fonts (self-hosted woff2, latin + latin-ext, SIL Open Font License;
