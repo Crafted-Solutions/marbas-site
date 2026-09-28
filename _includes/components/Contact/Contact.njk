@@ -1,0 +1,33 @@
+{#
+  Contact (Base v2) — Stammdaten als Zeilen + Öffnungszeiten. Daten als Blockfelder (Komponenten sehen kein site.*).
+  Felder: id, label, tone, headline, text (html), details[] {term, value (html)}, notes (html),
+          hoursTitle, hours[] {day, time}, link, linkText.
+#}
+<section id="{{ data.id }}" class="c-v2 c-v2--{{ data.tone or 'paper' }} c-v2-section c-v2-contact-section">
+  <div class="c-v2__wrap c-v2__frame">
+    {% if data.label %}<p class="c-v2__label">{{ data.label }}</p>{% else %}<span></span>{% endif %}
+    <div>
+      {% if data.headline or data.text %}
+      <div class="c-v2__intro">
+        {% if data.headline %}<h2 class="c-v2__title">{{ data.headline | safe }}</h2>{% endif %}
+        {% if data.text %}<div class="c-v2__muted">{{ data.text | safe }}</div>{% endif %}
+      </div>
+      {% endif %}
+      <div class="c-v2-contact">
+        <div>
+          {% if data.details and (data.details | length) %}
+          <dl class="c-v2-facts">{% for d in data.details %}<div><dt>{{ d.term }}</dt><dd>{{ d.value | safe }}</dd></div>{% endfor %}</dl>
+          {% endif %}
+          {% if data.notes %}<div class="c-v2__small c-v2-contact__notes">{{ data.notes | safe }}</div>{% endif %}
+        </div>
+        <div>
+          {% if data.hoursTitle %}<h3 class="c-v2-contact__h3">{{ data.hoursTitle }}</h3>{% endif %}
+          {% if data.hours and (data.hours | length) %}
+          <dl class="c-v2-hours">{% for h in data.hours %}<div><dt>{{ h.day }}</dt><dd>{{ h.time }}</dd></div>{% endfor %}</dl>
+          {% endif %}
+          {% if data.link %}<a class="c-v2-link" href="{{ data.link | locale_url }}">{{ data.linkText or (lang | defaultLinkText) }}</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

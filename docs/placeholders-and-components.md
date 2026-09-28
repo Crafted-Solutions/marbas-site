@@ -377,6 +377,46 @@ An embedded HTML5 video player with optional headline.
 
 ---
 
+## Base v2 components
+
+Five building blocks for the Base v2 look (no boxes, hairlines, full-width bands, display typography — see
+[themes.md](themes.md#theme-families-and-palettes-base-v2)). They work in every theme, but are designed for v2 themes;
+in classic themes their bands stay inside the boxed page. Common fields:
+
+| Field | Meaning |
+|---|---|
+| `label` | Section label in the left rail (e.g. `01 / Orientierung`) |
+| `tone` | Band colour: `paper` (default), `soft` (accent tint), `white`, `alert` (warning tint) |
+
+### Intro
+
+Editorial opening block — **provides the page `<h1>`** (like Hero); only in `Placeholder_Hero`.
+Fields: `label`, `headline` (h1, may contain `<br>`), `lead`, `text` (html), `links[] {label, href}` (text links with ↗),
+`image {src, alt, originalId}`, `tone`.
+
+### Notice
+
+Slim notice band. Fields: `label`, `text` (html), `meta` (right-aligned, e.g. a date), `tone`.
+
+### LinkList
+
+Numbered rows instead of cards (number, title, text, arrow; the whole row is the link).
+Fields: `label`, `headline`, `text` (html), `items[] {title, text, href, tone}` (`tone: alert` highlights a row), `tone`.
+
+### Split
+
+Two columns. `layout: text` (default): headline, text and link on the left, list or big numbers on the right;
+`layout: title`: headline on the left, text on the right.
+Fields: `label`, `layout`, `headline`, `text` (html), `mutedText` (html), `note` (side note with a line), `link`, `linkText`,
+`list {title, items[], note}` (items as strings or `{value}`), `numbers[] {label, detail, value, href}` (without `href` a
+`tel:` link is built from `value`), `tone`.
+
+### Contact
+
+Contact data and opening hours as rows. Components do not see `site.*` — enter the data in the block.
+Fields: `label`, `headline`, `text` (html), `details[] {term, value (html)}`, `notes` (html), `hoursTitle`,
+`hours[] {day, time}`, `link`, `linkText`, `tone`.
+
 ## Custom components
 
 You can add your own components alongside the built-in ones. A component is a Nunjucks template in `_components/<Name>/<Name>.njk` — no registration required. Components can also carry their own CSS, JavaScript, server-side PHP files, and build hooks.

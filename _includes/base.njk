@@ -32,7 +32,7 @@
       {% set hasHeroInPage = false %}
       {% for _placeholder in [Placeholder_Hero, Placeholder_Main, Placeholder_Aside_1, Placeholder_Aside_2] %}
         {% for item in (_placeholder or []) %}
-          {% if item.componentType == "Hero" or item.providesH1 %}
+          {% if item.componentType == "Hero" or (item.componentType == "Intro" and item.headline) or item.providesH1 %}
             {% set hasHeroInPage = true %}
           {% endif %}
         {% endfor %}

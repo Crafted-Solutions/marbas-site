@@ -1,0 +1,41 @@
+{#
+  Split (Base v2) — zwei Spalten: links Überschrift/Text/Link, rechts Liste, Zahlen oder (layout: title) der Text.
+  Felder: id, label, tone, layout ("text" | "title"), headline, text (html), mutedText (html), note, link, linkText,
+          list {title, items[], note}, numbers[] {label, detail, value, href}.
+#}
+{% set titleLeft = data.layout == 'title' %}
+{% macro copy() %}
+  {% if data.text %}<div class="c-v2__text">{{ data.text | safe }}</div>{% endif %}
+  {% if data.mutedText %}<div class="c-v2__text c-v2__muted">{{ data.mutedText | safe }}</div>{% endif %}
+  {% if data.note %}<p class="c-v2__note">{{ data.note }}</p>{% endif %}
+  {% if data.link %}<a class="c-v2-link" href="{{ data.link | locale_url }}">{{ data.linkText or (lang | defaultLinkText) }}</a>{% endif %}
+{% endmacro %}
+<section id="{{ data.id }}" class="c-v2 c-v2--{{ data.tone or 'paper' }} c-v2-section c-v2-split-section">
+  <div class="c-v2__wrap c-v2__frame">
+    {% if data.label %}<p class="c-v2__label">{{ data.label }}</p>{% else %}<span></span>{% endif %}
+    <div class="c-v2-split{% if titleLeft %} c-v2-split--title{% endif %}">
+      <div class="c-v2-split__main">
+        {% if data.headline %}<h2 class="c-v2__title">{{ data.headline | safe }}</h2>{% endif %}
+        {% if not titleLeft %}{{ copy() }}{% endif %}
+      </div>
+      <div class="c-v2-split__aside">
+        {% if titleLeft %}{{ copy() }}{% endif %}
+        {% if data.list and data.list.items and (data.list.items | length) %}
+          {% if data.list.title %}<p class="c-v2__label c-v2__label--inline">{{ data.list.title }}</p>{% endif %}
+          <ul class="c-v2-dashlist">{% for li in data.list.items %}<li>{{ li.value if (li.value is defined) else li }}</li>{% endfor %}</ul>
+          {% if data.list.note %}<p class="c-v2__small">{{ data.list.note }}</p>{% endif %}
+        {% endif %}
+        {% if data.numbers and (data.numbers | length) %}
+          <div class="c-v2-numbers">
+            {% for n in data.numbers %}
+            {% set tel = n.value | telHref %}
+            {% set numHref = n.href or (('tel:' + tel) if tel else '') %}
+            {% set numTag = 'a' if numHref else 'div' %}
+            <{{ numTag }} class="c-v2-numbers__item"{% if numHref %} href="{{ numHref }}"{% endif %}><span><strong class="c-v2-numbers__label">{{ n.label }}</strong>{% if n.detail %}<br>{{ n.detail }}{% endif %}</span><strong class="c-v2-numbers__value">{{ n.value }}</strong></{{ numTag }}>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
