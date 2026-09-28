@@ -5,7 +5,7 @@
    Stil        : Warme Neutrals, Editorial-Serif, aspirationell
    Schriften   : Cormorant Garamond (Headlines), Jost (Body/UI)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #a07048 – Kontrast auf #fefcf9 4.55:1 (WCAG AA ✓)
+   Akzentfarbe : #7a5a32 – Kontrast auf #f8f4ee 5.75:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 15.4:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -71,10 +71,10 @@
   --t-surface: #f8f4ee;
 
   --t-text:    #2a2420;   /* Warmton Near-Black – 15.4:1 auf #fefcf9 */
-  --t-muted:   #7a6a5a;   /* Warmes Graubraun – 4.6:1 auf #fefcf9 */
+  --t-muted:   #736353;   /* angepasst (Task 120, vorher #7a6a5a): 5.27:1 auf #f8f4ee – AA ✓ */
 
   --t-border:  #ddd0be;
-  --t-accent:  #a07048;   /* Sienna – 4.55:1 auf #fefcf9 – AA ✓ */
+  --t-accent:  #7a5a32;   /* angepasst (Task 120, vorher #a07048): 5.75:1 auf #f8f4ee – AA ✓ */
 
   --t-radius-sm: 0;
   --t-radius-md: 0.125rem;
@@ -88,7 +88,7 @@
   --t-text-invert:    #f8f4ee;
   --t-muted-invert:   #c4a888;
   --t-border-invert:  #4a3c30;
-  --t-accent-invert:  #d4a878;   /* helles Sienna auf Dunkel */
+  --t-accent-invert:  #d8ac7c;   /* angepasst (Task 120, vorher #d4a878): 7.37:1 auf #2a2420 – AA ✓ */
 
   /* Chrome tokens – page chrome, announcement, footer helpers */
   --t-announcement-bg: color-mix(in oklab, var(--t-accent) 42%, var(--t-surface-invert));
@@ -183,5 +183,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

@@ -144,6 +144,9 @@
     --t-muted:   #a8b2c1;
     --t-border:  #393939;
     --t-accent:  #78a9ff;   /* IBM Blue 40 – 5.5:1 auf #262626 – AA ✓ */
+    --t-on-accent: #161616;   /* Button-Text auf Akzent 7.68:1 */
+    /* Dark Mode: Akzent ist hell → Announcement-Mix dunkler, sonst Link < 4.5:1 */
+    --t-announcement-bg: color-mix(in oklab, var(--t-accent) 30%, var(--t-surface-invert));
 
     --t-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
     --t-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
@@ -188,5 +191,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

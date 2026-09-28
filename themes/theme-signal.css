@@ -6,7 +6,7 @@
    Stil        : Dark-First, Violett, Monospace-Ästhetik, fokussiert
    Schriften   : JetBrains Mono (Kicker/Headlines), system-ui (Body)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #8b5cf6 – Kontrast auf #161a24 5.7:1 (WCAG AA ✓)
+   Akzentfarbe : #a084ff – Kontrast auf #1e2432 5.35:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 13.2:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -39,10 +39,11 @@
   --t-surface: #1e2432;
 
   --t-text:    #e8eaf0;   /* 13.2:1 auf #161a24 – AAA ✓ */
-  --t-muted:   #8896a8;   /* 5.4:1 auf #161a24 – AA ✓ */
+  --t-muted:   #8c9aac;   /* angepasst (Task 120, vorher #8896a8): 5.42:1 auf #1e2432 – AA ✓ */
 
   --t-border:  #2c3448;
-  --t-accent:  #8b5cf6;   /* Violet-500 – 5.7:1 auf #161a24 – AA ✓ */
+  --t-accent:  #a084ff;   /* angepasst (Task 120, vorher #8b5cf6): 5.35:1 auf #1e2432 – AA ✓ */
+  --t-on-accent: #161a24;   /* Button-Text auf Akzent 6.00:1 */
 
   --t-radius-sm: 0.25rem;
   --t-radius-md: 0.375rem;
@@ -146,5 +147,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: #ffffff;   /* dunkler Link auf heller Invert-Fläche → weißer Button-Text */
   --cmp-shadow:  var(--t-shadow-sm);
 }
