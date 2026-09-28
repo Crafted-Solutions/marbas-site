@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-28T19:27:52.788Z */
+/* Build time: 2026-09-28T19:49:37.809Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2641,8 +2641,9 @@ hr {
 :where(.c-page--v2) a { color: var(--p-accent); text-underline-offset: .22em; text-decoration-thickness: 1px; }
 :where(.c-page--v2) a:hover { text-decoration-thickness: 2px; }
 /* Richtext: Absätze mit Abstand (classic setzt p auf 0) */
-.c-page--v2 .c-v2 :where(p) { margin: 0 0 1rem; }
-.c-page--v2 .c-v2 :where(p):last-child { margin-bottom: 0; }
+/* :where() → Spezifität 0,0,1: Abstände der Bausteine (.c-v2__note, .c-v2__label …) gewinnen */
+:where(.c-page--v2 .c-v2) p { margin: 0 0 1rem; }
+:where(.c-page--v2 .c-v2) p:last-child { margin-bottom: 0; }
 
 /* v2/layout */
 /* Base v2 — Seite nicht boxen: Bänder laufen über die volle Breite, Inhalte bleiben im Maß.
@@ -2706,4 +2707,104 @@ hr {
 }
 @media (prefers-reduced-motion: reduce) {
   .c-v2-link::after { transition: none; }
+}
+
+/* v2/components */
+/* ============================================================
+   Base v2 — Bausteine Intro, Notice, LinkList, Split, Contact (Standardform = Editorial).
+   Farben nur aus der Palette (--p-*); ein v2-Theme passt Form-Tokens an, nicht diese Regeln.
+   ============================================================ */
+
+/* Intro — Editorial-Einstieg */
+.c-v2-intro { padding: clamp(3.2rem, 6.2vw, 6.7rem) 0 4.3rem; }
+.c-v2-intro__grid { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: center; }
+.c-v2-intro__grid--text { grid-template-columns: minmax(0, 1fr); max-width: 52rem; }
+.c-v2-intro .c-v2__label { margin: 0 0 1.9rem; }
+.c-v2-intro__title { font-size: var(--v2-display-1); letter-spacing: -.073em; margin: 0 0 1.6rem; }
+.c-v2-intro__lead { max-width: 35rem; font-size: clamp(1.12rem, 1.7vw, 1.35rem); line-height: 1.48; letter-spacing: -.015em; }
+.c-v2-intro__minor { max-width: 33rem; margin: 1.6rem 0 1.1rem; color: var(--p-muted); font-size: .91rem; }
+.c-v2-intro__media { margin: 0; }
+.c-v2-intro__media img, .c-v2-intro__media picture { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; max-height: 400px; object-fit: cover; }
+
+/* Notice — Hinweisband */
+.c-v2-notice__inner { padding-block: 1.6rem; border-top: 1px solid var(--p-line); }
+.c-v2-notice .c-v2__label { margin-top: .45rem; }
+.c-v2-notice__copy { display: flex; gap: 1rem 3rem; align-items: baseline; justify-content: space-between; font-size: .98rem; }
+.c-v2-notice__text { max-width: 45rem; }
+.c-v2-notice__meta { color: var(--p-muted); font-size: .78rem; white-space: nowrap; }
+
+/* LinkList — Zeilen statt Karten */
+.c-v2-rows { border-top: 1px solid var(--p-line); }
+.c-v2-rows__row {
+  display: grid; grid-template-columns: 3.2rem minmax(0, .95fr) minmax(0, 1fr) 1.4rem; gap: 1.2rem; align-items: baseline;
+  padding: 1.55rem .4rem 1.65rem 0; border-bottom: 1px solid var(--p-line); color: var(--p-ink); text-decoration: none;
+  transition: background .18s ease, padding .18s ease;
+}
+a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; }
+.c-v2-rows__index { color: var(--p-accent); font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.c-v2-rows__title { margin: 0; font-size: var(--v2-display-3); letter-spacing: -.035em; }
+.c-v2-rows__text { margin: 0; color: var(--p-muted); font-size: .91rem; line-height: 1.48; }
+.c-v2-rows__arrow { color: var(--p-accent); font-size: 1.3rem; line-height: 1; }
+.c-v2-rows__row--alert .c-v2-rows__title,
+.c-v2-rows__row--alert .c-v2-rows__index,
+.c-v2-rows__row--alert .c-v2-rows__arrow { color: var(--p-alert); }
+
+/* Split — Text links, Liste/Zahlen rechts */
+.c-v2-split { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(2.5rem, 7vw, 7.5rem); }
+.c-v2-split--title { grid-template-columns: .9fr 1.1fr; align-items: start; }
+.c-v2-split--title .c-v2__title { max-width: 9ch; }
+.c-v2-split--title .c-v2__text { font-size: 1.07rem; padding-top: .5rem; }
+.c-v2__text :where(p) { max-width: 30rem; }
+.c-v2-split--title .c-v2__text :where(p) { max-width: 36rem; }
+.c-v2__text + .c-v2__text { margin-top: 1rem; }
+.c-v2__note { margin: 1.7rem 0 1.5rem; padding-left: 1rem; border-left: 2px solid var(--p-accent); color: var(--p-muted); font-size: .88rem; }
+.c-v2--alert .c-v2__note { border-left-color: var(--p-alert); }
+.c-v2__label--inline { margin: .35rem 0 1.1rem; }
+.c-v2-dashlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid color-mix(in oklab, var(--p-accent) 30%, var(--p-accent-soft)); }
+.c-v2-dashlist li {
+  display: grid; grid-template-columns: 2rem 1fr; gap: .7rem; padding: .79rem 0; font-size: .96rem; line-height: 1.45;
+  border-bottom: 1px solid color-mix(in oklab, var(--p-accent) 30%, var(--p-accent-soft));
+}
+.c-v2-dashlist li::before { content: "—"; color: var(--p-accent); }
+.c-v2-numbers { border-top: 1px solid color-mix(in oklab, var(--p-alert) 30%, var(--p-alert-soft)); }
+.c-v2-numbers__item {
+  display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding: 1.3rem 0; text-decoration: none; color: var(--p-alert);
+  border-bottom: 1px solid color-mix(in oklab, var(--p-alert) 30%, var(--p-alert-soft));
+}
+.c-v2-numbers span { max-width: 12rem; color: var(--p-ink); font-size: .92rem; line-height: 1.35; }
+.c-v2-numbers__label { font-weight: 400; }
+.c-v2-numbers__value { font-size: clamp(2.1rem, 4vw, 3.2rem); line-height: 1; font-weight: 500; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+
+/* Contact — Daten als Zeilen */
+.c-v2-contact { display: grid; grid-template-columns: .88fr 1.12fr; gap: clamp(3rem, 8vw, 9rem); }
+.c-v2-facts { margin: 0; }
+.c-v2-facts > div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: .83rem 0; border-top: 1px solid var(--p-line); }
+.c-v2-facts > div:last-child { border-bottom: 1px solid var(--p-line); }
+.c-v2-facts dt { color: var(--p-muted); font-size: .8rem; }
+.c-v2-facts dd { margin: 0; line-height: 1.42; }
+.c-v2-contact__notes :where(p) { max-width: 31rem; margin-top: 1.3rem; }
+.c-v2-contact__h3 { margin: .08rem 0 1.25rem; font-size: 1.35rem; }
+.c-v2-hours { margin: 0; border-top: 1px solid var(--p-line); }
+.c-v2-hours div { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--p-line); }
+.c-v2-hours dt { font-weight: 600; }
+.c-v2-hours dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* In classic-Themes (boxed Seite) die Bänder auf die Containerbreite begrenzen und die Innenbreite nicht doppelt einrücken */
+.c-page--classic .c-v2::before { left: 0; width: 100%; margin-left: 0; }
+.c-page--classic .c-v2__wrap { width: 100%; }
+
+@media (max-width: 1050px) {
+  .c-v2-rows__row { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1fr) 1.1rem; gap: .9rem; }
+}
+@media (max-width: 760px) {
+  .c-v2-intro { padding: 3.5rem 0 3rem; }
+  .c-v2-intro__grid, .c-v2-split, .c-v2-contact { grid-template-columns: 1fr; gap: 2.5rem; }
+  .c-v2-notice__copy { display: block; }
+  .c-v2-notice__meta { display: block; margin-top: .35rem; }
+  .c-v2-rows__row { grid-template-columns: 2rem 1fr 1.1rem; gap: .7rem; padding-block: 1.35rem; }
+  .c-v2-rows__text { grid-column: 2; grid-row: 2; }
+  .c-v2-rows__arrow { grid-column: 3; grid-row: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-v2-rows__row { transition: none; }
 }

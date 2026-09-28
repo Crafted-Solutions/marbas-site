@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Palettes:** v2 themes define 8 named colours (`--p-*`) and optional presets; a project picks a preset
   (`theme.palette`) or overrides single colours (`theme.colors`) in `marbas-project.json`. Invalid values are rejected,
   weak contrasts are reported by the build and `doctor`.
+- **Base v2 building blocks** (built-ins): `Intro` (editorial opening, provides the `<h1>`), `Notice`, `LinkList`
+  (numbered rows), `Split` (text + list or big numbers), `Contact` (contact data + opening hours) — all with the section
+  frame fields `label` and `tone`. Also usable in classic themes (bands stay inside the boxed page).
 
 ### Fixed
 
