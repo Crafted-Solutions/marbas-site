@@ -1,6 +1,8 @@
 /**
  * Smoke test (Task 113): built-in blocks render their id as HTML id (anchors), and a custom
  * hero with providesH1: true suppresses the page-title <h1>.
+ * Task 124: the page-title <h1> uses .c-page-title (h1 size, not the component h2 size), and
+ * Cards columns are clamped to the 1–4 grid classes the base provides.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -64,6 +66,20 @@ Placeholder_Hero:
 ---
 `;
 
+const cardsPage = (columns) => `---
+layout: content_1col.njk
+title: Karten ${columns}
+pageLanguage: de
+templateEngineOverride: njk,md
+Placeholder_Main:
+  - componentType: Cards
+    id: cards-${columns}
+    columns: ${columns}
+    cards:
+      - headline: A
+---
+`;
+
 test('anchors on built-ins and providesH1 for custom heroes', { timeout: 360_000 }, () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-anchors-'));
   const projectPath = path.join(tmp, 'site');
@@ -75,6 +91,7 @@ test('anchors on built-ins and providesH1 for custom heroes', { timeout: 360_000
     fs.writeFileSync(path.join(projectPath, 'pages', 'blocks.md'), blocksPage);
     fs.writeFileSync(path.join(projectPath, 'pages', 'flagged.md'), customHeroPage(true));
     fs.writeFileSync(path.join(projectPath, 'pages', 'unflagged.md'), customHeroPage(false));
+    for (const columns of [4, 9]) fs.writeFileSync(path.join(projectPath, 'pages', `cards-${columns}.md`), cardsPage(columns));
 
     const build = run(['build', projectPath, '--env=development']);
     assert.equal(build.status, 0, `build failed:\n${build.stdout}\n${build.stderr}`);
@@ -93,6 +110,13 @@ test('anchors on built-ins and providesH1 for custom heroes', { timeout: 360_000
 
     const unflagged = read('unflagged');
     assert.equal((unflagged.match(/<h1\b/g) || []).length, 2, 'without the flag the page title h1 is added (previous behaviour)');
+    assert.ok(unflagged.includes('<h1 class="c-page-title">Seitentitel</h1>'), 'page title h1 uses .c-page-title');
+
+    assert.match(read('cards-4'), /c-cols-lg-4/, 'Cards columns: 4 → 4-column class');
+    assert.match(read('cards-9'), /c-cols-lg-4/, 'Cards columns: 9 → clamped to 4');
+    const css = fs.readFileSync(path.join(out, '_assets', 'css', 'base.full.css'), 'utf8');
+    assert.match(css, /\.c-page-title\s*\{[^}]*--text-4/, 'base defines .c-page-title with h1 size');
+    assert.match(css, /\.c-cols-lg-4\s*\{/, 'base defines the 4-column grid');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
