@@ -5,7 +5,7 @@
    Stil        : Klinisch sauber, beruhigendes Cyan-Teal, zugänglich
    Schriften   : Nunito Sans (körperlich, nicht steril)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #0891b2 – Kontrast auf #f7fbfd 4.75:1 (WCAG AA ✓)
+   Akzentfarbe : #007088 – Kontrast auf #ffffff 5.72:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 15.9:1 (AAA ✓)
                      Verbesserte focus-visible Styles
 
@@ -39,10 +39,10 @@
   --t-surface: #ffffff;
 
   --t-text:    #0d2d38;   /* Tiefer Teal-Navy – 15.9:1 auf #f7fbfd */
-  --t-muted:   #4a7a8e;   /* Mittel-Teal – 4.75:1 auf #f7fbfd */
+  --t-muted:   #437383;   /* angepasst (Task 120, vorher #4a7a8e): 5.23:1 auf #ffffff – AA ✓ */
 
   --t-border:  #b0d8e8;
-  --t-accent:  #0891b2;   /* Cyan-600 – 4.75:1 auf #ffffff – AA ✓ */
+  --t-accent:  #007088;   /* angepasst (Task 120, vorher #0891b2): 5.72:1 auf #ffffff – AA ✓ */
 
   --t-radius-sm: 0.5rem;
   --t-radius-md: 0.75rem;
@@ -148,5 +148,6 @@ button:focus-visible,
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

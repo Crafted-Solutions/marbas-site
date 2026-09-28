@@ -5,7 +5,7 @@
    Stil        : Warm, einladend, Amber-Terrakotta, großzügige Radien
    Schriften   : Lato (freundlich, lesbar, international)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #c2410c – Kontrast auf #fdf9f3 5.85:1 (WCAG AA ✓)
+   Akzentfarbe : #ba3900 – Kontrast auf #fef4e6 5.25:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 16.4:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -70,10 +70,10 @@
   --t-surface: #fef4e6;   /* Helles Amber */
 
   --t-text:    #2d1f14;   /* Tiefes Amber-Braun – 16.4:1 auf #fdf9f3 */
-  --t-muted:   #8c6a3f;   /* Warmes Mittelbraun – 5.05:1 auf #fdf9f3 */
+  --t-muted:   #7f6237;   /* angepasst (Task 120, vorher #8c6a3f): 5.21:1 auf #fef4e6 – AA ✓ */
 
   --t-border:  #f0d5ae;
-  --t-accent:  #c2410c;   /* Orange-700 – 5.85:1 auf #fdf9f3 – AA ✓ */
+  --t-accent:  #ba3900;   /* angepasst (Task 120, vorher #c2410c): 5.25:1 auf #fef4e6 – AA ✓ */
 
   --t-radius-sm: 0.5rem;
   --t-radius-md: 1rem;
@@ -113,7 +113,7 @@
   --t-nav-item-color: var(--t-text);
   --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
   --t-nav-item-hover-color: var(--t-accent);
-  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
   --t-nav-item-active-color: var(--t-accent);
   --t-nav-toggle-bg: var(--t-surface);
   --t-nav-toggle-border: var(--t-border);
@@ -164,7 +164,7 @@ h4 {
   --cmp-shadow:  var(--t-shadow-sm);
 }
 .c-component--special {
-  --cmp-surface: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 7%, var(--t-surface));
   --cmp-border:  color-mix(in oklab, var(--t-accent) 25%, var(--t-border));
   --cmp-link:    var(--t-accent);
 }
@@ -174,5 +174,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

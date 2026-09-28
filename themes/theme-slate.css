@@ -98,7 +98,7 @@
   --t-nav-item-color: var(--t-text);
   --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
   --t-nav-item-hover-color: var(--t-accent);
-  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
   --t-nav-item-active-color: var(--t-accent);
   --t-nav-toggle-bg: var(--t-surface);
   --t-nav-toggle-border: var(--t-border);
@@ -127,7 +127,8 @@
     --t-text:    #f1f5f9;
     --t-muted:   #94a3b8;
     --t-border:  #334155;
-    --t-accent:  #60a5fa;   /* blue-400 – 5.87:1 auf #1e293b */
+    --t-accent:  #62a7fc;   /* angepasst (Task 120, vorher #60a5fa): 5.89:1 auf #1e293b – AA ✓ */
+    --t-on-accent: #0f172a;   /* Button-Text auf Akzent 7.02:1 */
 
     --t-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
     --t-shadow-md: 0 10px 28px rgba(0, 0, 0, 0.5);
@@ -173,5 +174,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

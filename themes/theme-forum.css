@@ -5,7 +5,7 @@
    Stil        : Freundlich, einladend, Violett, großzügige Radien
    Schriften   : Plus Jakarta Sans (modern, lesbar)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #7c3aed – Kontrast auf Weiß 5.44:1 (WCAG AA ✓)
+   Akzentfarbe : #7b38eb – Kontrast auf #f5f0fe 5.21:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 17.1:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -41,7 +41,7 @@
   --t-muted:   #5e4d7a;   /* Gedämpftes Violett – 5.2:1 auf #fdfbff */
 
   --t-border:  #d4c4f5;
-  --t-accent:  #7c3aed;   /* Violet-600 – 5.44:1 auf #ffffff – AA ✓ */
+  --t-accent:  #7b38eb;   /* angepasst (Task 120, vorher #7c3aed): 5.21:1 auf #f5f0fe – AA ✓ */
 
   --t-radius-sm: 0.5rem;
   --t-radius-md: 1rem;
@@ -81,7 +81,7 @@
   --t-nav-item-color: var(--t-text);
   --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
   --t-nav-item-hover-color: var(--t-accent);
-  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
   --t-nav-item-active-color: var(--t-accent);
   --t-nav-toggle-bg: var(--t-surface);
   --t-nav-toggle-border: var(--t-border);
@@ -131,7 +131,7 @@ h4 {
   --cmp-shadow:  var(--t-shadow-sm);
 }
 .c-component--special {
-  --cmp-surface: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 9%, var(--t-surface));
   --cmp-border:  color-mix(in oklab, var(--t-accent) 25%, var(--t-border));
   --cmp-link:    var(--t-accent);
 }
@@ -141,5 +141,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

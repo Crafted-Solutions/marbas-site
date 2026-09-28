@@ -5,7 +5,7 @@
    Stil        : Zart, einladend, Rose + Salbei, großzügige Radien
    Schriften   : Jost (modern, weich, zeitlos)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #be3a52 – Kontrast auf #fef8f8 5.2:1 (WCAG AA ✓)
+   Akzentfarbe : #b8344f – Kontrast auf #fdf0f2 5.20:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 15.8:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -41,7 +41,7 @@
   --t-muted:   #8c5060;   /* Gedämpftes Rose – 4.8:1 auf #fef8f8 – AA ✓ */
 
   --t-border:  #f0c8cc;
-  --t-accent:  #be3a52;   /* Rose-600 – 5.2:1 auf #fef8f8 – AA ✓ */
+  --t-accent:  #b8344f;   /* angepasst (Task 120, vorher #be3a52): 5.20:1 auf #fdf0f2 – AA ✓ */
 
   --t-radius-sm: 1rem;
   --t-radius-md: 1.5rem;
@@ -81,7 +81,7 @@
   --t-nav-item-color: var(--t-text);
   --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
   --t-nav-item-hover-color: var(--t-accent);
-  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
   --t-nav-item-active-color: var(--t-accent);
   --t-nav-toggle-bg: var(--t-surface);
   --t-nav-toggle-border: var(--t-border);
@@ -133,7 +133,7 @@ h4 {
   --cmp-shadow:  var(--t-shadow-sm);
 }
 .c-component--special {
-  --cmp-surface: color-mix(in oklab, var(--t-accent) 9%, var(--t-surface));
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 7%, var(--t-surface));
   --cmp-border:  color-mix(in oklab, var(--t-accent) 25%, var(--t-border));
   --cmp-link:    var(--t-accent);
 }
@@ -143,5 +143,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

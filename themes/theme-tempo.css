@@ -5,7 +5,7 @@
    Stil        : Dark-First, hohes Kontrastverhältnis, Orange-Energie
    Schriften   : Oswald (Headlines kondensiert), system-ui (Body)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #f97316 – Kontrast auf #1c2028 5.4:1 (WCAG AA ✓)
+   Akzentfarbe : #ff791f – Kontrast auf #262d38 5.29:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 14.9:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -38,10 +38,11 @@
   --t-surface: #262d38;
 
   --t-text:    #f4f6f8;   /* 14.9:1 auf #1c2028 – AAA ✓ */
-  --t-muted:   #9aa5b4;   /* 5.4:1 auf #1c2028 – AA ✓ */
+  --t-muted:   #9ca7b6;   /* angepasst (Task 120, vorher #9aa5b4): 5.69:1 auf #262d38 – AA ✓ */
 
   --t-border:  #374151;
-  --t-accent:  #f97316;   /* Orange-500 – 5.4:1 auf #1c2028 – AA ✓ */
+  --t-accent:  #ff791f;   /* angepasst (Task 120, vorher #f97316): 5.29:1 auf #262d38 – AA ✓ */
+  --t-on-accent: #1c2028;   /* Button-Text auf Akzent 5.82:1 */
 
   --t-radius-sm: 0;
   --t-radius-md: 0.125rem;
@@ -53,12 +54,12 @@
   /* Invert-Palette – invertiertes Orange für helle Surfaces */
   --t-surface-invert: #f97316;
   --t-text-invert:    #1c2028;
-  --t-muted-invert:   #374151;
+  --t-muted-invert:   #293343;   /* angepasst (Task 120, vorher #374151): 4.54:1 auf #f97316 – AA ✓ */
   --t-border-invert:  #fb923c;
   --t-accent-invert:  #1c2028;
 
   /* Chrome tokens – page chrome, announcement, footer helpers */
-  --t-announcement-bg: linear-gradient(90deg, #ff6a00 0%, #f97316 52%, #c2410c 100%);
+  --t-announcement-bg: linear-gradient(90deg, #ff6a00 0%, #f97316 52%, #ea580c 100%);   /* Endstopp aufgehellt: dunkler Text ≥ 4.5:1 */
   --t-announcement-color: #1c2028;
   --t-announcement-link: #111827;
   --t-announcement-dismiss-border: color-mix(in oklab, #1c2028 45%, transparent);
@@ -136,7 +137,7 @@ h4 {
   --cmp-shadow:  var(--t-shadow-sm);
 }
 .c-component--special {
-  --cmp-surface: color-mix(in oklab, var(--t-accent) 15%, var(--t-surface));
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
   --cmp-border:  color-mix(in oklab, var(--t-accent) 35%, var(--t-border));
   --cmp-link:    var(--t-accent);
 }
@@ -146,5 +147,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: #ffffff;   /* dunkler Link auf Orange → weißer Button-Text */
   --cmp-shadow:  0 12px 40px rgba(249, 115, 22, 0.25);
 }

@@ -6,7 +6,7 @@
    Stil        : Minimalistisch, Eisblau, viel Weißraum, präzise
    Schriften   : Raleway (elegant-geometrisch, nordisch)
                  Webfonts mitgeliefert (self-hosted, OFL-1.1) — kein Google-CDN
-   Akzentfarbe : #0070a8 – Kontrast auf #f8fafc 6.38:1 (WCAG AA ✓)
+   Akzentfarbe : #006da2 – Kontrast auf #f1f5f9 5.17:1 (WCAG AA ✓, angepasst in Task 120)
    Barrierefreiheit: WCAG AA ✓ | Text/BG 18.1:1 (AAA ✓)
 
    Nur Tokens + Varianten-Mappings. Keine Layout-Regeln.
@@ -42,7 +42,7 @@
   --t-muted:   #476075;   /* Eisblau-Grau – 4.7:1 auf #f8fafc – AA ✓ */
 
   --t-border:  #c8d8e4;
-  --t-accent:  #0070a8;   /* Arktisches Blau – 6.38:1 auf #f8fafc – AA ✓ */
+  --t-accent:  #006da2;   /* angepasst (Task 120, vorher #0070a8): 5.17:1 auf #f1f5f9 – AA ✓ */
 
   --t-radius-sm: 0.25rem;
   --t-radius-md: 0.5rem;
@@ -82,7 +82,7 @@
   --t-nav-item-color: var(--t-text);
   --t-nav-item-hover-bg: color-mix(in oklab, var(--t-accent) 12%, var(--t-surface));
   --t-nav-item-hover-color: var(--t-accent);
-  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 16%, var(--t-surface));
+  --t-nav-item-active-bg: color-mix(in oklab, var(--t-accent) 10%, var(--t-surface));
   --t-nav-item-active-color: var(--t-accent);
   --t-nav-toggle-bg: var(--t-surface);
   --t-nav-toggle-border: var(--t-border);
@@ -133,7 +133,7 @@ h4 {
   --cmp-shadow:  var(--t-shadow-sm);
 }
 .c-component--special {
-  --cmp-surface: color-mix(in oklab, var(--t-accent) 8%, var(--t-surface));
+  --cmp-surface: color-mix(in oklab, var(--t-accent) 7%, var(--t-surface));
   --cmp-border:  color-mix(in oklab, var(--t-accent) 22%, var(--t-border));
   --cmp-link:    var(--t-accent);
 }
@@ -143,5 +143,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  var(--t-shadow-md);
 }

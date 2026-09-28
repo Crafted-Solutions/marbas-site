@@ -55,7 +55,7 @@
   --t-surface: #f8f6f2;   /* Hauchzartes Creme */
 
   --t-text:    #080808;   /* Near-Black – 20.2:1 auf #ffffff – AAA ✓ */
-  --t-muted:   #6b6258;   /* Warmes Graubraun – 5.0:1 auf #ffffff – AA ✓ */
+  --t-muted:   #675e54;   /* angepasst (Task 120, vorher #6b6258): 5.89:1 auf #f8f6f2 – AA ✓ */
 
   --t-border:  #e0d8cc;
   --t-accent:  #080808;   /* Akzent = Schwarz – keine Ablenkung vom Inhalt */
@@ -168,5 +168,6 @@ h4 {
   --cmp-muted:   var(--t-muted-invert);
   --cmp-border:  var(--t-border-invert);
   --cmp-link:    var(--t-accent-invert);   /* Gold – der einzige Farb-Moment */
+  --cmp-on-link: var(--t-surface-invert);
   --cmp-shadow:  0 8px 40px rgba(8, 8, 8, 0.4);
 }
