@@ -3,7 +3,7 @@
 {# @category: layout #}
 
 <!DOCTYPE html>
-<html lang="{{pageLanguage}}">
+<html lang="{{pageLanguage}}"{% if marbasTheme.palette %} data-palette="{{ marbasTheme.palette }}"{% endif %}>
 
 {% set dlang = defaultLanguage %}
 
@@ -17,7 +17,7 @@
     {% siteHeadAssets %}
   </head>
 
-  <body class="c-page">
+  <body class="c-page c-page--{{ marbasTheme.family or 'classic' }}">
     <div class="c-container">
       {% if buildConfig.useLanguageSwitcher and websiteLanguageCount > 1 %}
       {% set _alternates = collections.all | languageAlternates(page) %}

@@ -164,6 +164,48 @@ The **built-in themes ship their fonts** (self-hosted woff2, SIL Open Font Licen
 
 ---
 
+## Theme families and palettes (Base v2)
+
+Themes belong to one of two families:
+
+| Family | Look | Colours |
+|---|---|---|
+| `classic` | the boxed look of all themes up to 0.14 — unchanged | set in the theme file |
+| `v2` | full-width bands, section frame (label rail, tone), display typography, text links | **palette** of 8 named colours |
+
+A theme is `v2` when its CSS declares `@family v2` in a comment; everything else is `classic`. The page gets
+`<body class="c-page c-page--v2">` (or `--classic`), and all Base v2 rules are scoped to it — classic sites are not affected.
+
+**Theme = form, palette = colours.** A v2 theme defines the form (typography, spacing, lines, section frame, links) and
+ships its **default palette** plus optional **presets**:
+
+```css
+/* theme-editorial.css — @family v2 */
+:root { --p-paper: #f8f8f5; --p-ink: #252d2a; --p-muted: #53615b; --p-line: #cdd8d1;
+        --p-accent: #234b45; --p-accent-soft: #e8efea; --p-alert: #7e332f; --p-alert-soft: #f6eeeb; }
+:root[data-palette="nacht"] { --p-paper: #12172a; --p-ink: #ecebe4; /* … */ }
+```
+
+All colour tokens (`--t-*`) are derived from the palette. A project overrides colours only where it wants to, in
+`marbas-project.json` — the theme file stays untouched:
+
+```json
+"theme": {
+  "id": "theme-editorial",
+  "palette": "nacht",
+  "colors": { "accent": "#e0c070" }
+}
+```
+
+- `palette` picks a preset of the theme (unknown names fall back to the default palette with a warning).
+- `colors` overrides single values; allowed names: `paper`, `ink`, `muted`, `line`, `accent`, `accent-soft`, `alert`,
+  `alert-soft`; allowed values: `#rgb`, `#rrggbb` (with alpha) or `rgb(…)`. Anything else is rejected.
+- The build and `marbas-site doctor` warn when a text/background pair of the resulting palette is below WCAG AA (4.5:1).
+- `palette`/`colors` have no effect on classic themes (warning).
+
+Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2--{tone}">` with `tone` `paper`
+(default), `soft`, `white` or `alert`, a `.c-v2__label` in the left rail and `.c-v2-link` for text links with an arrow.
+
 ## CSS custom properties reference
 
 Every theme must provide the following tokens. Derived tokens (header, footer, navigation colours) can be expressed as `color-mix()` or direct values.
