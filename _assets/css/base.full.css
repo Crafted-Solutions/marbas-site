@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-28T12:46:04.575Z */
+/* Build time: 2026-09-28T15:19:43.205Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -578,7 +578,7 @@ hr {
 }
 
 /* components/grid */
-/* Responsive grids (1–3 columns) */
+/* Responsive grids (1–3 columns; lg/xl up to 4) */
 .c-grid { display: grid; gap: clamp(1rem, 2.5vw, 2rem) clamp(0.75rem, 2vw, 1.5rem); align-items: start; }
 .c-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 .c-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -597,11 +597,13 @@ hr {
   .c-cols-lg-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
   .c-cols-lg-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .c-cols-lg-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .c-cols-lg-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (min-width: 75rem) {
   .c-cols-xl-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
   .c-cols-xl-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .c-cols-xl-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .c-cols-xl-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .c-span-2 { grid-column: span 2; }
 .c-span-3 { grid-column: span 3; }
@@ -660,6 +662,8 @@ hr {
   font-size: 0.78rem;
 }
 .c-component__headline { font-size: var(--text-2); line-height: var(--lh-heading); }
+/* Page title as <h1> on pages without a hero (base.njk) — must outrank section headings (h2 = --text-3) */
+.c-page-title { font-size: var(--text-4); line-height: var(--lh-heading); }
 .c-component__text { color: color-mix(in oklab, var(--cmp-text) 88%, var(--cmp-muted)); }
 .c-component__text :where(p, ul, ol) { margin-top: var(--space-3); max-width: var(--measure); }
 .c-component__text :where(p:first-child, ul:first-child, ol:first-child) { margin-top: 0; }

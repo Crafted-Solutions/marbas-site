@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Pages without a hero: the page title `<h1>` was rendered with the component heading size
+  (`--text-2`) and came out smaller than the section headings below it (Cards headings use `--text-3`).
+  It now uses `.c-page-title` (`--text-4`, like any `h1`). **Visible change:** larger titles on sub pages.
+- Cards `columns: 4` silently fell back to two columns — the grid had classes for 1–3 only. The base now
+  provides `c-cols-lg-4` / `c-cols-xl-4`; values outside 1–4 are clamped.
+
 ## [0.14.0] - 2026-09-28
 
 ### Added
