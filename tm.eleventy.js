@@ -12,6 +12,8 @@ import { getLibRoot } from './src/eject/index.js';
 import { resolveComponentPath } from './src/components/resolver.js';
 import { MarbasResolver } from './src/render/nunjucks-resolver.js';
 import { registerLayoutAliases } from './src/render/layout-aliases.js';
+import { resolveThemeFile } from './src/theme/resolver.js';
+import { resolveThemePalette } from './src/theme/copy.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -84,6 +86,20 @@ export default function (eleventyConfig) {
     useCmsStyles: process.env.MARBAS_USE_CMS_STYLES !== '0',
     useLanguageSwitcher: process.env.MARBAS_USE_LANGUAGE_SWITCHER !== '0'
   });
+  // Base v2: theme family (<body class="c-page--v2">) and palette preset (<html data-palette>)
+  let marbasTheme = { id: null, family: 'classic', palette: null };
+  const themeId = projectConfig?.theme?.id || null;
+  if (themeId) {
+    try {
+      const css = fs.readFileSync(resolveThemeFile({ projectPath: projectRoot, themeId, libRoot: LIB_ROOT }), 'utf8');
+      const resolved = resolveThemePalette({ css, theme: projectConfig.theme });
+      marbasTheme = { id: themeId, family: resolved.family, palette: resolved.preset };
+    } catch {
+      marbasTheme = { id: themeId, family: 'classic', palette: null };
+    }
+  }
+  eleventyConfig.addGlobalData('marbasTheme', marbasTheme);
+
   eleventyConfig.addGlobalData('marbasRendering', {
     footerMode: process.env.MARBAS_FOOTER_MODE || 'globalData',
     headerMode: process.env.MARBAS_HEADER_MODE || 'globalData'

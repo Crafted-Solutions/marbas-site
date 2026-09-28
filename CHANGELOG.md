@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Base v2 foundations:** theme families `classic` (the look up to 0.14, unchanged) and `v2` (`@family v2` in the theme).
+  v2 pages are no longer boxed — sections run as full-width bands with the content in a measure; a section frame
+  (`.c-v2`, label rail, `tone` paper/soft/white/alert, hairlines), form tokens for display typography and text links
+  with an arrow. `<body>` gets `c-page--v2` / `c-page--classic`.
+- **Palettes:** v2 themes define 8 named colours (`--p-*`) and optional presets; a project picks a preset
+  (`theme.palette`) or overrides single colours (`theme.colors`) in `marbas-project.json`. Invalid values are rejected,
+  weak contrasts are reported by the build and `doctor`.
+
 ### Fixed
 
 - Pages without a hero: the page title `<h1>` was rendered with the component heading size
