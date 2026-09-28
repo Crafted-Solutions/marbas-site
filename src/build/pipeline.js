@@ -146,6 +146,9 @@ export async function runPipeline({
   const themeResult = copyThemeToOutput({ projectRoot: absProject, libRoot: absLib, environment: env, config });
   if (themeResult.copied) {
     onLog(`[build] Theme: ${themeResult.themeId}`);
+    for (const font of themeResult.fonts?.missing || []) {
+      onLog(`[build] Warning: theme references /_assets/fonts/${font}, but the file exists neither in the project (_assets/fonts/) nor in the library`);
+    }
     hooks.theme?.(themeResult.themeId);
   } else if (themeResult.error) {
     onLog(`[build] Theme copy failed: ${themeResult.error}`);

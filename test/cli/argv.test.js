@@ -69,3 +69,65 @@ test('parseArgv — flags intermixed with positionals', () => {
   assert.equal(r.projectPath, '/p');
   assert.equal(r.flags.env, 'dev');
 });
+
+// ─── value flags: `--flag value` (Task 119) ───────────────────────────────
+const VALUE_FLAGS = ['name', 'lang', 'env', 'port'];
+
+test('parseArgv — value flag with space-separated value', () => {
+  const r = parseArgv(['init', '/p', '--name', 'Praxis Nord', '--lang', 'en'], { valueFlags: VALUE_FLAGS });
+  assert.equal(r.flags.name, 'Praxis Nord');
+  assert.equal(r.flags.lang, 'en');
+  assert.equal(r.projectPath, '/p');
+  assert.deepEqual(r.extras, []);
+  assert.deepEqual(r.errors, []);
+});
+
+test('parseArgv — both forms mixed', () => {
+  const r = parseArgv(['preview', '/p', '--env=staging', '--port', '3005'], { valueFlags: VALUE_FLAGS });
+  assert.equal(r.flags.env, 'staging');
+  assert.equal(r.flags.port, '3005');
+});
+
+test('parseArgv — value flag before positionals consumes only its value', () => {
+  const r = parseArgv(['--env', 'dev', 'build', '/p'], { valueFlags: VALUE_FLAGS });
+  assert.equal(r.flags.env, 'dev');
+  assert.equal(r.command, 'build');
+  assert.equal(r.projectPath, '/p');
+});
+
+test('parseArgv — value flag without value (last arg) is an error, not true', () => {
+  const r = parseArgv(['init', '/p', '--name'], { valueFlags: VALUE_FLAGS });
+  assert.equal(r.flags.name, undefined);
+  assert.equal(r.errors.length, 1);
+  assert.match(r.errors[0], /--name expects a value/);
+});
+
+test('parseArgv — value flag followed by another flag is an error', () => {
+  const r = parseArgv(['init', '/p', '--name', '--force'], { valueFlags: VALUE_FLAGS });
+  assert.equal(r.flags.name, undefined);
+  assert.equal(r.flags.force, true);
+  assert.equal(r.errors.length, 1);
+});
+
+test('parseArgv — switches never consume the next argument', () => {
+  const r = parseArgv(['init', '--force', '/p', '--starter'], { valueFlags: VALUE_FLAGS });
+  assert.equal(r.flags.force, true);
+  assert.equal(r.flags.starter, true);
+  assert.equal(r.projectPath, '/p');
+});
+
+test('parseArgv — without valueFlags the old behaviour stays (backwards compatible)', () => {
+  const r = parseArgv(['init', '/p', '--name', 'X']);
+  assert.equal(r.flags.name, true);
+  assert.deepEqual(r.extras, ['X']);
+});
+
+test('collectValueFlags — derives value flags from command definitions', async () => {
+  const { collectValueFlags } = await import('../../src/cli/argv.js');
+  const { COMMANDS } = await import('../../src/cli/commands.js');
+  const names = collectValueFlags(COMMANDS);
+  for (const n of ['name', 'description', 'lang', 'theme', 'env', 'port', 'log-level', 'mode', 'output']) {
+    assert.ok(names.includes(n), `${n} fehlt`);
+  }
+  for (const s of ['force', 'starter', 'quiet', 'json', 'no-color']) assert.ok(!names.includes(s), `${s} ist ein Schalter`);
+});

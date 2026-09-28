@@ -2,7 +2,7 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
-import { parseArgv } from './argv.js';
+import { parseArgv, collectValueFlags } from './argv.js';
 import { COMMANDS, COMMAND_MAP } from './commands.js';
 import { printGlobalHelp, printCommandHelp } from './help.js';
 import { discoverPlugins } from '../plugin/discovery.js';
@@ -24,7 +24,14 @@ for (const cmd of listCommands()) {
   COMMAND_MAP[pluginCmd.name] = pluginCmd;
 }
 
-const { command, projectPath, extras, flags } = parseArgv(process.argv.slice(2));
+const { command, projectPath, extras, flags, errors } = parseArgv(process.argv.slice(2), {
+  valueFlags: collectValueFlags(COMMANDS)
+});
+
+if (errors.length > 0) {
+  for (const message of errors) process.stderr.write(`Error: ${message}\n`);
+  process.exit(1);
+}
 
 if (flags.version || flags.v) {
   process.stdout.write(pkg.version + '\n');

@@ -114,6 +114,8 @@ The build output lands in `my-site/build/public_development/` (or `public_<env>/
 | `marbas-site envs <path>` | List configured environments |
 | `marbas-site reinit <path>` | Migrate a legacy project to `marbas-project.json`. Reads `.marbas-site-project.json` if present and writes a fresh config. A backup is saved to `.marbas/migration-backup/`. Add `--force` to overwrite an existing `marbas-project.json`. |
 
+Options take their value with `=` or as the next argument: `--name="Acme Inc"` and `--name "Acme Inc"` are the same. An option that needs a value but has none (e.g. `--name` at the end) is an error.
+
 `--env` is required for `build`, `preview`, and `deploy`. If `defaultEnvironment` is set in `marbas-project.json`, it is used when `--env` is omitted.
 
 ---
