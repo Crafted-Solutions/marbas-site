@@ -140,6 +140,28 @@ Create `_theme/theme-<name>.css` in your project root. The file must define all 
 
 Activate it by setting `"theme": { "id": "theme-acme" }` in `marbas-project.json` (or run `marbas-site theme <project> theme-acme`). A `theme` block in `site.json` is ignored.
 
+### Web fonts
+
+Marbas does not load fonts from a CDN. Ship the files with the project and declare them in the theme:
+
+```css
+/* _theme/theme-acme.css — files in <project>/_assets/fonts/inter/ */
+@font-face {
+  font-family: 'Inter';
+  src: url('/_assets/fonts/inter/inter-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+```
+
+The theme is served as `/_assets/css/theme.css`, so absolute `/_assets/fonts/…` URLs work in every
+page. Without `@font-face` the browser falls back to the next font in the stack (usually the system
+font). Avoid `@import` from Google Fonts — it transfers visitor IP addresses to Google (GDPR).
+
+The **built-in themes ship their fonts** (self-hosted woff2, SIL Open Font License, see
+`THIRD_PARTY_NOTICES.md`). A build copies only the fonts of the selected theme to
+`_assets/fonts/`; a file with the same path in your project's `_assets/fonts/` takes precedence.
+
 ---
 
 ## CSS custom properties reference
@@ -157,7 +179,8 @@ Every theme must provide the following tokens. Derived tokens (header, footer, n
 | `--t-text` | Primary text colour |
 | `--t-muted` | Secondary / subdued text |
 | `--t-border` | Border colour |
-| `--t-accent` | Primary accent / brand colour |
+| `--t-accent` | Primary accent / brand colour (links, primary button fill) |
+| `--t-on-accent` | *Optional.* Text colour on accent-filled buttons (`.c-btn--primary`, header actions, footer CTA). Default `white`. Set a dark colour wherever the accent is light (dark mode, dark-first themes) — white on a light accent cannot reach 4.5:1 |
 | `--t-radius-sm` | Small border radius |
 | `--t-radius-md` | Medium border radius |
 | `--t-radius-lg` | Large border radius |
@@ -173,6 +196,17 @@ Every theme must provide the following tokens. Derived tokens (header, footer, n
 | `--t-muted-invert` | Muted text on inverted background |
 | `--t-border-invert` | Borders on inverted background |
 | `--t-accent-invert` | Accent colour on inverted background |
+
+Inside components, primary buttons are filled with `--cmp-link` and use `--cmp-on-link` for their
+text (falls back to `--t-on-accent`, then `white`). The `.c-component--dark` mapping usually sets
+`--cmp-link: var(--t-accent-invert)` — a light colour — so set `--cmp-on-link` there as well:
+
+```css
+@media (prefers-color-scheme: dark) {
+  :root { --t-accent: #60a5fa; --t-on-accent: #0f172a; }
+}
+.c-component--dark { --cmp-link: var(--t-accent-invert); --cmp-on-link: var(--t-surface-invert); }
+```
 
 ### Header tokens
 

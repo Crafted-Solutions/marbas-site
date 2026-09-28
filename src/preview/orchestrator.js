@@ -64,6 +64,9 @@ export async function startPreview({
     });
     if (themeResult.copied) {
       onLog(`[preview] Theme: ${themeResult.themeId}`);
+      for (const font of themeResult.fonts?.missing || []) {
+        onLog(`[preview] Warning: theme references /_assets/fonts/${font}, but the file exists neither in the project (_assets/fonts/) nor in the library`);
+      }
     } else if (themeResult.error) {
       onLog(`[preview] Theme copy failed: ${themeResult.error}`);
     }

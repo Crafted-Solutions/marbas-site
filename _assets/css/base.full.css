@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-27T19:48:48.278Z */
+/* Build time: 2026-09-28T12:46:04.575Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -192,7 +192,9 @@ hr {
 }
 .c-btn:hover { transform: translateY(-1px); border-color: color-mix(in oklab, var(--t-border, #e6e8ee), var(--t-text, #121316) 12%); }
 .c-btn:active { transform: translateY(0px); }
-.c-btn--primary { background: var(--t-accent, #1f6feb); border-color: color-mix(in oklab, var(--t-accent, #1f6feb) 70%, black); color: white; }
+/* --t-on-accent: text colour on accent-filled buttons (default white). Themes whose accent must be light
+   (dark mode, dark-first) set it to a dark colour to keep AA contrast. */
+.c-btn--primary { background: var(--t-accent, #1f6feb); border-color: color-mix(in oklab, var(--t-accent, #1f6feb) 70%, black); color: var(--t-on-accent, white); }
 
 /* components/forms */
 /* ============================================================================
@@ -665,7 +667,8 @@ hr {
 .c-component__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-2); }
 .c-component a { color: var(--cmp-link); }
 .c-component .c-btn { border-color: var(--cmp-border); background: color-mix(in oklab, var(--cmp-surface) 92%, var(--cmp-bg)); color: var(--cmp-text); }
-.c-component .c-btn--primary { background: var(--cmp-link); border-color: color-mix(in oklab, var(--cmp-link) 70%, black); color: white; }
+/* --cmp-on-link: text on the variant's link colour (e.g. .c-component--dark sets it, because --cmp-link is light there) */
+.c-component .c-btn--primary { background: var(--cmp-link); border-color: color-mix(in oklab, var(--cmp-link) 70%, black); color: var(--cmp-on-link, var(--t-on-accent, white)); }
 
 /* components/stream */
 /* Stream + Zebra */
@@ -1821,6 +1824,13 @@ hr {
 .c-footer-contact__phone,
 .c-footer-contact__email {
   display: block;
+  /* own colour: the global `a` colour (--t-accent) is unreadable on dark footers (variant contrast) */
+  color: var(--t-footer-link, var(--t-muted));
+}
+
+.c-footer-contact__phone:hover,
+.c-footer-contact__email:hover {
+  color: var(--t-footer-link-hover, var(--t-accent));
 }
 
 /* ---------- Social Links ---------- */
