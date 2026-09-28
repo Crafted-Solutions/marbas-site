@@ -94,3 +94,68 @@ test('copyThemeToOutput: unknown theme.id reports error, no crash', () => {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// ─── web fonts (Task 119) ───────────────────────────────────
+test('copyThemeToOutput: copies exactly the fonts the theme references', () => {
+  const tmp = makeTmpDir();
+  try {
+    const libRoot = makeFakeLib(tmp);
+    fs.writeFileSync(path.join(libRoot, 'themes', 'theme-slate.css'),
+      "@font-face { font-family: 'Inter'; src: url('/_assets/fonts/inter/inter-latin.woff2') format('woff2'); }\n" +
+      "@font-face { font-family: 'Inter'; src: url(\"/_assets/fonts/inter/inter-latin.woff2\"); }\n:root { --t-bg: #fff; }");
+    fs.mkdirSync(path.join(libRoot, 'themes', 'fonts', 'inter'), { recursive: true });
+    fs.mkdirSync(path.join(libRoot, 'themes', 'fonts', 'lato'), { recursive: true });
+    fs.writeFileSync(path.join(libRoot, 'themes', 'fonts', 'inter', 'inter-latin.woff2'), 'woff2');
+    fs.writeFileSync(path.join(libRoot, 'themes', 'fonts', 'lato', 'lato-latin.woff2'), 'woff2');
+    const projectPath = makeProject(tmp, { theme: { id: 'theme-slate' } });
+
+    const result = copyThemeToOutput({ projectRoot: projectPath, libRoot, environment: 'development' });
+    assert.deepEqual(result.fonts, { copied: ['inter/inter-latin.woff2'], missing: [] });
+
+    const config = JSON.parse(fs.readFileSync(path.join(projectPath, 'marbas-project.json'), 'utf8'));
+    const out = resolveBuildOutputPath({ projectRoot: projectPath, config, environment: 'development' });
+    assert.ok(fs.existsSync(path.join(out, '_assets', 'fonts', 'inter', 'inter-latin.woff2')));
+    assert.ok(!fs.existsSync(path.join(out, '_assets', 'fonts', 'lato')), 'fonts of other themes must not be copied');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('copyThemeToOutput: project fonts win, unknown fonts are reported, no path traversal', () => {
+  const tmp = makeTmpDir();
+  try {
+    const libRoot = makeFakeLib(tmp);
+    const projectPath = makeProject(tmp, { theme: { id: 'theme-custom' } });
+    fs.mkdirSync(path.join(projectPath, '_theme'), { recursive: true });
+    fs.writeFileSync(path.join(projectPath, '_theme', 'theme-custom.css'),
+      "@font-face { src: url('/_assets/fonts/own/own.woff2'); }\n" +
+      "@font-face { src: url('/_assets/fonts/nowhere/x.woff2'); }\n" +
+      "@font-face { src: url('/_assets/fonts/../../secret.woff2'); }\n" +
+      "@font-face { src: url('/_assets/fonts/my%20font/r.woff2'); }");
+    fs.mkdirSync(path.join(projectPath, '_assets', 'fonts', 'my font'), { recursive: true });
+    fs.writeFileSync(path.join(projectPath, '_assets', 'fonts', 'my font', 'r.woff2'), 'mine');
+    fs.mkdirSync(path.join(projectPath, '_assets', 'fonts', 'own'), { recursive: true });
+    fs.writeFileSync(path.join(projectPath, '_assets', 'fonts', 'own', 'own.woff2'), 'mine');
+
+    const result = copyThemeToOutput({ projectRoot: projectPath, libRoot, environment: 'development' });
+    assert.equal(result.copied, true);
+    assert.deepEqual(result.fonts, { copied: [], missing: ['nowhere/x.woff2'] });
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('library themes: every referenced font file ships in themes/fonts', () => {
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const themesDir = path.join(root, 'themes');
+  let refs = 0;
+  for (const file of fs.readdirSync(themesDir).filter((f) => /^theme-.*\.css$/.test(f))) {
+    const css = fs.readFileSync(path.join(themesDir, file), 'utf8');
+    assert.doesNotMatch(css, /fonts\.googleapis|@import/, `${file}: no external font loading`);
+    for (const [, rel] of css.matchAll(/url\('\/_assets\/fonts\/([^']+)'\)/g)) {
+      refs++;
+      assert.ok(fs.existsSync(path.join(themesDir, 'fonts', rel)), `${file}: themes/fonts/${rel} fehlt`);
+    }
+  }
+  assert.ok(refs > 0);
+});

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Built-in themes ship their web fonts (self-hosted woff2, latin + latin-ext, SIL Open Font License;
+  source: Fontsource, see `THIRD_PARTY_NOTICES.md`). Until now the themes named fonts such as Inter,
+  Cormorant Garamond or Playfair Display but nothing loaded them — visitors saw the system fallback.
+  A build copies only the fonts of the selected theme to `_assets/fonts/`. **Sites using a built-in
+  theme change their look** (the intended typeface now renders; line breaks and button widths may
+  shift). The npm package grows from 0.17 MB to 2.3 MB (packed).
+- Theme token `--t-on-accent` (and `--cmp-on-link` inside components) for the text colour of primary
+  buttons. Default stays `white`; themes set a dark colour where the accent must be light (dark mode,
+  `.c-component--dark`), where white text could not reach 4.5:1.
+- CLI options accept their value as the next argument: `--name "Acme Inc"` works like `--name="Acme Inc"`.
+
+### Fixed
+
+- `marbas-site init p --name Acme` named the project "true" (the value was dropped silently). An option
+  that needs a value but has none is now an error.
+- Footer contact links (phone, e-mail) used the global accent colour and were barely readable on dark
+  footers (`footer.variant: contrast`). They now use the footer link colours.
+
 ## [0.13.1] - 2026-09-27
 
 ### Fixed

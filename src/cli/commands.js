@@ -19,7 +19,7 @@ export const COMMANDS = [
     description: 'Create a new Marbas project',
     usage: 'marbas-site init <path> [--name=<name>] [--lang=<code>] [--theme=<id>] [--env=<name>] [--force] [--starter]',
     positionals: ['path'],
-    flags: ['--name=<name>', '--lang=<code>', '--theme=<id>', '--env=<name>', '--force', '--starter'],
+    flags: ['--name=<name>', '--description=<text>', '--lang=<code>', '--theme=<id>', '--env=<name>', '--force', '--starter'],
     run({ projectPath, flags }) {
       if (!projectPath) {
         process.stderr.write('Usage: marbas-site init <path>\n');
