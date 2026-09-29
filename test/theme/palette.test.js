@@ -71,6 +71,8 @@ test('ejected base.njk without Base v2 classes is reported for v2 themes only', 
     assert.match(checkEjectedBaseForV2({ projectRoot: root, family: 'v2' }), /ge-ejectete _includes\/base\.njk/);
     assert.equal(checkEjectedBaseForV2({ projectRoot: root, family: 'classic' }), null);
     fs.writeFileSync(path.join(root, '_includes', 'base.njk'), '<html {{ marbasTheme.palette }}><body class="c-page--{{ marbasTheme.family }}">');
+    assert.match(checkEjectedBaseForV2({ projectRoot: root, family: 'v2' }), /Layout/, 'base from before Task 138 lacks the layout classes');
+    fs.writeFileSync(path.join(root, '_includes', 'base.njk'), '<html {{ marbasTheme.palette }}><body class="c-page--{{ marbasTheme.family }} {{ marbasTheme.layoutClasses }}">');
     assert.equal(checkEjectedBaseForV2({ projectRoot: root, family: 'v2' }), null);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });

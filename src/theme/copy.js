@@ -4,6 +4,7 @@ import { resolveThemeFile } from './resolver.js';
 import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { readProjectConfig } from '../project/config.js';
 import { readThemeFamily, readPalettePresets, readPaletteValues, normalizePaletteConfig, paletteOverrideCss, paletteContrastWarnings } from './palette.js';
+import { readThemeLayout, LAYOUT_DEFAULTS } from './layout.js';
 
 /**
  * Copy the project's configured theme CSS into the build/preview output as
@@ -69,16 +70,16 @@ export function checkEjectedBaseForV2({ projectRoot, family }) {
   const ejected = path.join(projectRoot, '_includes', 'base.njk');
   if (!fs.existsSync(ejected)) return null;
   const source = fs.readFileSync(ejected, 'utf8');
-  if (source.includes('marbasTheme.family') && source.includes('marbasTheme.palette')) return null;
-  return 'Projekt hat eine ge-ejectete _includes/base.njk ohne Base-v2-Klassen — das v2-Theme wirkt nicht (Seite bleibt boxed, Palette/Preset ignoriert). '
-    + 'Ergänzen: <html … {% if marbasTheme.palette %}data-palette="{{ marbasTheme.palette }}"{% endif %}> und <body class="c-page c-page--{{ marbasTheme.family }}">, oder marbas-site reset <p> _includes/base.njk';
+  if (source.includes('marbasTheme.family') && source.includes('marbasTheme.palette') && source.includes('marbasTheme.layoutClasses')) return null;
+  return 'Projekt hat eine ge-ejectete _includes/base.njk ohne Base-v2-Klassen — das v2-Theme wirkt nicht vollständig (boxed, Palette/Preset oder Layout ignoriert). '
+    + 'Ergänzen: <html … {% if marbasTheme.palette %}data-palette="{{ marbasTheme.palette }}"{% endif %}> und <body class="c-page c-page--{{ marbasTheme.family }} {{ marbasTheme.layoutClasses }}">, oder marbas-site reset <p> _includes/base.njk';
 }
 
 /**
  * Base v2 palette for a theme + the project's `theme.palette` / `theme.colors`.
  * classic themes ignore both (their colours are not palette-driven) — reported as a warning.
  *
- * @returns {{ family, preset, overrideCss, errors: string[], warnings: string[], contrast: Array }}
+ * @returns {{ family, preset, overrideCss, errors: string[], warnings: string[], contrast: Array, layout: object }}
  */
 export function resolveThemePalette({ css, theme = {} }) {
   const family = readThemeFamily(css);
@@ -86,15 +87,17 @@ export function resolveThemePalette({ css, theme = {} }) {
   const warnings = [];
   if (family !== 'v2') {
     if (preset || Object.keys(colors).length) warnings.push('theme.palette/theme.colors wirken nur bei Themes der Familie v2 — ignoriert');
-    return { family, preset: null, overrideCss: '', errors, warnings, contrast: [] };
+    return { family, preset: null, overrideCss: '', errors, warnings, contrast: [], layout: { ...LAYOUT_DEFAULTS } };
   }
+  const themeLayout = readThemeLayout(css);
+  warnings.push(...themeLayout.warnings);
   let activePreset = preset;
   if (preset && !readPalettePresets(css).includes(preset)) {
     warnings.push(`theme.palette "${preset}" gibt es in diesem Theme nicht (vorhanden: ${readPalettePresets(css).join(', ') || 'keine'}) — Standard-Palette aktiv`);
     activePreset = null;
   }
   const values = { ...readPaletteValues(css, activePreset), ...colors };
-  return { family, preset: activePreset, overrideCss: paletteOverrideCss(colors), errors, warnings, contrast: paletteContrastWarnings(values) };
+  return { family, preset: activePreset, overrideCss: paletteOverrideCss(colors), errors, warnings, contrast: paletteContrastWarnings(values), layout: themeLayout.layout };
 }
 
 /**

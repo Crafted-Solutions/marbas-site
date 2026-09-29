@@ -17,7 +17,7 @@
     {% siteHeadAssets %}
   </head>
 
-  <body class="c-page c-page--{{ marbasTheme.family or 'classic' }}">
+  <body class="c-page c-page--{{ marbasTheme.family or 'classic' }} {{ marbasTheme.layoutClasses }}">
     <div class="c-container">
       {% if buildConfig.useLanguageSwitcher and websiteLanguageCount > 1 %}
       {% set _alternates = collections.all | languageAlternates(page) %}

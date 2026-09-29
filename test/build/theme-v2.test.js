@@ -39,7 +39,7 @@ test('base v2: family class, palette preset, colour overrides; classic unchanged
     const out = path.join(v2, 'build', 'public_development');
     const html = fs.readFileSync(path.join(out, 'index.html'), 'utf8');
     assert.match(html, /<html lang="de" data-palette="nacht">/);
-    assert.match(html, /<body class="c-page c-page--v2">/);
+    assert.match(html, /<body class="c-page c-page--v2 c-l-/);
     const css = fs.readFileSync(path.join(out, '_assets', 'css', 'theme.css'), 'utf8');
     assert.match(css, /--p-accent: #e0c070;/);
     assert.doesNotMatch(css, /body \{/, 'invalid colour must not reach the CSS');
@@ -50,7 +50,7 @@ test('base v2: family class, palette preset, colour overrides; classic unchanged
     assert.equal(run(['build', classic, '--env=development']).status, 0);
     const chtml = fs.readFileSync(path.join(classic, 'build', 'public_development', 'index.html'), 'utf8');
     assert.match(chtml, /<html lang="de">/);
-    assert.match(chtml, /<body class="c-page c-page--classic">/);
+    assert.match(chtml, /<body class="c-page c-page--classic c-l-rail-top c-l-intro-split c-l-linklist-cards c-l-split-columns c-l-notice-box c-l-cta-button">/);
     const ccss = fs.readFileSync(path.join(classic, 'build', 'public_development', '_assets', 'css', 'theme.css'), 'utf8');
     assert.equal(ccss, fs.readFileSync(path.resolve(__dirname, '../../themes/theme-slate.css'), 'utf8'), 'classic theme.css is copied unchanged');
   } finally {
