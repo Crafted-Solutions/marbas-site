@@ -75,3 +75,7 @@
 .c-page--v2 .c-footer .c-footer-intro__name { font-size: 1.55rem; font-weight: 600; letter-spacing: -.055em; }
 .c-page--v2 .c-footer-intro__text,
 .c-page--v2 .c-footer-contact { color: var(--p-muted); font-size: .88rem; line-height: 1.55; margin: .6rem 0 0; }
+
+/* Titelbreite: schmale Überschriften sind Teil dieser Form (früher Base-Regel) */
+.c-page--v2 .c-v2__title--narrow { max-width: 12ch; }
+.c-page--v2 .c-v2-split--title .c-v2__title { max-width: 9ch; }

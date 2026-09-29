@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-29T09:02:45.866Z */
+/* Build time: 2026-09-29T12:04:24.551Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2717,6 +2717,15 @@ hr {
 .c-page--v2 .c-grid .c-stream { display: flex; flex-direction: column; gap: 1.5rem; }
 .c-page--v2 .c-grid .c-v2-section { padding-block: clamp(1.5rem, 6cqi, 4rem); }
 
+/* Klassische Built-ins (Cards, TextMedia, Hero …) und eigene Komponenten in v2-Seiten: im Maß mit Abstand.
+   v2-Bausteine (.c-v2) bringen ihren eigenen Rahmen mit; in Spalten-Layouts füllen alle die Spalte. */
+.c-page--v2 .c-main .c-section > :not(.c-v2, .c-stream, .c-grid),
+.c-page--v2 .c-main .c-section > .c-stream > :not(.c-v2) {
+  width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); margin: clamp(2.5rem, 5vw, 4.5rem) auto 0;
+}
+.c-page--v2 .c-main .c-section > .c-stream > :not(.c-v2):last-child { margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.c-page--v2 .c-main .c-grid .c-stream > :not(.c-v2) { width: auto; margin: 0; }
+
 @media (max-width: 760px) {
   .c-page--v2 { --v2-gutter: 2rem; }
 }
@@ -2749,7 +2758,7 @@ hr {
 }
 .c-v2--alert .c-v2__label, .c-v2--alert .c-v2__title { color: var(--p-alert); }
 .c-v2__title { font-size: var(--v2-display-2); margin: 0 0 1.3rem; }
-.c-v2__title--narrow { max-width: 12ch; }
+/* .c-v2__title--narrow: Breite bestimmt die Form (Editorial/Druckwerk verengen, andere nicht) */
 .c-v2__intro { max-width: 48rem; margin-bottom: 3.3rem; }
 .c-v2__muted { color: var(--p-muted); max-width: 37rem; }
 .c-v2__small { color: var(--p-muted); font-size: .85rem; margin-top: 1rem; }
@@ -2844,7 +2853,6 @@ hr {
 .c-l-split-stacked .c-v2-split--title .c-v2__title { max-width: none; }
 .c-v2-split { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(2.5rem, 7vw, 7.5rem); }
 .c-v2-split--title { grid-template-columns: .9fr 1.1fr; align-items: start; }
-.c-v2-split--title .c-v2__title { max-width: 9ch; }
 .c-v2-split--title .c-v2__text { font-size: 1.07rem; padding-top: .5rem; }
 .c-v2__text :where(p) { max-width: 30rem; }
 .c-v2-split--title .c-v2__text :where(p) { max-width: 36rem; }

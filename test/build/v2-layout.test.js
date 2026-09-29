@@ -59,6 +59,7 @@ test('theme @layout → body classes; warnings for invalid values; v2 blocks in 
     assert.match(css, /@container v2 \(max-width: 760px\)/, 'blocks stack by column width, not window width');
     assert.match(css, /\.c-page--v2 \.c-grid \.c-v2::before \{ left: 0; width: 100%; margin-left: 0; \}/, 'bands confined to the column');
     assert.match(css, /\.c-l-rail-side \.c-v2__frame \{ display: grid;/, 'label column only for rail=side');
+    assert.match(css, /\.c-page--v2 \.c-main \.c-section > \.c-stream > :not\(\.c-v2\) \{\s*width: min\(calc\(100% - var\(--v2-gutter\)\), var\(--v2-measure\)\)/, 'classic blocks and custom components get the page measure in v2 pages');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
