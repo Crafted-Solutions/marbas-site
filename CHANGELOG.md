@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
   `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
   is unchanged (classic).
+- **`theme-minimal-luxe`** — fifth Base v2 library theme: strong reduction, hairlines, light serif in large sizes
+  (Cormorant Garamond, Jost), centred section heads, full-bleed intro image (no horizontal scroll, stays in its column
+  in multi-column layouts), letter-spaced caps for labels, menu and links. Palettes: default ivory + bronze, `noir`,
+  `stein` (all AA).
 - **`theme-warm`** — fourth Base v2 library theme: serif headings with italics (Source Serif 4, Nunito Sans), cream
   paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy top edge on colour bands (stays
   inside its column in multi-column layouts), pill buttons. Palettes: default terracotta, `salbei`, `beere` (all AA).
