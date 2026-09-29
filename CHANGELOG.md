@@ -54,6 +54,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Base v2: the narrow title widths (`Split layout: title` 9ch, LinkList/section title 12ch) were a base rule and
+  squeezed titles in every form (e.g. five lines in Product). They now belong to `theme-editorial` only; other forms
+  use the full column. Projects with an ejected/own Editorial theme add the two rules themselves (see theme-editorial.css).
+- Classic built-ins (Hero, Cards, TextMedia …) and custom components in pages with a Base v2 theme ran edge to edge
+  without spacing (the v2 page is unboxed). They now sit in the page measure with section spacing; in multi-column
+  layouts they fill their column.
 - v2 themes with multi-column page layouts (`content_2col_*`, `content_3col_*`): bands ran across the side column
   and past the window edge, the page title sat at the window edge. The column grid now stays in the page measure,
   bands stay in their column, and the building blocks adapt to their column width (container queries).
