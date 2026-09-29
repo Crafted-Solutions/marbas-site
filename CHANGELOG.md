@@ -27,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
   `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
   is unchanged (classic).
+- **`theme-druckwerk`** — sixth Base v2 library theme, a risograph/zine look: two print colours on natural paper with
+  grain (off with `prefers-reduced-transparency`), per-line overprint bars behind headings, duotone intro image with
+  offset, rotated stamp labels in the side rail, sticker cards, tape notes, label buttons. Print colours are theme-internal
+  decoration only (fluorescent colours never carry text). Palettes: default pink + blue, `gruen-orange`, `gelb-violett` (all AA).
 - **`theme-minimal-luxe`** — fifth Base v2 library theme: strong reduction, hairlines, light serif in large sizes
   (Cormorant Garamond, Jost), centred section heads, full-bleed intro image (no horizontal scroll, stays in its column
   in multi-column layouts), letter-spaced caps for labels, menu and links. Palettes: default ivory + bronze, `noir`,
