@@ -116,6 +116,7 @@
 /* Karten: weiche Schatten statt Linien */
 .c-page--v2.c-l-linklist-cards .c-v2-rows__row { border-color: var(--p-line); box-shadow: var(--t-shadow-sm); background: var(--p-surface); }
 .c-page--v2.c-l-linklist-cards a.c-v2-rows__row:hover { box-shadow: var(--t-shadow-md); }
+.c-page--v2.c-l-linklist-cards .c-v2-rows__row.c-v2-rows__row--alert { background: var(--p-alert-soft); border-color: color-mix(in oklab, var(--p-alert) 40%, var(--p-line)); }
 .c-page--v2 .c-v2-rows__index {
   display: inline-grid; place-items: center; width: 2rem; height: 2rem; border-radius: .6rem;
   background: var(--p-accent-soft); font-size: .78rem;

@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 21 ready-to-use themes (18 classic, 3 Base v2: `theme-editorial`, `theme-product`, `theme-bold`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 22 ready-to-use themes (18 classic, 4 Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -72,6 +72,7 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 | `theme-studio` | Studio | Creative agencies, design studios, portfolios — maximum reduction, black on off-white |
 | `theme-tempo` | Tempo | Sports clubs, fitness brands — dark-first, high contrast, orange energy |
 | `theme-terra` | Terra | Restaurants, farm-to-table, artisan food — earthy sienna tones |
+| `theme-warm` | Warm | **Base v2.** Crafts, food, farm shops, wellness — serif headings with italics (Source Serif 4 + Nunito Sans), cream paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy band edges, pill buttons. Palettes: default (terracotta), `salbei` (herbs), `beere` (berry) |
 | `theme-verdant` | Verdant | NGOs, environmental organisations, sustainability — forest green, organic |
 
 ---
