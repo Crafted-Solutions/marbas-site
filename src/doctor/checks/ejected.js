@@ -9,7 +9,7 @@ function walkFiles(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results.push(...walkFiles(full));
-    } else {
+    } else if (!entry.name.startsWith('.')) {   // .gitkeep & co. are placeholders, not ejected files
       results.push(full);
     }
   }
@@ -83,7 +83,9 @@ export function checkEjected({ projectPath, libRoot = null }) {
 
       for (const absFile of files) {
         const rel = path.relative(absProject, absFile);
-        const hasLibDefault = libRoot ? fs.existsSync(path.join(libRoot, rel)) : null;
+        // project `_theme/<id>.css` overrides the lib's `themes/<id>.css` (same mapping as eject)
+        const libRel = dirName === '_theme' ? path.join('themes', path.relative(projectDir, absFile)) : rel;
+        const hasLibDefault = libRoot ? fs.existsSync(path.join(libRoot, libRel)) : null;
         const label = hasLibDefault === false ? 'project-specific (no lib default)' : 'ejected';
         results.push({
           id: `ejected.${rel}`,

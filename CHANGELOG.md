@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-09-29
+
+### Fixed
+
+- **`doctor` reported every library theme as "not found"** (`The "path" argument must be of type string. Received null`):
+  `runDoctor` passed an explicit `libRoot: null` that replaced the checks' default. It now uses the installed lib, so
+  library themes resolve and v2 palettes are checked again.
+- **`doctor` ejected check:** it now compares against the lib too — an ejected library theme (`_theme/<id>.css`) is
+  matched against `themes/<id>.css` and reported as "ejected" instead of "project-specific"; placeholder dotfiles
+  (`.gitkeep`) are no longer listed.
+
+### Added
+
+- `@crafted.solutions/marbas-site/theme` exports the Base v2 palette and layout helpers (`PALETTE_KEYS`,
+  `readThemeFamily`, `readPalettePresets`, `readPaletteValues`, `normalizePaletteConfig`, `paletteContrastWarnings`,
+  `contrastRatio`, `LAYOUT_OPTIONS`, `readThemeLayout`) — the same logic the build and `doctor` use.
+
 ## [0.15.0] - 2026-09-29
 
 ### Added
