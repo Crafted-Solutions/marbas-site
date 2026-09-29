@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-09-29
+
 ### Added
 
 - **Base v2 foundations:** theme families `classic` (the look up to 0.14, unchanged) and `v2` (`@family v2` in the theme).
