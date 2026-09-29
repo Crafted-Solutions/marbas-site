@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 23 ready-to-use themes (18 classic, 5 Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 24 ready-to-use themes (18 classic, 6 Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -57,6 +57,7 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 | `theme-bold` | Bold | **Base v2.** Brands, campaigns, products, events — huge condensed uppercase headings (Oswald), full colour fields with light text (`tone: soft`/`alert`), thick black rules, square uppercase buttons, black footer. Palettes: default (cobalt), `signal` (red), `wald` (deep green) |
 | `theme-bloom` | Bloom | Wellness, beauty, spa — soft rose + sage, generous radii |
 | `theme-campus` | Campus | Universities, research institutes, academic journals |
+| `theme-druckwerk` | Druckwerk | **Base v2.** Culture, studios, cafés, bookshops, festivals — risograph look: two print colours on natural paper with grain, overprint bars behind headings, duotone intro image with misregistration offset, stamp labels in the margin, sticker cards, tape notes, label buttons (Jost, IBM Plex Sans/Mono). The duotone recolours every intro image. Palettes: default (pink + blue), `gruen-orange`, `gelb-violett` |
 | `theme-editorial` | Editorial | **Base v2.** Practices, law firms, consulting, culture — large grotesque type, hairlines instead of boxes, labels in the margin, text links with ↗. Palettes: default (graphite + ink blue), `warm`, `nacht`, `salbei` — see [Theme families and palettes](#theme-families-and-palettes-base-v2) |
 | `theme-civic` | Civic | Government agencies, public institutions — USWDS-inspired, accessible, neutral |
 | `theme-fjord` | Fjord | Scandinavian SaaS products, engineering firms — minimal, cool blue-grey |
