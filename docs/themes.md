@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 20 ready-to-use themes (18 classic, 2 Base v2: `theme-editorial`, `theme-product`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 21 ready-to-use themes (18 classic, 3 Base v2: `theme-editorial`, `theme-product`, `theme-bold`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -54,6 +54,7 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 |---|---|---|
 | `theme-atelier` | Atelier | Fashion, luxury retail, haute couture — extreme reduction, black/white with gold accent |
 | `theme-atlas` | Atlas | B2B enterprise software, data platforms, ERP — IBM Carbon-inspired, precise, functional |
+| `theme-bold` | Bold | **Base v2.** Brands, campaigns, products, events — huge condensed uppercase headings (Oswald), full colour fields with light text (`tone: soft`/`alert`), thick black rules, square uppercase buttons, black footer. Palettes: default (cobalt), `signal` (red), `wald` (deep green) |
 | `theme-bloom` | Bloom | Wellness, beauty, spa — soft rose + sage, generous radii |
 | `theme-campus` | Campus | Universities, research institutes, academic journals |
 | `theme-editorial` | Editorial | **Base v2.** Practices, law firms, consulting, culture — large grotesque type, hairlines instead of boxes, labels in the margin, text links with ↗. Palettes: default (graphite + ink blue), `warm`, `nacht`, `salbei` — see [Theme families and palettes](#theme-families-and-palettes-base-v2) |
