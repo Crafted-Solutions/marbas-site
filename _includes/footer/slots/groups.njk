@@ -5,7 +5,11 @@
     {%- if group.title %}
     <p class="c-footer-group__title">{{ group.title | t(pageLanguage) }}</p>
     {%- endif %}
-    {%- if group.source == "tagCollection" %}
+    {%- if group.source == "text" %}
+    {%- if group.text %}
+    <div class="c-footer-group__text">{{ group.text | t(pageLanguage) | safe }}</div>
+    {%- endif %}
+    {%- elif group.source == "tagCollection" %}
     {%- set _groupPages = [] %}
     {%- for tag in group.tags %}
       {%- set _tagPages = collections[tag] | default([]) | filterCollectionByLanguage(pageLanguage) %}

@@ -148,8 +148,9 @@ with language codes instead of a plain string — a plain string still applies t
 
 The value for the page language is used (then its primary language, then `locale.defaultLanguage`,
 then the first entry). Supported for: `title`, `header.announcement` (text, label, href),
-`header.actions`, `header.utilityLinks`, `footer.companyName`, `footer.intro`, `footer.copyright`,
-`footer.groups` (title, links), `footer.bottomLinks`, `footer.ctaBlock`, `footer.socialLinks`
+`header.actions`, `header.utilityLinks`, `header.tagline`, `header.navLinks` (label, href, ariaLabel),
+`footer.companyName`, `footer.intro`, `footer.copyright`, `footer.bottomNote`,
+`footer.groups` (title, links, text), `footer.bottomLinks`, `footer.ctaBlock`, `footer.socialLinks`
 (label, ariaLabel, href), `seo.siteName`, `seo.defaultCopyright`, `seo.defaultImage.alt`.
 Links are not prefixed automatically — give per-language `href`s where the targets differ.
 
@@ -189,6 +190,28 @@ Controls the logo displayed in the header.
 | `showCompanyName` | boolean | `true` | Display the site title next to the logo. |
 | `navigationVariant` | string | `"default"` | Nav item style: `"default"`, `"compact"`, `"pill"`, `"underline"`. |
 | `sticky` | boolean | `false` | Fix the header to the top of the viewport while scrolling. |
+| `tagline` | string | — | Optional second line under the company name (e.g. "Internistische Rheumatologie · Berlin"). Shown when `showCompanyName` is on. |
+| `navLinks` | array | — | Optional extra menu entries after the page menu — see [`header.navLinks`](#headernavlinks). |
+
+### `header.navLinks`
+
+The page menu comes from front matter (see above). `navLinks` adds entries that are not pages:
+anchors on a one-pager, an external portal, a highlighted emergency link. Up to six.
+
+| Field | Type | Description |
+|---|---|---|
+| `label` | string | Menu text (entries without label or href are skipped) |
+| `href` | string | Target as written: `#kontakt`, `/#kontakt`, `https://…` (no language prefix is added) |
+| `tone` | string | `"alert"` = warning colour with ↗ (e.g. "Akute Beschwerden"); otherwise omit |
+| `external` | boolean | Open in a new tab (`target="_blank" rel="noopener noreferrer"`) |
+| `ariaLabel` | string | Optional accessible name |
+
+```json
+"navLinks": [
+  { "label": "Kontakt & Zeiten", "href": "#kontakt" },
+  { "label": "Akute Beschwerden", "href": "#akut", "tone": "alert" }
+]
+```
 
 ### `header.announcement`
 
@@ -273,6 +296,7 @@ Up to two call-to-action buttons shown on the right side of the header (only in 
 | `companyName` | string | value of `title` | Company name shown in the footer. |
 | `copyright` | string | `"© <year> <title>"` | Copyright line at the bottom of the footer. |
 | `intro` | string | `""` | Short intro text below the company name (used in `editorial` preset). |
+| `bottomNote` | string | — | Optional short note on the right of the bottom bar (e.g. "Rechtliche Pflichtangaben ergänzen"). HTML allowed. |
 
 ### `footer.contact`
 
@@ -303,6 +327,12 @@ Up to four link groups, each with a title and a list of links. Used in the `colu
 ```
 
 Groups also support `"source": "tagCollection"` to auto-populate from Eleventy tag collections (same syntax as `utilityLinks`).
+
+A column with **text instead of links** uses `"source": "text"` (short HTML, localizable):
+
+```json
+{ "title": "Für Fachkreise", "source": "text", "text": "<p>Informationen für zuweisende Ärzt:innen folgen.</p>" }
+```
 
 ### `footer.socialLinks`
 

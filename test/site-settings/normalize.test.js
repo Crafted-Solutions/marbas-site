@@ -222,3 +222,48 @@ describe('normalizeSiteSettings — theme migration (Task 90)', () => {
     assert.equal(normalized.theme, undefined, 'theme must be dropped');
   });
 });
+
+describe('normalizeSiteSettings — Base v2 header/footer fields (Task 129)', () => {
+  it('does not add the new fields when the source has none', () => {
+    const n = normalizeSiteSettings({ title: 'X' }, '/project');
+    assert.equal('tagline' in n.header, false);
+    assert.equal('navLinks' in n.header, false);
+    assert.equal('bottomNote' in n.footer, false);
+  });
+
+  it('normalizes tagline, navLinks (tone whitelist, max 6) and bottomNote', () => {
+    const n = normalizeSiteSettings({
+      title: 'X',
+      header: {
+        tagline: { de: ' Rheumatologie ', en: 'Rheumatology' },
+        navLinks: [
+          { label: 'Kontakt', href: '#kontakt' },
+          { label: 'Akut', href: '#akut', tone: 'alert' },
+          { label: 'Extern', href: 'https://example.org', tone: 'loud', external: true },
+          ...Array.from({ length: 5 }, (_, i) => ({ label: `L${i}`, href: `#l${i}` }))
+        ]
+      },
+      footer: { bottomNote: ' Hinweis ' }
+    }, '/project');
+    assert.deepEqual(n.header.tagline, { de: 'Rheumatologie', en: 'Rheumatology' });
+    assert.equal(n.header.navLinks.length, 6);
+    assert.deepEqual(n.header.navLinks[0], { label: 'Kontakt', href: '#kontakt' });
+    assert.equal(n.header.navLinks[1].tone, 'alert');
+    assert.equal('tone' in n.header.navLinks[2], false, 'unknown tone dropped');
+    assert.equal(n.header.navLinks[2].external, true);
+    assert.equal(n.footer.bottomNote, 'Hinweis');
+  });
+
+  it('keeps a text column in footer.groups', () => {
+    const n = normalizeSiteSettings({
+      title: 'X',
+      footer: { groups: [{ title: 'Für Fachkreise', source: 'text', text: '<p>Info</p>', links: [{ label: 'x', href: '/' }] }] }
+    }, '/project');
+    assert.deepEqual(n.footer.groups[0], { title: 'Für Fachkreise', source: 'text', text: '<p>Info</p>' });
+  });
+
+  it('turns a non-array navLinks into an empty list', () => {
+    const n = normalizeSiteSettings({ title: 'X', header: { navLinks: 'nope' } }, '/project');
+    assert.deepEqual(n.header.navLinks, []);
+  });
+});

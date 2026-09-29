@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Base v2 building blocks** (built-ins): `Intro` (editorial opening, provides the `<h1>`), `Notice`, `LinkList`
   (numbered rows), `Split` (text + list or big numbers), `Contact` (contact data + opening hours) — all with the section
   frame fields `label` and `tone`. Also usable in classic themes (bands stay inside the boxed page).
+- **Header/footer from `site.json` without ejecting:** `header.tagline` (line under the name), `header.navLinks`
+  (anchor/external menu entries, `tone: "alert"` for a highlighted link), footer columns with text
+  (`groups[].source: "text"`) and `footer.bottomNote`. In v2 themes buttons (`.c-btn`) render as text links with ↗;
+  `.c-link-arrow` is available everywhere. Classic themes keep their buttons.
 
 ### Fixed
 

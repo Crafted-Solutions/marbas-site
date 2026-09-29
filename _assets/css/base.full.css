@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-28T19:49:37.809Z */
+/* Build time: 2026-09-28T20:58:52.066Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -1189,6 +1189,31 @@ hr {
   white-space: nowrap;
 }
 
+/* Marke mit Unterzeile (site.header.tagline) */
+.c-brand__text {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.c-brand__tagline {
+  margin-top: 0.3rem;
+  color: var(--t-muted);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Menülink mit Warnton (site.header.navLinks[].tone = "alert") */
+/* a.… schlägt die Altlast `.c-nav a { color }` (layout/page.css) */
+.c-nav a.c-nav__item--alert {
+  color: var(--t-danger, #b42318);
+}
+
+.c-nav__item--alert::after {
+  content: " ↗";
+}
+
 /* ---------- Navigation - Base ---------- */
 
 .c-nav {
@@ -1972,6 +1997,24 @@ hr {
   flex-wrap: wrap;
 }
 
+/* Fußzeilen-Hinweis rechts (site.footer.bottomNote) */
+.c-footer-bottom__note {
+  margin: 0;
+  color: color-mix(in oklab, var(--t-footer-link, var(--t-muted)) 88%, transparent);
+}
+
+/* Footer-Spalte mit Text statt Links (footer.groups[].source = "text") */
+.c-footer-group__text {
+  color: var(--t-footer-link, var(--t-muted));
+  font-size: var(--text--1);
+  line-height: 1.55;
+  max-width: 22rem;
+}
+
+.c-footer-group__text p {
+  margin: 0 0 0.5rem;
+}
+
 .c-footer-bottom__copyright {
   color: color-mix(in oklab, var(--t-footer-link, var(--t-muted)) 88%, transparent);
 }
@@ -2612,6 +2655,7 @@ hr {
   --t-nav-item-hover-color: var(--p-accent);
   --t-nav-item-active-bg: transparent;
   --t-nav-item-active-color: var(--p-accent);
+  --t-danger: var(--p-alert);
   --t-footer-bg: color-mix(in oklab, var(--p-accent-soft) 60%, var(--p-paper));
   --t-footer-border: var(--p-line);
   --t-footer-heading: var(--p-ink);
@@ -2807,4 +2851,41 @@ a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; 
 }
 @media (prefers-reduced-motion: reduce) {
   .c-v2-rows__row { transition: none; }
+}
+
+/* v2/links */
+/* ============================================================
+   Base v2 — Links und CTAs (Standardform = Editorial)
+   .c-link-arrow: Textlink mit ↗ als eigenständige Klasse (auch in classic nutzbar).
+   In v2 werden .c-btn (Hero, CtaSection, TextMedia, Footer-CTA, Header-Actions) zu solchen Textlinks.
+   Ein v2-Theme, das Buttons will (z.B. Bold), setzt eigene `.c-page--v2 .c-btn { … }`-Regeln im Theme.
+   ============================================================ */
+
+.c-link-arrow,
+.c-page--v2 .c-btn {
+  display: inline-flex; align-items: center; gap: .8rem; padding: .35rem 0; min-height: 0;
+  border: 0; border-bottom: 1px solid currentColor; border-radius: 0; background: none; box-shadow: none;
+  color: var(--cmp-link, var(--t-accent, #1f6feb)); font-size: .96rem; font-weight: 700; text-decoration: none;
+  transform: none;
+}
+.c-link-arrow::after,
+.c-page--v2 .c-btn::after { content: "↗"; font-size: 1.16rem; line-height: 1; transition: transform .2s ease; }
+.c-link-arrow:hover,
+.c-page--v2 .c-btn:hover { transform: none; background: none; border-color: currentColor; }
+.c-link-arrow:hover::after,
+.c-page--v2 .c-btn:hover::after { transform: translate(2px, -2px); }
+/* Sekundär/Outline: Text statt Akzent */
+.c-page--v2 .c-btn--secondary,
+.c-page--v2 .c-btn--outline { color: var(--cmp-text, var(--p-ink)); }
+.c-page--v2 .c-v2--alert .c-btn { color: var(--p-alert); }
+
+/* Menü: Altlast `.c-nav a { color: muted }` (0,1,1) schlägt .c-nav__item — in v2 zählt die Header-Farbe */
+.c-page--v2 .c-nav a.c-nav__item { color: var(--t-nav-item-color); }
+.c-page--v2 .c-nav a.c-nav__item:hover { color: var(--t-nav-item-hover-color); }
+.c-page--v2 .c-nav a.c-nav__item--active,
+.c-page--v2 .c-nav .c-nav__entry--active-trail > .c-nav__primary > a.c-nav__item { color: var(--t-nav-item-active-color); }
+.c-page--v2 .c-nav a.c-nav__item--alert { color: var(--t-danger); }
+
+@media (prefers-reduced-motion: reduce) {
+  .c-link-arrow::after, .c-page--v2 .c-btn::after { transition: none; }
 }
