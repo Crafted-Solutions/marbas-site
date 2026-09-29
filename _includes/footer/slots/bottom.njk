@@ -33,5 +33,9 @@
       </ul>
     </nav>
     {%- endif %}
+    {%- set _bottomNote = site.footer.bottomNote | t(pageLanguage) %}
+    {%- if _bottomNote %}
+    <p class="c-footer-bottom__note">{{ _bottomNote | safe }}</p>
+    {%- endif %}
   </div>
 </div>

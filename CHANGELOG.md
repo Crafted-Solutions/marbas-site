@@ -7,6 +7,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-09-29
+
+### Added
+
+- **Base v2 foundations:** theme families `classic` (the look up to 0.14, unchanged) and `v2` (`@family v2` in the theme).
+  v2 pages are no longer boxed — sections run as full-width bands with the content in a measure; a section frame
+  (`.c-v2`, label rail, `tone` paper/soft/white/alert, hairlines), form tokens for display typography and text links
+  with an arrow. `<body>` gets `c-page--v2` / `c-page--classic`.
+- **Palettes:** v2 themes define 8 named colours (`--p-*`) and optional presets; a project picks a preset
+  (`theme.palette`) or overrides single colours (`theme.colors`) in `marbas-project.json`. Invalid values are rejected,
+  weak contrasts are reported by the build and `doctor`.
+- **Base v2 building blocks** (built-ins): `Intro` (editorial opening, provides the `<h1>`), `Notice`, `LinkList`
+  (numbered rows), `Split` (text + list or big numbers), `Contact` (contact data + opening hours) — all with the section
+  frame fields `label` and `tone`. Also usable in classic themes (bands stay inside the boxed page).
+- **Header/footer from `site.json` without ejecting:** `header.tagline` (line under the name), `header.navLinks`
+  (anchor/external menu entries, `tone: "alert"` for a highlighted link), footer columns with text
+  (`groups[].source: "text"`) and `footer.bottomNote`. In v2 themes buttons (`.c-btn`) render as text links with ↗;
+  `.c-link-arrow` is available everywhere. Classic themes keep their buttons.
+- **`theme-editorial`** — the first Base v2 library theme: editorial form (large grotesque type, hairlines, labels in
+  the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
+  `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
+  is unchanged (classic).
+- **`theme-druckwerk`** — sixth Base v2 library theme, a risograph/zine look: two print colours on natural paper with
+  grain (off with `prefers-reduced-transparency`), per-line overprint bars behind headings, duotone intro image with
+  offset, rotated stamp labels in the side rail, sticker cards, tape notes, label buttons. Print colours are theme-internal
+  decoration only (fluorescent colours never carry text). Palettes: default pink + blue, `gruen-orange`, `gelb-violett` (all AA).
+- **`theme-minimal-luxe`** — fifth Base v2 library theme: strong reduction, hairlines, light serif in large sizes
+  (Cormorant Garamond, Jost), centred section heads, full-bleed intro image (no horizontal scroll, stays in its column
+  in multi-column layouts), letter-spaced caps for labels, menu and links. Palettes: default ivory + bronze, `noir`,
+  `stein` (all AA).
+- **`theme-warm`** — fourth Base v2 library theme: serif headings with italics (Source Serif 4, Nunito Sans), cream
+  paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy top edge on colour bands (stays
+  inside its column in multi-column layouts), pill buttons. Palettes: default terracotta, `salbei`, `beere` (all AA).
+- **`theme-bold`** — third Base v2 library theme: huge condensed uppercase headings (Oswald), `tone: soft` and `alert`
+  as full colour fields with light text (the palette is remapped inside the band), thick black rules, square uppercase
+  buttons with offset shadow, black footer. Palettes: default cobalt, `signal`, `wald` (all AA, inverted pairs included).
+- **`theme-product`** — second Base v2 library theme, deliberately the opposite of Editorial: floating glass header
+  with underlined active item, pill labels above titles, card grid, check-mark lists, numbers and contact as cards,
+  solid buttons, dark footer; Plus Jakarta Sans. Palettes: default indigo on white, `nacht` (navy + gold), `petrol` (all AA).
+- **Theme decides the layout (`@layout`)**: v2 themes declare how the building blocks are arranged — section label
+  above the title or as a side column (`rail`), Intro image right/left/below (`intro`), LinkList as cards or rows,
+  Split in columns or stacked, Notice as box or band, CTAs as buttons or text links. Defaults for themes without
+  `@layout`: label above the title, cards, boxes, buttons. `theme-editorial` declares its current arrangement and looks
+  unchanged. Body gets `c-l-*` classes; an ejected `base.njk` needs `{{ marbasTheme.layoutClasses }}` (doctor warns).
+- Palette value **`surface`** (optional, default `#fff`) for the `tone: white` band; the contrast check now also tests
+  text on it, so a dark palette without `surface` is reported instead of rendering light text on white.
+
+### Fixed
+
+- Base v2: the narrow title widths (`Split layout: title` 9ch, LinkList/section title 12ch) were a base rule and
+  squeezed titles in every form (e.g. five lines in Product). They now belong to `theme-editorial` only; other forms
+  use the full column. Projects with an ejected/own Editorial theme add the two rules themselves (see theme-editorial.css).
+- Classic built-ins (Hero, Cards, TextMedia …) and custom components in pages with a Base v2 theme ran edge to edge
+  without spacing (the v2 page is unboxed). They now sit in the page measure with section spacing; in multi-column
+  layouts they fill their column.
+- v2 themes with multi-column page layouts (`content_2col_*`, `content_3col_*`): bands ran across the side column
+  and past the window edge, the page title sat at the window edge. The column grid now stays in the page measure,
+  bands stay in their column, and the building blocks adapt to their column width (container queries).
+- SVG images (`image.src: *.svg`) are no longer rasterised to WebP/JPEG variants — they are copied as-is and
+  rendered as a single `<img src="….svg">` (sharp at any size). Projects that linked the generated
+  `/images/<id>-<w>w.webp` files of an SVG directly must link the SVG instead.
+- Pages without a hero: the page title `<h1>` was rendered with the component heading size
+  (`--text-2`) and came out smaller than the section headings below it (Cards headings use `--text-3`).
+  It now uses `.c-page-title` (`--text-4`, like any `h1`). **Visible change:** larger titles on sub pages.
+- Cards `columns: 4` silently fell back to two columns — the grid had classes for 1–3 only. The base now
+  provides `c-cols-lg-4` / `c-cols-xl-4`; values outside 1–4 are clamped.
+
 ## [0.14.0] - 2026-09-28
 
 ### Added

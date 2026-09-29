@@ -1,0 +1,24 @@
+{#
+  Intro (Base v2) — Editorial-Einstieg: Kennung, H1 (liefert die Seiten-H1), Lead, Nebentext, Textlinks, Bild.
+  Nur in Placeholder_Hero. Felder: id, label, headline, lead, text (html), links[] {label, href}, image, tone.
+#}
+{% set tone = data.tone or 'paper' %}
+<section id="{{ data.id }}" class="c-v2 c-v2--{{ tone }} c-v2-intro">
+  <div class="c-v2__wrap c-v2-intro__grid{% if not (data.image and data.image.src) %} c-v2-intro__grid--text{% endif %}">
+    <div class="c-v2-intro__copy">
+      {% if data.label %}<p class="c-v2__label">{{ data.label }}</p>{% endif %}
+      {% if data.headline %}<h1 class="c-v2-intro__title">{{ data.headline | safe }}</h1>{% endif %}
+      {% if data.lead %}<p class="c-v2-intro__lead">{{ data.lead }}</p>{% endif %}
+      {% if data.text %}<div class="c-v2-intro__minor">{{ data.text | safe }}</div>{% endif %}
+      {% if data.links and (data.links | length) %}
+      <div class="c-v2__links">
+        {% for link in data.links %}{% if link.href %}<a class="c-v2-link" href="{{ link.href | locale_url }}">{{ link.label }}</a>{% endif %}{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% if data.image and data.image.src %}
+    {% set img = data.image | processLocalImage({"sizes": [12,12,12,6,6,6], "placeholder_sizes": placeholder_sizes}) %}
+    <figure class="c-v2-intro__media">{{ img.html | safe }}</figure>
+    {% endif %}
+  </div>
+</section>

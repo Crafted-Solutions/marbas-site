@@ -146,6 +146,12 @@ export async function runPipeline({
   const themeResult = copyThemeToOutput({ projectRoot: absProject, libRoot: absLib, environment: env, config });
   if (themeResult.copied) {
     onLog(`[build] Theme: ${themeResult.themeId}`);
+    for (const message of [...(themeResult.palette?.errors || []), ...(themeResult.palette?.warnings || [])]) {
+      onLog(`[build] Warning: ${message}`);
+    }
+    for (const c of themeResult.palette?.contrast || []) {
+      onLog(`[build] Warning: Palette-Kontrast ${c.label}: ${c.ratio}:1 (${c.fg} auf ${c.bg}) — unter 4.5:1`);
+    }
     for (const font of themeResult.fonts?.missing || []) {
       onLog(`[build] Warning: theme references /_assets/fonts/${font}, but the file exists neither in the project (_assets/fonts/) nor in the library`);
     }

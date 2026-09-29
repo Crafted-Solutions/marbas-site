@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 18 ready-to-use themes. Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 24 ready-to-use themes (18 classic, 6 Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -54,8 +54,11 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 |---|---|---|
 | `theme-atelier` | Atelier | Fashion, luxury retail, haute couture — extreme reduction, black/white with gold accent |
 | `theme-atlas` | Atlas | B2B enterprise software, data platforms, ERP — IBM Carbon-inspired, precise, functional |
+| `theme-bold` | Bold | **Base v2.** Brands, campaigns, products, events — huge condensed uppercase headings (Oswald), full colour fields with light text (`tone: soft`/`alert`), thick black rules, square uppercase buttons, black footer. Palettes: default (cobalt), `signal` (red), `wald` (deep green) |
 | `theme-bloom` | Bloom | Wellness, beauty, spa — soft rose + sage, generous radii |
 | `theme-campus` | Campus | Universities, research institutes, academic journals |
+| `theme-druckwerk` | Druckwerk | **Base v2.** Culture, studios, cafés, bookshops, festivals — risograph look: two print colours on natural paper with grain, overprint bars behind headings, duotone intro image with misregistration offset, stamp labels in the margin, sticker cards, tape notes, label buttons (Jost, IBM Plex Sans/Mono). The duotone recolours every intro image. Palettes: default (pink + blue), `gruen-orange`, `gelb-violett` |
+| `theme-editorial` | Editorial | **Base v2.** Practices, law firms, consulting, culture — large grotesque type, hairlines instead of boxes, labels in the margin, text links with ↗. Palettes: default (graphite + ink blue), `warm`, `nacht`, `salbei` — see [Theme families and palettes](#theme-families-and-palettes-base-v2) |
 | `theme-civic` | Civic | Government agencies, public institutions — USWDS-inspired, accessible, neutral |
 | `theme-fjord` | Fjord | Scandinavian SaaS products, engineering firms — minimal, cool blue-grey |
 | `theme-forum` | Forum | eLearning platforms, online courses — friendly violet, generous radii |
@@ -63,12 +66,15 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 | `theme-klinik` | Klinik | Medical practices, clinics, telehealth — clinical, calming cyan-teal |
 | `theme-lumina` | Lumina | Hotels, travel booking, hospitality — warm amber-terracotta |
 | `theme-maison` | Maison | Real estate, architecture, premium projects — warm neutrals, editorial serif |
+| `theme-product` | Product | **Base v2.** Software, platforms, marketplaces, apps — floating glass header, cards with soft shadows, pill labels, solid buttons, dark footer. Plus Jakarta Sans. Palettes: default (indigo on white), `nacht` (navy + gold), `petrol` |
+| `theme-minimal-luxe` | Minimal-Luxe | **Base v2.** Architecture, design, fashion, manufactories, hotels — strong reduction, hairlines, light serif in large sizes (Cormorant Garamond + Jost), centred section heads, full-bleed intro image, letter-spaced caps for labels/menu/links. Palettes: default (ivory + bronze), `noir`, `stein` |
 | `theme-praxis` | Praxis | Law firms, tax advisory, professional services |
 | `theme-signal` | Signal | Developer tools, CLI products, API documentation |
 | `theme-slate` | Slate | SaaS products, tech marketing — clean slate-grey, modern blue |
 | `theme-studio` | Studio | Creative agencies, design studios, portfolios — maximum reduction, black on off-white |
 | `theme-tempo` | Tempo | Sports clubs, fitness brands — dark-first, high contrast, orange energy |
 | `theme-terra` | Terra | Restaurants, farm-to-table, artisan food — earthy sienna tones |
+| `theme-warm` | Warm | **Base v2.** Crafts, food, farm shops, wellness — serif headings with italics (Source Serif 4 + Nunito Sans), cream paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy band edges, pill buttons. Palettes: default (terracotta), `salbei` (herbs), `beere` (berry) |
 | `theme-verdant` | Verdant | NGOs, environmental organisations, sustainability — forest green, organic |
 
 ---
@@ -163,6 +169,82 @@ The **built-in themes ship their fonts** (self-hosted woff2, SIL Open Font Licen
 `_assets/fonts/`; a file with the same path in your project's `_assets/fonts/` takes precedence.
 
 ---
+
+## Theme families and palettes (Base v2)
+
+Themes belong to one of two families:
+
+| Family | Look | Colours |
+|---|---|---|
+| `classic` | the boxed look of all themes up to 0.14 — unchanged | set in the theme file |
+| `v2` | full-width bands, section frame (label rail, tone), display typography, text links | **palette** of 8 named colours |
+
+A theme is `v2` when its CSS declares `@family v2` in a comment; everything else is `classic`. The page gets
+`<body class="c-page c-page--v2">` (or `--classic`), and all Base v2 rules are scoped to it — classic sites are not affected.
+
+**Theme = form, palette = colours.** A v2 theme defines the form (typography, spacing, lines, section frame, links) and
+ships its **default palette** plus optional **presets**:
+
+```css
+/* theme-editorial.css — @family v2 */
+:root { --p-paper: #f7f7f4; --p-ink: #1d2127; --p-muted: #555c66; --p-line: #d8dbe0;
+        --p-accent: #27418c; --p-accent-soft: #e7ebf5; --p-alert: #9a2b2b; --p-alert-soft: #f7eceb; }
+:root[data-palette="nacht"] { --p-paper: #12172a; --p-ink: #ecebe4; /* … */ --p-surface: #1a2038; }
+```
+
+`--p-surface` is optional (background of the `tone: white` band, default `#fff`). **Dark palettes must set it** —
+otherwise light text sits on a white band; the contrast check reports this as "Text auf weißem Band (surface)".
+
+`init --theme=theme-editorial --starter` creates starter pages built from the Base v2 building blocks (Intro, Notice,
+LinkList, Split, Contact); without `--theme` new projects stay classic.
+
+All colour tokens (`--t-*`) are derived from the palette. A project overrides colours only where it wants to, in
+`marbas-project.json` — the theme file stays untouched:
+
+```json
+"theme": {
+  "id": "theme-editorial",
+  "palette": "nacht",
+  "colors": { "accent": "#e0c070" }
+}
+```
+
+- `palette` picks a preset of the theme (unknown names fall back to the default palette with a warning).
+- `colors` overrides single values; allowed names: `paper`, `ink`, `muted`, `line`, `accent`, `accent-soft`, `alert`,
+  `alert-soft`, `surface`; allowed values: `#rgb`, `#rrggbb` (with alpha) or `rgb(…)`. Anything else is rejected.
+- The build and `marbas-site doctor` warn when a text/background pair of the resulting palette is below WCAG AA (4.5:1).
+- `palette`/`colors` have no effect on classic themes (warning).
+
+### Layout: the theme decides how the blocks are arranged
+
+A v2 theme is **form = layout + typography + details**, not just colours. It declares the arrangement of the building
+blocks in a comment next to `@family`:
+
+```css
+/* theme-editorial.css
+   @family v2
+   @layout rail=side intro=split linklist=rows split=columns notice=band cta=link */
+```
+
+| Key | Values (first = default) | Effect |
+|---|---|---|
+| `rail` | `top` · `side` | Section label as a line above the title · as a column on the left (editorial) |
+| `intro` | `split` · `reverse` · `stacked` | Text left, image right · image left · text above, image full width below |
+| `linklist` | `cards` · `rows` | Card grid · numbered rows with hairlines |
+| `split` | `columns` · `stacked` | Two columns · one below the other |
+| `notice` | `box` · `band` | Tinted box · thin band between hairlines |
+| `cta` | `button` · `link` | Buttons (also for the text links of the blocks) · text links with ↗ (also for `.c-btn`) |
+
+Missing keys use the default; unknown keys or values are reported by the build and `doctor`. The resolved layout
+becomes classes on `<body>` (`c-l-rail-side c-l-intro-split …`); the base CSS hangs the variants on them. Content does
+not choose the layout — the theme does.
+
+**Column layouts stay flexible.** The blocks are size containers: they adapt to the width of **their column**, not
+the window. In `content_2col_*` / `content_3col_*` pages bands stay inside their column and a Split or Intro in a narrow
+column stacks by itself; the column grid stays inside the page measure.
+
+Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2--{tone}">` with `tone` `paper`
+(default), `soft`, `white` or `alert`, a `.c-v2__label` in the left rail and `.c-v2-link` for text links with an arrow.
 
 ## CSS custom properties reference
 

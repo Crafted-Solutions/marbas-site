@@ -12,7 +12,10 @@
     {% endif %}
 
     {# Cards grid #}
-    {% set colClass = "c-cols-lg-" + (data.columns | default(3)) %}
+    {# columns 1–4 (the grid has no classes beyond 4; out-of-range values are clamped) #}
+    {% set columnCount = (data.columns | default(3) | int) or 3 %}
+    {% set columnCount = 4 if columnCount > 4 else (1 if columnCount < 1 else columnCount) %}
+    {% set colClass = "c-cols-lg-" + columnCount %}
     <div class="c-grid c-grid--cards c-cols-1 c-cols-md-2 {{ colClass }}">
         {% for card in data.cards %}
         {% set cardImageData = card.image | processLocalImage({"sizes":[12,12,6,4,4,4], "placeholder_sizes":placeholder_sizes}) if card.image %}

@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-28T12:46:04.575Z */
+/* Build time: 2026-09-29T12:04:24.551Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -578,7 +578,7 @@ hr {
 }
 
 /* components/grid */
-/* Responsive grids (1–3 columns) */
+/* Responsive grids (1–3 columns; lg/xl up to 4) */
 .c-grid { display: grid; gap: clamp(1rem, 2.5vw, 2rem) clamp(0.75rem, 2vw, 1.5rem); align-items: start; }
 .c-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 .c-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -597,11 +597,13 @@ hr {
   .c-cols-lg-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
   .c-cols-lg-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .c-cols-lg-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .c-cols-lg-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 @media (min-width: 75rem) {
   .c-cols-xl-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
   .c-cols-xl-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .c-cols-xl-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .c-cols-xl-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 .c-span-2 { grid-column: span 2; }
 .c-span-3 { grid-column: span 3; }
@@ -660,6 +662,8 @@ hr {
   font-size: 0.78rem;
 }
 .c-component__headline { font-size: var(--text-2); line-height: var(--lh-heading); }
+/* Page title as <h1> on pages without a hero (base.njk) — must outrank section headings (h2 = --text-3) */
+.c-page-title { font-size: var(--text-4); line-height: var(--lh-heading); }
 .c-component__text { color: color-mix(in oklab, var(--cmp-text) 88%, var(--cmp-muted)); }
 .c-component__text :where(p, ul, ol) { margin-top: var(--space-3); max-width: var(--measure); }
 .c-component__text :where(p:first-child, ul:first-child, ol:first-child) { margin-top: 0; }
@@ -1183,6 +1187,31 @@ hr {
 
 .c-brand__name {
   white-space: nowrap;
+}
+
+/* Marke mit Unterzeile (site.header.tagline) */
+.c-brand__text {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.c-brand__tagline {
+  margin-top: 0.3rem;
+  color: var(--t-muted);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Menülink mit Warnton (site.header.navLinks[].tone = "alert") */
+/* a.… schlägt die Altlast `.c-nav a { color }` (layout/page.css) */
+.c-nav a.c-nav__item--alert {
+  color: var(--t-danger, #b42318);
+}
+
+.c-nav__item--alert::after {
+  content: " ↗";
 }
 
 /* ---------- Navigation - Base ---------- */
@@ -1968,6 +1997,24 @@ hr {
   flex-wrap: wrap;
 }
 
+/* Fußzeilen-Hinweis rechts (site.footer.bottomNote) */
+.c-footer-bottom__note {
+  margin: 0;
+  color: color-mix(in oklab, var(--t-footer-link, var(--t-muted)) 88%, transparent);
+}
+
+/* Footer-Spalte mit Text statt Links (footer.groups[].source = "text") */
+.c-footer-group__text {
+  color: var(--t-footer-link, var(--t-muted));
+  font-size: var(--text--1);
+  line-height: 1.55;
+  max-width: 22rem;
+}
+
+.c-footer-group__text p {
+  margin: 0 0 0.5rem;
+}
+
 .c-footer-bottom__copyright {
   color: color-mix(in oklab, var(--t-footer-link, var(--t-muted)) 88%, transparent);
 }
@@ -2565,4 +2612,351 @@ hr {
 
 .u-cluster-lg {
   gap: var(--space-5);
+}
+
+/* v2/tokens */
+/* ============================================================
+   Base v2 — Palette und Form-Tokens (nur für Themes der Familie v2, <body class="c-page--v2">)
+   Theme = Form (fest), Palette = Farben: 8 benannte Werte --p-*, alle Farb-Tokens werden daraus
+   abgeleitet. Ein v2-Theme setzt seine Standard-Palette (+ Presets per :root[data-palette="…"]),
+   marbas-project.json → theme.colors überschreibt einzelne Werte (Build hängt einen Block an).
+   ============================================================ */
+:root {
+  /* neutrale Standard-Palette, falls ein v2-Theme keine eigene setzt */
+  --p-paper: #fafaf8;
+  --p-ink: #1f2421;
+  --p-muted: #5a625e;
+  --p-line: #d7ddd9;
+  --p-accent: #2d5a52;
+  --p-accent-soft: #e9efec;
+  --p-alert: #8a3530;
+  --p-alert-soft: #f7ecea;
+}
+
+.c-page--v2 {
+  /* Farben: aus der Palette abgeleitet */
+  --t-bg: var(--p-paper);
+  --t-surface: var(--p-paper);
+  --t-text: var(--p-ink);
+  --t-muted: var(--p-muted);
+  --t-border: var(--p-line);
+  --t-accent: var(--p-accent);
+  --t-on-accent: var(--p-paper);
+  --t-surface-invert: var(--p-ink);
+  --t-text-invert: var(--p-paper);
+  --t-muted-invert: color-mix(in oklab, var(--p-paper) 70%, var(--p-ink));
+  --t-border-invert: color-mix(in oklab, var(--p-paper) 25%, var(--p-ink));
+  --t-accent-invert: color-mix(in oklab, var(--p-accent) 35%, var(--p-paper));
+  --t-header-bg: var(--p-paper);
+  --t-header-border: var(--p-line);
+  --t-header-shadow: none;
+  --t-nav-item-color: var(--p-ink);
+  --t-nav-item-hover-bg: transparent;
+  --t-nav-item-hover-color: var(--p-accent);
+  --t-nav-item-active-bg: transparent;
+  --t-nav-item-active-color: var(--p-accent);
+  --t-danger: var(--p-alert);
+  --t-footer-bg: color-mix(in oklab, var(--p-accent-soft) 60%, var(--p-paper));
+  --t-footer-border: var(--p-line);
+  --t-footer-heading: var(--p-ink);
+  --t-footer-link: var(--p-ink);
+  --t-footer-link-hover: var(--p-accent);
+
+  /* Form: Standard = Editorial; ein v2-Theme überschreibt sie in einem eigenen .c-page--v2-Block */
+  --v2-measure: 73rem;
+  --v2-gutter: 3rem;
+  --v2-rail: 13rem;
+  --v2-gap: 3rem;
+  --v2-section-pad: clamp(4.8rem, 9vw, 8.8rem);
+  --v2-display-1: clamp(3.4rem, 7vw, 7.1rem);
+  --v2-display-2: clamp(2.45rem, 5vw, 4.6rem);
+  --v2-display-3: clamp(1.25rem, 2vw, 1.65rem);
+  --v2-heading-weight: 500;
+  --v2-heading-tracking: -.045em;
+  --v2-label-size: .76rem;
+  --v2-label-tracking: .11em;
+
+  background: var(--p-paper);
+  color: var(--p-ink);
+}
+
+.c-page--v2 :where(h1, h2, h3) { font-weight: var(--v2-heading-weight); letter-spacing: var(--v2-heading-tracking); line-height: 1.08; }
+/* :where() hält die Spezifität bei 0,0,1 — Komponenten-Farben (Navigation, Footer, Buttons) gewinnen */
+:where(.c-page--v2) a { color: var(--p-accent); text-underline-offset: .22em; text-decoration-thickness: 1px; }
+:where(.c-page--v2) a:hover { text-decoration-thickness: 2px; }
+/* Richtext: Absätze mit Abstand (classic setzt p auf 0) */
+/* :where() → Spezifität 0,0,1: Abstände der Bausteine (.c-v2__note, .c-v2__label …) gewinnen */
+:where(.c-page--v2 .c-v2) p { margin: 0 0 1rem; }
+:where(.c-page--v2 .c-v2) p:last-child { margin-bottom: 0; }
+
+/* v2/layout */
+/* Base v2 — Seite nicht boxen: Bänder laufen über die volle Breite, Inhalte bleiben im Maß.
+   classic (ohne .c-page--v2) bleibt unverändert boxed. */
+.c-page--v2 > .c-container,
+.c-page--v2 .c-main > .c-container { width: 100%; max-width: none; padding: 0; }
+.c-page--v2 .c-main .c-section,
+.c-page--v2 .c-main .c-stream { padding: 0; margin: 0; gap: 0; }
+.c-page--v2 .c-v2__wrap,
+.c-page--v2 .c-header__inner,
+.c-page--v2 .c-footer__inner,
+.c-page--v2 .c-footer__bottom-inner { width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); max-width: none; margin-inline: auto; padding-inline: 0; }
+.c-page--v2 .c-header { border-bottom: 1px solid var(--p-line); }
+/* Seitentitel (Seiten ohne Intro/Hero) im Maß statt am Fensterrand */
+.c-page--v2 .c-main .c-section--top-only { width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); margin: 0 auto; padding-top: clamp(2.5rem, 5vw, 4.5rem); }
+.c-page--v2 .c-main .c-section--top-only .c-component { padding: 0; background: none; border: 0; box-shadow: none; }
+
+/* Mehrspaltige Seiten-Layouts (content_2col_*, content_3col_*): Spaltenraster im Maß, Bausteine bleiben in ihrer
+   Spalte — Bänder füllen nur die Spalte (keine 100vw), Inhalt mit Innenabstand auf getönten Flächen. */
+.c-page--v2 .c-main .c-section > .c-grid {
+  width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); margin-inline: auto;
+  padding-block: clamp(2rem, 4vw, 3.5rem); gap: var(--v2-gap);
+}
+.c-page--v2 .c-grid .c-v2::before { left: 0; width: 100%; margin-left: 0; }
+.c-page--v2 .c-grid .c-v2__wrap { width: 100%; }
+.c-page--v2 .c-grid .c-v2:is(.c-v2--soft, .c-v2--white, .c-v2--alert) { padding-inline: clamp(1rem, 3cqi, 2rem); }
+.c-page--v2 .c-grid .c-stream { display: flex; flex-direction: column; gap: 1.5rem; }
+.c-page--v2 .c-grid .c-v2-section { padding-block: clamp(1.5rem, 6cqi, 4rem); }
+
+/* Klassische Built-ins (Cards, TextMedia, Hero …) und eigene Komponenten in v2-Seiten: im Maß mit Abstand.
+   v2-Bausteine (.c-v2) bringen ihren eigenen Rahmen mit; in Spalten-Layouts füllen alle die Spalte. */
+.c-page--v2 .c-main .c-section > :not(.c-v2, .c-stream, .c-grid),
+.c-page--v2 .c-main .c-section > .c-stream > :not(.c-v2) {
+  width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); margin: clamp(2.5rem, 5vw, 4.5rem) auto 0;
+}
+.c-page--v2 .c-main .c-section > .c-stream > :not(.c-v2):last-child { margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.c-page--v2 .c-main .c-grid .c-stream > :not(.c-v2) { width: auto; margin: 0; }
+
+@media (max-width: 760px) {
+  .c-page--v2 { --v2-gutter: 2rem; }
+}
+
+/* v2/section */
+/* Base v2 — Section-Rahmen für alle v2-Bausteine.
+   Markup: <section class="c-v2 c-v2--{tone}"><div class="c-v2__wrap c-v2__frame"><p class="c-v2__label">…</p><div>…</div></div></section>
+   tone: paper (Standard) | soft | white | alert — Band über die volle Fensterbreite, Haarlinie unten.
+   Kennung (Theme-Layout, body-Klasse): c-l-rail-top (Standard) = Dachzeile über dem Titel; c-l-rail-side = Spalte links (Editorial). */
+/* container: Bausteine richten sich nach der Breite ihrer Spalte (Seiten-Layouts mit Seitenspalten), nicht nach dem Fenster */
+.c-v2 { position: relative; isolation: isolate; container: v2 / inline-size; }
+.c-v2::before {
+  content: ""; position: absolute; inset: 0; left: 50%; width: 100vw; margin-left: -50vw; z-index: -1;
+  background: var(--v2-band, transparent);
+  border-bottom: 1px solid var(--v2-band-line, var(--p-line));
+}
+.c-v2--soft  { --v2-band: var(--p-accent-soft); }
+.c-v2--white { --v2-band: var(--p-surface, #fff); }  /* --p-surface: optionaler 9. Palettenwert, dunkle Paletten setzen ihn */
+.c-v2--alert { --v2-band: var(--p-alert-soft); --v2-band-line: color-mix(in oklab, var(--p-alert) 18%, var(--p-alert-soft)); }
+.c-v2-section { padding-block: var(--v2-section-pad); }
+/* rail=top (Standard): Kennung als Dachzeile, Inhalt volle Breite, leerer Platzhalter ohne Wirkung */
+.c-v2__frame > span:empty { display: none; }
+.c-l-rail-top .c-v2__frame > .c-v2__label { margin: 0 0 .9rem; }
+/* rail=side: Kennungsspalte links (auch ohne Kennung bleibt die Spalte — gewollt) */
+.c-l-rail-side .c-v2__frame { display: grid; grid-template-columns: var(--v2-rail) minmax(0, 1fr); gap: var(--v2-gap); }
+.c-l-rail-side .c-v2__frame > span:empty { display: block; }
+.c-v2__label {
+  margin: .62rem 0 0; color: var(--p-accent);
+  font-size: var(--v2-label-size); line-height: 1.4; font-weight: 700; letter-spacing: var(--v2-label-tracking); text-transform: uppercase;
+}
+.c-v2--alert .c-v2__label, .c-v2--alert .c-v2__title { color: var(--p-alert); }
+.c-v2__title { font-size: var(--v2-display-2); margin: 0 0 1.3rem; }
+/* .c-v2__title--narrow: Breite bestimmt die Form (Editorial/Druckwerk verengen, andere nicht) */
+.c-v2__intro { max-width: 48rem; margin-bottom: 3.3rem; }
+.c-v2__muted { color: var(--p-muted); max-width: 37rem; }
+.c-v2__small { color: var(--p-muted); font-size: .85rem; margin-top: 1rem; }
+
+/* Textlink mit Pfeil — v2-Standard statt Pill-Button */
+.c-v2-link {
+  display: inline-flex; align-items: center; gap: .8rem; padding-block: .35rem; margin-top: 1rem;
+  font-size: .96rem; font-weight: 700; text-decoration: none; border-bottom: 1px solid currentColor; color: var(--p-accent);
+}
+.c-v2--alert .c-v2-link { color: var(--p-alert); }
+.c-v2-link::after { content: "↗"; font-size: 1.16rem; line-height: 1; transition: transform .2s ease; }
+.c-v2-link:hover::after { transform: translate(2px, -2px); }
+.c-v2__links { display: flex; flex-wrap: wrap; gap: .7rem 2rem; }
+
+@container v2 (max-width: 1050px) {
+  .c-l-rail-side .c-v2__frame { grid-template-columns: 9rem minmax(0, 1fr); gap: 2.2rem; }
+}
+@container v2 (max-width: 760px) {
+  .c-l-rail-side .c-v2__frame { grid-template-columns: 1fr; gap: 1.5rem; }
+  .c-v2__label { margin: 0 0 .55rem; }
+}
+@media (max-width: 760px) {
+  .c-v2-section { padding-block: 4.7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-v2-link::after { transition: none; }
+}
+
+/* v2/components */
+/* ============================================================
+   Base v2 — Bausteine Intro, Notice, LinkList, Split, Contact (Standardform = Editorial).
+   Farben nur aus der Palette (--p-*); ein v2-Theme passt Form-Tokens an, nicht diese Regeln.
+   ============================================================ */
+
+/* Intro — intro=split (Standard): Text links, Bild rechts; reverse: Bild links; stacked: Text oben, Bild volle Breite */
+.c-v2-intro { padding: clamp(3.2rem, 6.2vw, 6.7rem) 0 4.3rem; }
+.c-v2-intro__grid { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: center; }
+.c-v2-intro__grid--text { grid-template-columns: minmax(0, 1fr); max-width: 52rem; }
+.c-v2-intro .c-v2__label { margin: 0 0 1.9rem; }
+.c-v2-intro__title { font-size: var(--v2-display-1); letter-spacing: -.073em; margin: 0 0 1.6rem; }
+.c-v2-intro__lead { max-width: 35rem; font-size: clamp(1.12rem, 1.7vw, 1.35rem); line-height: 1.48; letter-spacing: -.015em; }
+.c-v2-intro__minor { max-width: 33rem; margin: 1.6rem 0 1.1rem; color: var(--p-muted); font-size: .91rem; }
+.c-v2-intro__media { margin: 0; }
+.c-l-intro-reverse .c-v2-intro__grid:not(.c-v2-intro__grid--text) { grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr); }
+.c-l-intro-reverse .c-v2-intro__media { order: -1; }
+.c-l-intro-stacked .c-v2-intro__grid { grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+.c-l-intro-stacked .c-v2-intro__copy { max-width: 52rem; }
+.c-l-intro-stacked .c-v2-intro__media img, .c-l-intro-stacked .c-v2-intro__media picture { aspect-ratio: 21 / 9; max-height: 520px; }
+.c-v2-intro__media img, .c-v2-intro__media picture { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; max-height: 400px; object-fit: cover; }
+
+/* Notice — notice=band: schmales Band zwischen Haarlinien (Editorial) */
+.c-l-notice-band .c-v2-notice__inner { padding-block: 1.6rem; border-top: 1px solid var(--p-line); }
+.c-l-rail-side.c-l-notice-band .c-v2-notice .c-v2__label { margin-top: .45rem; }
+/* notice=box (Standard): getönte Box */
+.c-l-notice-box .c-v2-notice { padding-block: 1.5rem; }
+.c-l-notice-box .c-v2-notice__inner { padding: 1.3rem 1.6rem; background: var(--p-accent-soft); border-radius: var(--t-radius-md, .5rem); }
+.c-l-notice-box .c-v2-notice.c-v2--alert .c-v2-notice__inner { background: var(--p-alert-soft); }
+.c-l-notice-box .c-v2-notice .c-v2__label { margin: 0 0 .4rem; }
+.c-v2-notice__copy { display: flex; gap: 1rem 3rem; align-items: baseline; justify-content: space-between; font-size: .98rem; }
+.c-v2-notice__text { max-width: 45rem; }
+.c-v2-notice__meta { color: var(--p-muted); font-size: .78rem; white-space: nowrap; }
+
+/* LinkList — linklist=rows: nummerierte Zeilen mit Haarlinien (Editorial) */
+.c-l-linklist-rows .c-v2-rows { border-top: 1px solid var(--p-line); }
+.c-l-linklist-rows .c-v2-rows__row {
+  display: grid; grid-template-columns: 3.2rem minmax(0, .95fr) minmax(0, 1fr) 1.4rem; gap: 1.2rem; align-items: baseline;
+  padding: 1.55rem .4rem 1.65rem 0; border-bottom: 1px solid var(--p-line); color: var(--p-ink); text-decoration: none;
+  transition: background .18s ease, padding .18s ease;
+}
+.c-l-linklist-rows a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; }
+.c-v2-rows__index { color: var(--p-accent); font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.c-v2-rows__title { margin: 0; font-size: var(--v2-display-3); letter-spacing: -.035em; }
+/* linklist=cards (Standard): Karten-Raster */
+.c-l-linklist-cards .c-v2-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 1.2rem; }
+.c-l-linklist-cards .c-v2-rows__row {
+  position: relative; display: flex; flex-direction: column; gap: .6rem; padding: 1.5rem 1.5rem 3.2rem;
+  background: var(--p-surface, #fff); border: 1px solid var(--p-line); border-radius: var(--t-radius-md, .5rem);
+  color: var(--p-ink); text-decoration: none; transition: border-color .18s ease, transform .18s ease;
+}
+.c-l-linklist-cards a.c-v2-rows__row:hover { border-color: var(--p-accent); transform: translateY(-2px); }
+.c-l-linklist-cards .c-v2-rows__title { font-size: clamp(1.15rem, 1.6vw, 1.35rem); }
+.c-l-linklist-cards .c-v2-rows__arrow { position: absolute; right: 1.3rem; bottom: 1.1rem; }
+.c-l-linklist-cards .c-v2-rows__row--alert { border-color: color-mix(in oklab, var(--p-alert) 45%, var(--p-line)); background: var(--p-alert-soft); }
+.c-v2-rows__text { margin: 0; color: var(--p-muted); font-size: .91rem; line-height: 1.48; }
+.c-v2-rows__arrow { color: var(--p-accent); font-size: 1.3rem; line-height: 1; }
+.c-v2-rows__row--alert .c-v2-rows__title,
+.c-v2-rows__row--alert .c-v2-rows__index,
+.c-v2-rows__row--alert .c-v2-rows__arrow { color: var(--p-alert); }
+
+/* Split — split=columns (Standard): Text links, Liste/Zahlen rechts; split=stacked: untereinander */
+.c-l-split-stacked .c-v2-split, .c-l-split-stacked .c-v2-split--title { grid-template-columns: minmax(0, 1fr); gap: 2.2rem; max-width: 48rem; }
+.c-l-split-stacked .c-v2-split--title .c-v2__title { max-width: none; }
+.c-v2-split { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(2.5rem, 7vw, 7.5rem); }
+.c-v2-split--title { grid-template-columns: .9fr 1.1fr; align-items: start; }
+.c-v2-split--title .c-v2__text { font-size: 1.07rem; padding-top: .5rem; }
+.c-v2__text :where(p) { max-width: 30rem; }
+.c-v2-split--title .c-v2__text :where(p) { max-width: 36rem; }
+.c-v2__text + .c-v2__text { margin-top: 1rem; }
+.c-v2__note { margin: 1.7rem 0 1.5rem; padding-left: 1rem; border-left: 2px solid var(--p-accent); color: var(--p-muted); font-size: .88rem; }
+.c-v2--alert .c-v2__note { border-left-color: var(--p-alert); }
+.c-v2__label--inline { margin: .35rem 0 1.1rem; }
+.c-v2-dashlist { list-style: none; margin: 0; padding: 0; border-top: 1px solid color-mix(in oklab, var(--p-accent) 30%, var(--p-accent-soft)); }
+.c-v2-dashlist li {
+  display: grid; grid-template-columns: 2rem 1fr; gap: .7rem; padding: .79rem 0; font-size: .96rem; line-height: 1.45;
+  border-bottom: 1px solid color-mix(in oklab, var(--p-accent) 30%, var(--p-accent-soft));
+}
+.c-v2-dashlist li::before { content: "—"; color: var(--p-accent); }
+.c-v2-numbers { border-top: 1px solid color-mix(in oklab, var(--p-alert) 30%, var(--p-alert-soft)); }
+.c-v2-numbers__item {
+  display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding: 1.3rem 0; text-decoration: none; color: var(--p-alert);
+  border-bottom: 1px solid color-mix(in oklab, var(--p-alert) 30%, var(--p-alert-soft));
+}
+.c-v2-numbers span { max-width: 12rem; color: var(--p-ink); font-size: .92rem; line-height: 1.35; }
+.c-v2-numbers__label { font-weight: 400; }
+.c-v2-numbers__value { font-size: clamp(2.1rem, 4vw, 3.2rem); line-height: 1; font-weight: 500; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+
+/* Contact — Daten als Zeilen */
+.c-v2-contact { display: grid; grid-template-columns: .88fr 1.12fr; gap: clamp(3rem, 8vw, 9rem); }
+.c-v2-facts { margin: 0; }
+.c-v2-facts > div { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: .83rem 0; border-top: 1px solid var(--p-line); }
+.c-v2-facts > div:last-child { border-bottom: 1px solid var(--p-line); }
+.c-v2-facts dt { color: var(--p-muted); font-size: .8rem; }
+.c-v2-facts dd { margin: 0; line-height: 1.42; }
+.c-v2-contact__notes :where(p) { max-width: 31rem; margin-top: 1.3rem; }
+.c-v2-contact__h3 { margin: .08rem 0 1.25rem; font-size: 1.35rem; }
+.c-v2-hours { margin: 0; border-top: 1px solid var(--p-line); }
+.c-v2-hours div { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--p-line); }
+.c-v2-hours dt { font-weight: 600; }
+.c-v2-hours dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* In classic-Themes (boxed Seite) die Bänder auf die Containerbreite begrenzen und die Innenbreite nicht doppelt einrücken */
+.c-page--classic .c-v2::before { left: 0; width: 100%; margin-left: 0; }
+.c-page--classic .c-v2__wrap { width: 100%; }
+
+/* Spaltenbreite statt Fensterbreite: dieselben Bausteine stapeln sich in einer Seitenspalte von selbst */
+@container v2 (max-width: 1050px) {
+  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1fr) 1.1rem; gap: .9rem; }
+}
+@media (max-width: 760px) {
+  .c-v2-intro { padding: 3.5rem 0 3rem; }
+}
+@container v2 (max-width: 760px) {
+  .c-v2-intro__grid, .c-v2-split, .c-v2-contact { grid-template-columns: 1fr; gap: 2.5rem; }
+  .c-l-intro-reverse .c-v2-intro__grid:not(.c-v2-intro__grid--text) { grid-template-columns: 1fr; }
+  .c-l-intro-reverse .c-v2-intro__media { order: 0; }
+  .c-v2-notice__copy { display: block; }
+  .c-v2-notice__meta { display: block; margin-top: .35rem; }
+  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 2rem 1fr 1.1rem; gap: .7rem; padding-block: 1.35rem; }
+  .c-l-linklist-rows .c-v2-rows__text { grid-column: 2; grid-row: 2; }
+  .c-l-linklist-rows .c-v2-rows__arrow { grid-column: 3; grid-row: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .c-v2-rows__row { transition: none; }
+}
+
+/* v2/links */
+/* ============================================================
+   Base v2 — Links und CTAs (Standardform = Editorial)
+   .c-link-arrow: Textlink mit ↗ als eigenständige Klasse (auch in classic nutzbar).
+   Theme-Layout cta=link (Editorial): .c-btn (Hero, TextMedia, Footer-CTA, Header-Actions) werden zu Textlinks.
+   cta=button (Standard): .c-btn bleiben Buttons, und die Textlinks der v2-Bausteine (.c-v2-link) werden Buttons.
+   ============================================================ */
+
+.c-link-arrow,
+.c-page--v2.c-l-cta-link .c-btn {
+  display: inline-flex; align-items: center; gap: .8rem; padding: .35rem 0; min-height: 0;
+  border: 0; border-bottom: 1px solid currentColor; border-radius: 0; background: none; box-shadow: none;
+  color: var(--cmp-link, var(--t-accent, #1f6feb)); font-size: .96rem; font-weight: 700; text-decoration: none;
+  transform: none;
+}
+.c-link-arrow::after,
+.c-page--v2.c-l-cta-link .c-btn::after { content: "↗"; font-size: 1.16rem; line-height: 1; transition: transform .2s ease; }
+.c-link-arrow:hover,
+.c-page--v2.c-l-cta-link .c-btn:hover { transform: none; background: none; border-color: currentColor; }
+.c-link-arrow:hover::after,
+.c-page--v2.c-l-cta-link .c-btn:hover::after { transform: translate(2px, -2px); }
+/* Sekundär/Outline: Text statt Akzent */
+.c-page--v2.c-l-cta-link .c-btn--secondary,
+.c-page--v2.c-l-cta-link .c-btn--outline { color: var(--cmp-text, var(--p-ink)); }
+.c-page--v2.c-l-cta-link .c-v2--alert .c-btn { color: var(--p-alert); }
+
+/* cta=button: Textlinks der v2-Bausteine als Buttons (Akzentfläche) */
+.c-l-cta-button .c-v2-link {
+  padding: .7rem 1.15rem; border: 1px solid var(--p-accent); border-radius: var(--t-radius-md, .5rem);
+  background: var(--p-accent); color: var(--t-on-accent, var(--p-paper)); gap: .6rem;
+}
+.c-l-cta-button .c-v2-link:hover { background: color-mix(in oklab, var(--p-accent) 85%, var(--p-ink)); }
+.c-l-cta-button .c-v2__links .c-v2-link + .c-v2-link,
+.c-l-cta-button .c-v2-link.c-v2-link--secondary { background: transparent; color: var(--p-accent); }
+.c-l-cta-button .c-v2--alert .c-v2-link { background: var(--p-alert); border-color: var(--p-alert); color: var(--p-alert-soft); }
+
+/* Menü: Altlast `.c-nav a { color: muted }` (0,1,1) schlägt .c-nav__item — in v2 zählt die Header-Farbe */
+.c-page--v2 .c-nav a.c-nav__item { color: var(--t-nav-item-color); }
+.c-page--v2 .c-nav a.c-nav__item:hover { color: var(--t-nav-item-hover-color); }
+.c-page--v2 .c-nav a.c-nav__item--active,
+.c-page--v2 .c-nav .c-nav__entry--active-trail > .c-nav__primary > a.c-nav__item { color: var(--t-nav-item-active-color); }
+.c-page--v2 .c-nav a.c-nav__item--alert { color: var(--t-danger); }
+
+@media (prefers-reduced-motion: reduce) {
+  .c-link-arrow::after, .c-page--v2.c-l-cta-link .c-btn::after { transition: none; }
 }

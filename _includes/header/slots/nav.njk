@@ -31,5 +31,11 @@
       {%- endif %}
     </li>
     {%- endfor %}
+    {#- site.header.navLinks: extra entries (anchors, external targets); tone "alert" = warning colour #}
+    {%- for link in (site.header.navLinks or []) %}{% if link.href and link.label %}
+    <li class="c-nav__entry">
+      <a href="{{ link.href | t(pageLanguage) }}" class="c-nav__item{% if link.tone == 'alert' %} c-nav__item--alert{% endif %}"{% if link.external %} target="_blank" rel="noopener noreferrer"{% endif %} {{ "aria-label" | htmlAttribute(link.ariaLabel | t(pageLanguage)) | safe }}>{{ link.label | t(pageLanguage) }}</a>
+    </li>
+    {%- endif %}{% endfor %}
   </ul>
 </nav>

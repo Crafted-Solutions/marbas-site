@@ -1,0 +1,13 @@
+{#
+  Notice (Base v2) — schmales Hinweisband: Kennung, Text (html), Meta rechts.
+  Felder: id, label, text, meta, tone.
+#}
+<aside id="{{ data.id }}" class="c-v2 c-v2--{{ data.tone or 'paper' }} c-v2-notice" {{ "aria-label" | htmlAttribute(data.label) | safe }}>
+  <div class="c-v2__wrap c-v2__frame c-v2-notice__inner">
+    {% if data.label %}<p class="c-v2__label">{{ data.label }}</p>{% else %}<span></span>{% endif %}
+    <div class="c-v2-notice__copy">
+      <div class="c-v2-notice__text">{{ data.text | safe }}</div>
+      {% if data.meta %}<span class="c-v2-notice__meta">{{ data.meta }}</span>{% endif %}
+    </div>
+  </div>
+</aside>

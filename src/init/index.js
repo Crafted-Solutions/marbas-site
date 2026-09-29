@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { getDefaultSiteSettings } from '../site-settings/defaults.js';
 import { resolveThemeFile } from '../theme/resolver.js';
 import { applyVariantDefaultsToSiteSettings } from '../theme/variant-defaults.js';
+import { readThemeFamily } from '../theme/palette.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -116,11 +117,20 @@ templateEngineOverride: njk,md
 
 const STARTER_PAGES_DIR = path.join(__dirname, 'starter', 'pages');
 const STARTER_PAGES_EN_DIR = path.join(__dirname, 'starter', 'pages-en');
+// Base v2 themes: same legal pages, home/about built from the v2 building blocks (overlaid)
+const STARTER_PAGES_V2_DIR = path.join(__dirname, 'starter', 'pages-v2');
+const STARTER_PAGES_V2_EN_DIR = path.join(__dirname, 'starter', 'pages-v2-en');
 const FAVICONS_DIR = path.join(__dirname, 'assets', 'favicons');
 
-function copyStarterPages(targetPagesDir, lang = 'de') {
+function copyStarterPages(targetPagesDir, lang = 'de', { family = 'classic' } = {}) {
   const primary = String(lang).split('-')[0];
-  const stack = [{ src: primary === 'de' ? STARTER_PAGES_DIR : STARTER_PAGES_EN_DIR, dest: targetPagesDir }];
+  const sources = [primary === 'de' ? STARTER_PAGES_DIR : STARTER_PAGES_EN_DIR];
+  if (family === 'v2') sources.push(primary === 'de' ? STARTER_PAGES_V2_DIR : STARTER_PAGES_V2_EN_DIR);
+  for (const src of sources) copyTree(src, targetPagesDir);
+}
+
+function copyTree(srcDir, targetPagesDir) {
+  const stack = [{ src: srcDir, dest: targetPagesDir }];
   while (stack.length > 0) {
     const { src, dest } = stack.pop();
     fs.mkdirSync(dest, { recursive: true });
@@ -167,9 +177,11 @@ export function initProject({
   if (!/^[a-z]{2}(-[a-z]{2})?$/.test(language)) {
     throw new Error(`Invalid --lang "${lang}". Use a language code like "de" or "en".`);
   }
+  let themeFamily = 'classic';
   if (theme) {
     // Throws with a helpful message when the theme does not exist.
-    resolveThemeFile({ projectPath: absPath, themeId: theme, libRoot });
+    const themeFile = resolveThemeFile({ projectPath: absPath, themeId: theme, libRoot });
+    themeFamily = readThemeFamily(fs.readFileSync(themeFile, 'utf8'));
   }
 
   const alreadyInitialised = fs.existsSync(path.join(absPath, 'marbas-project.json'));
@@ -233,6 +245,10 @@ export function initProject({
   // normalizing an existing site.json never injects a folder name into every page title.
   siteSettings.seo.siteName = siteSettings.title;
   if (theme) siteSettings = applyVariantDefaultsToSiteSettings(siteSettings, theme);
+  // v2 starter: show the header tagline (example text, only for new starter projects)
+  if (starter && themeFamily === 'v2') {
+    siteSettings.header.tagline = language.startsWith('de') ? 'Ihr Schwerpunkt · Ihr Ort' : 'Your focus · Your city';
+  }
   fs.writeFileSync(
     path.join(absPath, 'pages', '_data', 'site.json'),
     JSON.stringify(siteSettings, null, 2) + '\n'
@@ -240,7 +256,7 @@ export function initProject({
 
   // pages/index.md — starter copies example pages, minimal writes a blank index
   if (starter) {
-    copyStarterPages(path.join(absPath, 'pages'), language);
+    copyStarterPages(path.join(absPath, 'pages'), language, { family: themeFamily });
   } else {
     fs.writeFileSync(path.join(absPath, 'pages', 'index.md'), indexPage(language));
   }

@@ -138,9 +138,43 @@ function normalizeLinkSource(value, fallbackLinks = []) {
   };
 }
 
+const VALID_NAV_LINK_TONES = ['', 'alert'];
+const MAX_NAV_LINKS = 6;
+
+// Extra top-navigation entries besides the page menu: anchors (#kontakt), external targets.
+function normalizeNavLink(value) {
+  const source = asObject(value);
+  const link = normalizeLink(source);
+  const tone = readString(source.tone);
+  if (tone && VALID_NAV_LINK_TONES.includes(tone)) link.tone = tone;
+  return link;
+}
+
+// Optional Base-v2 fields: only present in the output when present in the source, so the
+// normalization never adds them to existing site.json files.
+function optionalHeaderFields(sourceHeader) {
+  const fields = {};
+  if (sourceHeader.tagline !== undefined) fields.tagline = readText(sourceHeader.tagline);
+  if (sourceHeader.navLinks !== undefined) {
+    fields.navLinks = Array.isArray(sourceHeader.navLinks)
+      ? sourceHeader.navLinks.slice(0, MAX_NAV_LINKS).map(normalizeNavLink)
+      : [];
+  }
+  return fields;
+}
+
 function normalizeFooterGroup(value) {
   const source = asObject(value);
   const sourceType = readString(source.source, 'manual');
+
+  // A column with text instead of links (e.g. "Für Fachkreise")
+  if (sourceType === 'text') {
+    return {
+      title: readText(source.title),
+      source: 'text',
+      text: readText(source.text)
+    };
+  }
 
   if (sourceType === 'tagCollection') {
     return {
@@ -235,6 +269,7 @@ export function normalizeSiteSettings(input, projectRoot) {
         label: readText(sourceAnnouncement.label),
         href: readText(sourceAnnouncement.href)
       },
+      ...optionalHeaderFields(sourceHeader),
       utilityLinks: normalizeLinkSource(sourceHeader.utilityLinks, []),
       actions: sourceActions.slice(0, 2).map(normalizeActionLink),
       mobile: {
@@ -270,7 +305,8 @@ export function normalizeSiteSettings(input, projectRoot) {
         href: readText(sourceCtaBlock.href)
       },
       bottomLinks: bottomLinksNormalized,
-      copyright: readText(sourceFooter.copyright, fallback.footer.copyright)
+      copyright: readText(sourceFooter.copyright, fallback.footer.copyright),
+      ...(sourceFooter.bottomNote !== undefined ? { bottomNote: readText(sourceFooter.bottomNote) } : {})
     },
     seo: {
       ...fallback.seo,

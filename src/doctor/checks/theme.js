@@ -3,6 +3,7 @@ import path from 'path';
 import { readProjectConfig } from '../../project/config.js';
 import { resolveThemeFile } from '../../theme/resolver.js';
 import { getLibRoot } from '../../eject/index.js';
+import { resolveThemePalette, checkEjectedBaseForV2 } from '../../theme/copy.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -45,12 +46,21 @@ export function checkTheme({ projectPath, libRoot = LIB_ROOT }) {
 
   const ejectedPath = path.join(absProject, '_theme', `${themeId}.css`);
   const isEjected = fs.existsSync(ejectedPath);
+  const palette = resolveThemePalette({ css: fs.readFileSync(resolvedPath, 'utf8'), theme: config.theme });
 
-  return [{
+  const results = [{
     id: 'theme',
     status: 'ok',
-    message: isEjected
+    message: (isEjected
       ? `${themeId} — ejected (project version)`
-      : `${themeId} — library built-in`,
+      : `${themeId} — library built-in`) + ` · family ${palette.family}${palette.preset ? ` · palette ${palette.preset}` : ''}`,
   }];
+  for (const message of palette.errors) results.push({ id: 'theme-palette', status: 'error', message });
+  for (const message of palette.warnings) results.push({ id: 'theme-palette', status: 'warn', message });
+  const ejectedBase = checkEjectedBaseForV2({ projectRoot: absProject, family: palette.family });
+  if (ejectedBase) results.push({ id: 'theme-base', status: 'warn', message: ejectedBase });
+  for (const c of palette.contrast) {
+    results.push({ id: 'theme-palette', status: 'warn', message: `Palette contrast ${c.label}: ${c.ratio}:1 (${c.fg} on ${c.bg}) — below 4.5:1` });
+  }
+  return results;
 }
