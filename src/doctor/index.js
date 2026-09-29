@@ -6,15 +6,19 @@ import { checkGitignore } from './checks/gitignore.js';
 import { checkStaleBuildContext } from './checks/stale-build-context.js';
 import { checkTheme } from './checks/theme.js';
 import { checkLegacyConfig } from './checks/legacy-config.js';
+import { getLibRoot } from '../eject/index.js';
 
 /**
- * @param {{ projectPath: string, libRoot?: string }} opts
+ * @param {{ projectPath: string, libRoot?: string }} opts — libRoot defaults to the installed lib
  * @returns {{ checks: Array, hasError: boolean }}
  */
-export function runDoctor({ projectPath, libRoot = null } = {}) {
+export function runDoctor({ projectPath, libRoot } = {}) {
   if (!projectPath) {
     return { checks: [{ id: 'setup', status: 'error', message: 'projectPath is required' }], hasError: true };
   }
+  // No libRoot (the CLI passes none) → the installed lib. An explicit `null` used to reach the checks and
+  // replace their default: every library theme was "not found", ejected files were never compared.
+  libRoot = libRoot || getLibRoot();
 
   const checks = [
     checkLegacyConfig(projectPath),
