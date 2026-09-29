@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
   `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
   is unchanged (classic).
+- **`theme-bold`** — third Base v2 library theme: huge condensed uppercase headings (Oswald), `tone: soft` and `alert`
+  as full colour fields with light text (the palette is remapped inside the band), thick black rules, square uppercase
+  buttons with offset shadow, black footer. Palettes: default cobalt, `signal`, `wald` (all AA, inverted pairs included).
 - **`theme-product`** — second Base v2 library theme, deliberately the opposite of Editorial: floating glass header
   with underlined active item, pill labels above titles, card grid, check-mark lists, numbers and contact as cards,
   solid buttons, dark footer; Plus Jakarta Sans. Palettes: default indigo on white, `nacht` (navy + gold), `petrol` (all AA).
