@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
   `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
   is unchanged (classic).
+- **`theme-product`** — second Base v2 library theme, deliberately the opposite of Editorial: floating glass header
+  with underlined active item, pill labels above titles, card grid, check-mark lists, numbers and contact as cards,
+  solid buttons, dark footer; Plus Jakarta Sans. Palettes: default indigo on white, `nacht` (navy + gold), `petrol` (all AA).
 - **Theme decides the layout (`@layout`)**: v2 themes declare how the building blocks are arranged — section label
   above the title or as a side column (`rail`), Intro image right/left/below (`intro`), LinkList as cards or rows,
   Split in columns or stacked, Notice as box or band, CTAs as buttons or text links. Defaults for themes without
