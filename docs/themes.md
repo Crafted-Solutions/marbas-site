@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 18 ready-to-use themes. Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 19 ready-to-use themes (18 classic, 1 Base v2). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -56,6 +56,7 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 | `theme-atlas` | Atlas | B2B enterprise software, data platforms, ERP — IBM Carbon-inspired, precise, functional |
 | `theme-bloom` | Bloom | Wellness, beauty, spa — soft rose + sage, generous radii |
 | `theme-campus` | Campus | Universities, research institutes, academic journals |
+| `theme-editorial` | Editorial | **Base v2.** Practices, law firms, consulting, culture — large grotesque type, hairlines instead of boxes, labels in the margin, text links with ↗. Palettes: default (graphite + ink blue), `warm`, `nacht`, `salbei` — see [Theme families and palettes](#theme-families-and-palettes-base-v2) |
 | `theme-civic` | Civic | Government agencies, public institutions — USWDS-inspired, accessible, neutral |
 | `theme-fjord` | Fjord | Scandinavian SaaS products, engineering firms — minimal, cool blue-grey |
 | `theme-forum` | Forum | eLearning platforms, online courses — friendly violet, generous radii |
@@ -181,10 +182,16 @@ ships its **default palette** plus optional **presets**:
 
 ```css
 /* theme-editorial.css — @family v2 */
-:root { --p-paper: #f8f8f5; --p-ink: #252d2a; --p-muted: #53615b; --p-line: #cdd8d1;
-        --p-accent: #234b45; --p-accent-soft: #e8efea; --p-alert: #7e332f; --p-alert-soft: #f6eeeb; }
-:root[data-palette="nacht"] { --p-paper: #12172a; --p-ink: #ecebe4; /* … */ }
+:root { --p-paper: #f7f7f4; --p-ink: #1d2127; --p-muted: #555c66; --p-line: #d8dbe0;
+        --p-accent: #27418c; --p-accent-soft: #e7ebf5; --p-alert: #9a2b2b; --p-alert-soft: #f7eceb; }
+:root[data-palette="nacht"] { --p-paper: #12172a; --p-ink: #ecebe4; /* … */ --p-surface: #1a2038; }
 ```
+
+`--p-surface` is optional (background of the `tone: white` band, default `#fff`). **Dark palettes must set it** —
+otherwise light text sits on a white band; the contrast check reports this as "Text auf weißem Band (surface)".
+
+`init --theme=theme-editorial --starter` creates starter pages built from the Base v2 building blocks (Intro, Notice,
+LinkList, Split, Contact); without `--theme` new projects stay classic.
 
 All colour tokens (`--t-*`) are derived from the palette. A project overrides colours only where it wants to, in
 `marbas-project.json` — the theme file stays untouched:
@@ -199,7 +206,7 @@ All colour tokens (`--t-*`) are derived from the palette. A project overrides co
 
 - `palette` picks a preset of the theme (unknown names fall back to the default palette with a warning).
 - `colors` overrides single values; allowed names: `paper`, `ink`, `muted`, `line`, `accent`, `accent-soft`, `alert`,
-  `alert-soft`; allowed values: `#rgb`, `#rrggbb` (with alpha) or `rgb(…)`. Anything else is rejected.
+  `alert-soft`, `surface`; allowed values: `#rgb`, `#rrggbb` (with alpha) or `rgb(…)`. Anything else is rejected.
 - The build and `marbas-site doctor` warn when a text/background pair of the resulting palette is below WCAG AA (4.5:1).
 - `palette`/`colors` have no effect on classic themes (warning).
 

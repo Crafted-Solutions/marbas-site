@@ -9,6 +9,7 @@ export const THEME_DEFAULTS_BY_ID = Object.freeze({
   'theme-bloom': { headerVariant: 'glass', navigationVariant: 'pill', footerVariant: 'accent' },
   'theme-campus': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-civic': { headerVariant: 'accent', navigationVariant: 'default', footerVariant: 'contrast' },
+  'theme-editorial': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-fjord': { headerVariant: 'line', navigationVariant: 'underline', footerVariant: 'contrast' },
   'theme-forum': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-gazette': { headerVariant: 'line', navigationVariant: 'underline', footerVariant: 'contrast' },
