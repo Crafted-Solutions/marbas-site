@@ -4,14 +4,18 @@
  * Family: a theme is `v2` when its CSS declares `@family v2` in a comment (library and project
  * themes alike); everything else is `classic` (the boxed look, unchanged).
  *
- * Palette (v2 only): a theme ships its default palette (`--p-*`, 8 names) and optional presets as
+ * Palette (v2 only): a theme ships its default palette (`--p-*`, 8 names + optional `surface` for the
+ * `tone: white` band, default #fff — dark palettes must set it) and optional presets as
  * `:root[data-palette="<name>"] { … }`. `marbas-project.json → theme` may pick a preset
  * (`palette: "<name>"`) and override single colours (`colors: { accent: "#…" }`); the overrides are
- * appended to the output theme.css. Only the 8 known names and plain colour values are accepted —
+ * appended to the output theme.css. Only the known names (PALETTE_KEYS) and plain colour values are accepted —
  * the values end up in CSS, so nothing else may pass.
  */
 
-export const PALETTE_KEYS = ['paper', 'ink', 'muted', 'line', 'accent', 'accent-soft', 'alert', 'alert-soft'];
+export const PALETTE_KEYS = ['paper', 'ink', 'muted', 'line', 'accent', 'accent-soft', 'alert', 'alert-soft', 'surface'];
+
+/** Optional palette values and the base's fallback when a theme leaves them out. */
+export const PALETTE_OPTIONAL_DEFAULTS = Object.freeze({ surface: '#ffffff' });
 
 const FAMILY_MARKER = /@family\s+(v2|classic)\b/;
 const PRESET_NAME = /^[a-z0-9][a-z0-9-]{0,31}$/;
@@ -99,7 +103,8 @@ const CHECKS = [
   ['ink', 'accent-soft', 'Text auf Farbband'],
   ['accent', 'accent-soft', 'Akzent auf Farbband'],
   ['alert', 'alert-soft', 'Warnung auf Warnband'],
-  ['ink', 'alert-soft', 'Text auf Warnband']
+  ['ink', 'alert-soft', 'Text auf Warnband'],
+  ['ink', 'surface', 'Text auf weißem Band (surface)']
 ];
 
 /**
@@ -119,6 +124,7 @@ export function readPaletteValues(css, preset = null) {
   if (preset) {
     for (const [, selector, body] of blocks) if (selector.includes(`[data-palette="${preset}"]`)) apply(body);
   }
+  for (const [key, value] of Object.entries(PALETTE_OPTIONAL_DEFAULTS)) if (!(key in values)) values[key] = value;
   return values;
 }
 

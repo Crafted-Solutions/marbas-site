@@ -76,3 +76,13 @@ test('ejected base.njk without Base v2 classes is reported for v2 themes only', 
     fs.rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('palette surface (Task 130): accepted in theme.colors, defaults to white for the contrast check', () => {
+    assert.deepEqual(normalizePaletteConfig({ colors: { surface: '#1a2038' } }).colors, { surface: '#1a2038' });
+    const css = ':root { --p-paper: #12172a; --p-ink: #ecebe4; }';
+    assert.equal(readPaletteValues(css).surface, '#ffffff');
+    const labels = paletteContrastWarnings(readPaletteValues(css)).map((w) => w.label);
+    assert.ok(labels.includes('Text auf weißem Band (surface)'), 'dark palette without surface is reported');
+    const withSurface = readPaletteValues(':root { --p-paper: #12172a; --p-ink: #ecebe4; --p-surface: #1a2038; }');
+    assert.equal(paletteContrastWarnings(withSurface).some((w) => w.label.includes('surface')), false);
+});

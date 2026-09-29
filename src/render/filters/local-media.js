@@ -85,9 +85,13 @@ export function configureLocalMediaFilters(eleventyConfig, publishFolder = "") {
         let outputDir = publishFolder ? `${publishFolder}/` : "";
         outputDir = `./${outputDir}images/`;
 
+        // SVG stays vector: copied as-is (svgShortCircuit), no raster variants, no srcset
+        const isSvg = path.extname(String(imageData.src)).toLowerCase() === ".svg";
+
         const imageOptions = {
-            widths: widths,
-            formats: ['webp', 'jpeg'],
+            widths: isSvg ? ["auto"] : widths,
+            formats: isSvg ? ["svg"] : ['webp', 'jpeg'],
+            svgShortCircuit: isSvg,
             urlPath: "/images/",
             outputDir: outputDir,
             filenameFormat: (id, src, width, format) => buildImageFilename(imageData, width, format)
@@ -96,6 +100,15 @@ export function configureLocalMediaFilters(eleventyConfig, publishFolder = "") {
         try {
             // Process the local image file — check project first, then lib assets
             const metadata = await Image(resolveImageSrc(imageData.src), imageOptions);
+
+            // SVG: the intrinsic size (viewBox, often 24–256px) would become width/height and keep the image small
+            // (base only sets max-width: 100%). Announce it at the largest requested width, like the raster variants.
+            if (isSvg && metadata.svg?.[0]?.width) {
+                const svg = metadata.svg[0];
+                const width = Math.max(...widths.filter((w) => Number.isFinite(w)), svg.width);
+                svg.height = Math.round(width * svg.height / svg.width);
+                svg.width = width;
+            }
 
             const imageAttributes = {
                 alt: imageData.alt || "",

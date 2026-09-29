@@ -23,9 +23,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   (anchor/external menu entries, `tone: "alert"` for a highlighted link), footer columns with text
   (`groups[].source: "text"`) and `footer.bottomNote`. In v2 themes buttons (`.c-btn`) render as text links with ↗;
   `.c-link-arrow` is available everywhere. Classic themes keep their buttons.
+- **`theme-editorial`** — the first Base v2 library theme: editorial form (large grotesque type, hairlines, labels in
+  the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
+  `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
+  is unchanged (classic).
+- Palette value **`surface`** (optional, default `#fff`) for the `tone: white` band; the contrast check now also tests
+  text on it, so a dark palette without `surface` is reported instead of rendering light text on white.
 
 ### Fixed
 
+- SVG images (`image.src: *.svg`) are no longer rasterised to WebP/JPEG variants — they are copied as-is and
+  rendered as a single `<img src="….svg">` (sharp at any size). Projects that linked the generated
+  `/images/<id>-<w>w.webp` files of an SVG directly must link the SVG instead.
 - Pages without a hero: the page title `<h1>` was rendered with the component heading size
   (`--text-2`) and came out smaller than the section headings below it (Cards headings use `--text-3`).
   It now uses `.c-page-title` (`--text-4`, like any `h1`). **Visible change:** larger titles on sub pages.
