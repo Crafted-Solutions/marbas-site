@@ -210,6 +210,34 @@ All colour tokens (`--t-*`) are derived from the palette. A project overrides co
 - The build and `marbas-site doctor` warn when a text/background pair of the resulting palette is below WCAG AA (4.5:1).
 - `palette`/`colors` have no effect on classic themes (warning).
 
+### Layout: the theme decides how the blocks are arranged
+
+A v2 theme is **form = layout + typography + details**, not just colours. It declares the arrangement of the building
+blocks in a comment next to `@family`:
+
+```css
+/* theme-editorial.css
+   @family v2
+   @layout rail=side intro=split linklist=rows split=columns notice=band cta=link */
+```
+
+| Key | Values (first = default) | Effect |
+|---|---|---|
+| `rail` | `top` · `side` | Section label as a line above the title · as a column on the left (editorial) |
+| `intro` | `split` · `reverse` · `stacked` | Text left, image right · image left · text above, image full width below |
+| `linklist` | `cards` · `rows` | Card grid · numbered rows with hairlines |
+| `split` | `columns` · `stacked` | Two columns · one below the other |
+| `notice` | `box` · `band` | Tinted box · thin band between hairlines |
+| `cta` | `button` · `link` | Buttons (also for the text links of the blocks) · text links with ↗ (also for `.c-btn`) |
+
+Missing keys use the default; unknown keys or values are reported by the build and `doctor`. The resolved layout
+becomes classes on `<body>` (`c-l-rail-side c-l-intro-split …`); the base CSS hangs the variants on them. Content does
+not choose the layout — the theme does.
+
+**Column layouts stay flexible.** The blocks are size containers: they adapt to the width of **their column**, not
+the window. In `content_2col_*` / `content_3col_*` pages bands stay inside their column and a Split or Intro in a narrow
+column stacks by itself; the column grid stays inside the page measure.
+
 Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2--{tone}">` with `tone` `paper`
 (default), `soft`, `white` or `alert`, a `.c-v2__label` in the left rail and `.c-v2-link` for text links with an arrow.
 

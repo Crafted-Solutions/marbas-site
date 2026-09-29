@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-29T07:18:18.108Z */
+/* Build time: 2026-09-29T09:02:45.866Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2701,6 +2701,22 @@ hr {
 .c-page--v2 .c-footer__inner,
 .c-page--v2 .c-footer__bottom-inner { width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); max-width: none; margin-inline: auto; padding-inline: 0; }
 .c-page--v2 .c-header { border-bottom: 1px solid var(--p-line); }
+/* Seitentitel (Seiten ohne Intro/Hero) im Maß statt am Fensterrand */
+.c-page--v2 .c-main .c-section--top-only { width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); margin: 0 auto; padding-top: clamp(2.5rem, 5vw, 4.5rem); }
+.c-page--v2 .c-main .c-section--top-only .c-component { padding: 0; background: none; border: 0; box-shadow: none; }
+
+/* Mehrspaltige Seiten-Layouts (content_2col_*, content_3col_*): Spaltenraster im Maß, Bausteine bleiben in ihrer
+   Spalte — Bänder füllen nur die Spalte (keine 100vw), Inhalt mit Innenabstand auf getönten Flächen. */
+.c-page--v2 .c-main .c-section > .c-grid {
+  width: min(calc(100% - var(--v2-gutter)), var(--v2-measure)); margin-inline: auto;
+  padding-block: clamp(2rem, 4vw, 3.5rem); gap: var(--v2-gap);
+}
+.c-page--v2 .c-grid .c-v2::before { left: 0; width: 100%; margin-left: 0; }
+.c-page--v2 .c-grid .c-v2__wrap { width: 100%; }
+.c-page--v2 .c-grid .c-v2:is(.c-v2--soft, .c-v2--white, .c-v2--alert) { padding-inline: clamp(1rem, 3cqi, 2rem); }
+.c-page--v2 .c-grid .c-stream { display: flex; flex-direction: column; gap: 1.5rem; }
+.c-page--v2 .c-grid .c-v2-section { padding-block: clamp(1.5rem, 6cqi, 4rem); }
+
 @media (max-width: 760px) {
   .c-page--v2 { --v2-gutter: 2rem; }
 }
@@ -2708,8 +2724,10 @@ hr {
 /* v2/section */
 /* Base v2 — Section-Rahmen für alle v2-Bausteine.
    Markup: <section class="c-v2 c-v2--{tone}"><div class="c-v2__wrap c-v2__frame"><p class="c-v2__label">…</p><div>…</div></div></section>
-   tone: paper (Standard) | soft | white | alert — Band über die volle Fensterbreite, Haarlinie unten. */
-.c-v2 { position: relative; isolation: isolate; }
+   tone: paper (Standard) | soft | white | alert — Band über die volle Fensterbreite, Haarlinie unten.
+   Kennung (Theme-Layout, body-Klasse): c-l-rail-top (Standard) = Dachzeile über dem Titel; c-l-rail-side = Spalte links (Editorial). */
+/* container: Bausteine richten sich nach der Breite ihrer Spalte (Seiten-Layouts mit Seitenspalten), nicht nach dem Fenster */
+.c-v2 { position: relative; isolation: isolate; container: v2 / inline-size; }
 .c-v2::before {
   content: ""; position: absolute; inset: 0; left: 50%; width: 100vw; margin-left: -50vw; z-index: -1;
   background: var(--v2-band, transparent);
@@ -2719,7 +2737,12 @@ hr {
 .c-v2--white { --v2-band: var(--p-surface, #fff); }  /* --p-surface: optionaler 9. Palettenwert, dunkle Paletten setzen ihn */
 .c-v2--alert { --v2-band: var(--p-alert-soft); --v2-band-line: color-mix(in oklab, var(--p-alert) 18%, var(--p-alert-soft)); }
 .c-v2-section { padding-block: var(--v2-section-pad); }
-.c-v2__frame { display: grid; grid-template-columns: var(--v2-rail) minmax(0, 1fr); gap: var(--v2-gap); }
+/* rail=top (Standard): Kennung als Dachzeile, Inhalt volle Breite, leerer Platzhalter ohne Wirkung */
+.c-v2__frame > span:empty { display: none; }
+.c-l-rail-top .c-v2__frame > .c-v2__label { margin: 0 0 .9rem; }
+/* rail=side: Kennungsspalte links (auch ohne Kennung bleibt die Spalte — gewollt) */
+.c-l-rail-side .c-v2__frame { display: grid; grid-template-columns: var(--v2-rail) minmax(0, 1fr); gap: var(--v2-gap); }
+.c-l-rail-side .c-v2__frame > span:empty { display: block; }
 .c-v2__label {
   margin: .62rem 0 0; color: var(--p-accent);
   font-size: var(--v2-label-size); line-height: 1.4; font-weight: 700; letter-spacing: var(--v2-label-tracking); text-transform: uppercase;
@@ -2741,12 +2764,14 @@ hr {
 .c-v2-link:hover::after { transform: translate(2px, -2px); }
 .c-v2__links { display: flex; flex-wrap: wrap; gap: .7rem 2rem; }
 
-@media (max-width: 1050px) {
-  .c-v2__frame { grid-template-columns: 9rem minmax(0, 1fr); gap: 2.2rem; }
+@container v2 (max-width: 1050px) {
+  .c-l-rail-side .c-v2__frame { grid-template-columns: 9rem minmax(0, 1fr); gap: 2.2rem; }
+}
+@container v2 (max-width: 760px) {
+  .c-l-rail-side .c-v2__frame { grid-template-columns: 1fr; gap: 1.5rem; }
+  .c-v2__label { margin: 0 0 .55rem; }
 }
 @media (max-width: 760px) {
-  .c-v2__frame { grid-template-columns: 1fr; gap: 1.5rem; }
-  .c-v2__label { margin: 0 0 .55rem; }
   .c-v2-section { padding-block: 4.7rem; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -2759,7 +2784,7 @@ hr {
    Farben nur aus der Palette (--p-*); ein v2-Theme passt Form-Tokens an, nicht diese Regeln.
    ============================================================ */
 
-/* Intro — Editorial-Einstieg */
+/* Intro — intro=split (Standard): Text links, Bild rechts; reverse: Bild links; stacked: Text oben, Bild volle Breite */
 .c-v2-intro { padding: clamp(3.2rem, 6.2vw, 6.7rem) 0 4.3rem; }
 .c-v2-intro__grid { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); gap: clamp(2.5rem, 7vw, 7rem); align-items: center; }
 .c-v2-intro__grid--text { grid-template-columns: minmax(0, 1fr); max-width: 52rem; }
@@ -2768,32 +2793,55 @@ hr {
 .c-v2-intro__lead { max-width: 35rem; font-size: clamp(1.12rem, 1.7vw, 1.35rem); line-height: 1.48; letter-spacing: -.015em; }
 .c-v2-intro__minor { max-width: 33rem; margin: 1.6rem 0 1.1rem; color: var(--p-muted); font-size: .91rem; }
 .c-v2-intro__media { margin: 0; }
+.c-l-intro-reverse .c-v2-intro__grid:not(.c-v2-intro__grid--text) { grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr); }
+.c-l-intro-reverse .c-v2-intro__media { order: -1; }
+.c-l-intro-stacked .c-v2-intro__grid { grid-template-columns: minmax(0, 1fr); gap: 3rem; }
+.c-l-intro-stacked .c-v2-intro__copy { max-width: 52rem; }
+.c-l-intro-stacked .c-v2-intro__media img, .c-l-intro-stacked .c-v2-intro__media picture { aspect-ratio: 21 / 9; max-height: 520px; }
 .c-v2-intro__media img, .c-v2-intro__media picture { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; max-height: 400px; object-fit: cover; }
 
-/* Notice — Hinweisband */
-.c-v2-notice__inner { padding-block: 1.6rem; border-top: 1px solid var(--p-line); }
-.c-v2-notice .c-v2__label { margin-top: .45rem; }
+/* Notice — notice=band: schmales Band zwischen Haarlinien (Editorial) */
+.c-l-notice-band .c-v2-notice__inner { padding-block: 1.6rem; border-top: 1px solid var(--p-line); }
+.c-l-rail-side.c-l-notice-band .c-v2-notice .c-v2__label { margin-top: .45rem; }
+/* notice=box (Standard): getönte Box */
+.c-l-notice-box .c-v2-notice { padding-block: 1.5rem; }
+.c-l-notice-box .c-v2-notice__inner { padding: 1.3rem 1.6rem; background: var(--p-accent-soft); border-radius: var(--t-radius-md, .5rem); }
+.c-l-notice-box .c-v2-notice.c-v2--alert .c-v2-notice__inner { background: var(--p-alert-soft); }
+.c-l-notice-box .c-v2-notice .c-v2__label { margin: 0 0 .4rem; }
 .c-v2-notice__copy { display: flex; gap: 1rem 3rem; align-items: baseline; justify-content: space-between; font-size: .98rem; }
 .c-v2-notice__text { max-width: 45rem; }
 .c-v2-notice__meta { color: var(--p-muted); font-size: .78rem; white-space: nowrap; }
 
-/* LinkList — Zeilen statt Karten */
-.c-v2-rows { border-top: 1px solid var(--p-line); }
-.c-v2-rows__row {
+/* LinkList — linklist=rows: nummerierte Zeilen mit Haarlinien (Editorial) */
+.c-l-linklist-rows .c-v2-rows { border-top: 1px solid var(--p-line); }
+.c-l-linklist-rows .c-v2-rows__row {
   display: grid; grid-template-columns: 3.2rem minmax(0, .95fr) minmax(0, 1fr) 1.4rem; gap: 1.2rem; align-items: baseline;
   padding: 1.55rem .4rem 1.65rem 0; border-bottom: 1px solid var(--p-line); color: var(--p-ink); text-decoration: none;
   transition: background .18s ease, padding .18s ease;
 }
-a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; }
+.c-l-linklist-rows a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; }
 .c-v2-rows__index { color: var(--p-accent); font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .c-v2-rows__title { margin: 0; font-size: var(--v2-display-3); letter-spacing: -.035em; }
+/* linklist=cards (Standard): Karten-Raster */
+.c-l-linklist-cards .c-v2-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 1.2rem; }
+.c-l-linklist-cards .c-v2-rows__row {
+  position: relative; display: flex; flex-direction: column; gap: .6rem; padding: 1.5rem 1.5rem 3.2rem;
+  background: var(--p-surface, #fff); border: 1px solid var(--p-line); border-radius: var(--t-radius-md, .5rem);
+  color: var(--p-ink); text-decoration: none; transition: border-color .18s ease, transform .18s ease;
+}
+.c-l-linklist-cards a.c-v2-rows__row:hover { border-color: var(--p-accent); transform: translateY(-2px); }
+.c-l-linklist-cards .c-v2-rows__title { font-size: clamp(1.15rem, 1.6vw, 1.35rem); }
+.c-l-linklist-cards .c-v2-rows__arrow { position: absolute; right: 1.3rem; bottom: 1.1rem; }
+.c-l-linklist-cards .c-v2-rows__row--alert { border-color: color-mix(in oklab, var(--p-alert) 45%, var(--p-line)); background: var(--p-alert-soft); }
 .c-v2-rows__text { margin: 0; color: var(--p-muted); font-size: .91rem; line-height: 1.48; }
 .c-v2-rows__arrow { color: var(--p-accent); font-size: 1.3rem; line-height: 1; }
 .c-v2-rows__row--alert .c-v2-rows__title,
 .c-v2-rows__row--alert .c-v2-rows__index,
 .c-v2-rows__row--alert .c-v2-rows__arrow { color: var(--p-alert); }
 
-/* Split — Text links, Liste/Zahlen rechts */
+/* Split — split=columns (Standard): Text links, Liste/Zahlen rechts; split=stacked: untereinander */
+.c-l-split-stacked .c-v2-split, .c-l-split-stacked .c-v2-split--title { grid-template-columns: minmax(0, 1fr); gap: 2.2rem; max-width: 48rem; }
+.c-l-split-stacked .c-v2-split--title .c-v2__title { max-width: none; }
 .c-v2-split { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(2.5rem, 7vw, 7.5rem); }
 .c-v2-split--title { grid-template-columns: .9fr 1.1fr; align-items: start; }
 .c-v2-split--title .c-v2__title { max-width: 9ch; }
@@ -2837,17 +2885,22 @@ a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; 
 .c-page--classic .c-v2::before { left: 0; width: 100%; margin-left: 0; }
 .c-page--classic .c-v2__wrap { width: 100%; }
 
-@media (max-width: 1050px) {
-  .c-v2-rows__row { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1fr) 1.1rem; gap: .9rem; }
+/* Spaltenbreite statt Fensterbreite: dieselben Bausteine stapeln sich in einer Seitenspalte von selbst */
+@container v2 (max-width: 1050px) {
+  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1fr) 1.1rem; gap: .9rem; }
 }
 @media (max-width: 760px) {
   .c-v2-intro { padding: 3.5rem 0 3rem; }
+}
+@container v2 (max-width: 760px) {
   .c-v2-intro__grid, .c-v2-split, .c-v2-contact { grid-template-columns: 1fr; gap: 2.5rem; }
+  .c-l-intro-reverse .c-v2-intro__grid:not(.c-v2-intro__grid--text) { grid-template-columns: 1fr; }
+  .c-l-intro-reverse .c-v2-intro__media { order: 0; }
   .c-v2-notice__copy { display: block; }
   .c-v2-notice__meta { display: block; margin-top: .35rem; }
-  .c-v2-rows__row { grid-template-columns: 2rem 1fr 1.1rem; gap: .7rem; padding-block: 1.35rem; }
-  .c-v2-rows__text { grid-column: 2; grid-row: 2; }
-  .c-v2-rows__arrow { grid-column: 3; grid-row: 1; }
+  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 2rem 1fr 1.1rem; gap: .7rem; padding-block: 1.35rem; }
+  .c-l-linklist-rows .c-v2-rows__text { grid-column: 2; grid-row: 2; }
+  .c-l-linklist-rows .c-v2-rows__arrow { grid-column: 3; grid-row: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .c-v2-rows__row { transition: none; }
@@ -2857,27 +2910,37 @@ a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; 
 /* ============================================================
    Base v2 — Links und CTAs (Standardform = Editorial)
    .c-link-arrow: Textlink mit ↗ als eigenständige Klasse (auch in classic nutzbar).
-   In v2 werden .c-btn (Hero, CtaSection, TextMedia, Footer-CTA, Header-Actions) zu solchen Textlinks.
-   Ein v2-Theme, das Buttons will (z.B. Bold), setzt eigene `.c-page--v2 .c-btn { … }`-Regeln im Theme.
+   Theme-Layout cta=link (Editorial): .c-btn (Hero, TextMedia, Footer-CTA, Header-Actions) werden zu Textlinks.
+   cta=button (Standard): .c-btn bleiben Buttons, und die Textlinks der v2-Bausteine (.c-v2-link) werden Buttons.
    ============================================================ */
 
 .c-link-arrow,
-.c-page--v2 .c-btn {
+.c-page--v2.c-l-cta-link .c-btn {
   display: inline-flex; align-items: center; gap: .8rem; padding: .35rem 0; min-height: 0;
   border: 0; border-bottom: 1px solid currentColor; border-radius: 0; background: none; box-shadow: none;
   color: var(--cmp-link, var(--t-accent, #1f6feb)); font-size: .96rem; font-weight: 700; text-decoration: none;
   transform: none;
 }
 .c-link-arrow::after,
-.c-page--v2 .c-btn::after { content: "↗"; font-size: 1.16rem; line-height: 1; transition: transform .2s ease; }
+.c-page--v2.c-l-cta-link .c-btn::after { content: "↗"; font-size: 1.16rem; line-height: 1; transition: transform .2s ease; }
 .c-link-arrow:hover,
-.c-page--v2 .c-btn:hover { transform: none; background: none; border-color: currentColor; }
+.c-page--v2.c-l-cta-link .c-btn:hover { transform: none; background: none; border-color: currentColor; }
 .c-link-arrow:hover::after,
-.c-page--v2 .c-btn:hover::after { transform: translate(2px, -2px); }
+.c-page--v2.c-l-cta-link .c-btn:hover::after { transform: translate(2px, -2px); }
 /* Sekundär/Outline: Text statt Akzent */
-.c-page--v2 .c-btn--secondary,
-.c-page--v2 .c-btn--outline { color: var(--cmp-text, var(--p-ink)); }
-.c-page--v2 .c-v2--alert .c-btn { color: var(--p-alert); }
+.c-page--v2.c-l-cta-link .c-btn--secondary,
+.c-page--v2.c-l-cta-link .c-btn--outline { color: var(--cmp-text, var(--p-ink)); }
+.c-page--v2.c-l-cta-link .c-v2--alert .c-btn { color: var(--p-alert); }
+
+/* cta=button: Textlinks der v2-Bausteine als Buttons (Akzentfläche) */
+.c-l-cta-button .c-v2-link {
+  padding: .7rem 1.15rem; border: 1px solid var(--p-accent); border-radius: var(--t-radius-md, .5rem);
+  background: var(--p-accent); color: var(--t-on-accent, var(--p-paper)); gap: .6rem;
+}
+.c-l-cta-button .c-v2-link:hover { background: color-mix(in oklab, var(--p-accent) 85%, var(--p-ink)); }
+.c-l-cta-button .c-v2__links .c-v2-link + .c-v2-link,
+.c-l-cta-button .c-v2-link.c-v2-link--secondary { background: transparent; color: var(--p-accent); }
+.c-l-cta-button .c-v2--alert .c-v2-link { background: var(--p-alert); border-color: var(--p-alert); color: var(--p-alert-soft); }
 
 /* Menü: Altlast `.c-nav a { color: muted }` (0,1,1) schlägt .c-nav__item — in v2 zählt die Header-Farbe */
 .c-page--v2 .c-nav a.c-nav__item { color: var(--t-nav-item-color); }
@@ -2887,5 +2950,5 @@ a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; 
 .c-page--v2 .c-nav a.c-nav__item--alert { color: var(--t-danger); }
 
 @media (prefers-reduced-motion: reduce) {
-  .c-link-arrow::after, .c-page--v2 .c-btn::after { transition: none; }
+  .c-link-arrow::after, .c-page--v2.c-l-cta-link .c-btn::after { transition: none; }
 }

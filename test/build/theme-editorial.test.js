@@ -48,7 +48,7 @@ test('init --theme=theme-editorial --starter builds v2 starter pages; init witho
     const out = build.stdout + build.stderr;
     assert.doesNotMatch(out, /missing-component|Palette contrast/i);
     const html = fs.readFileSync(path.join(project, 'build', 'public_development', 'index.html'), 'utf8');
-    assert.match(html, /<body class="c-page c-page--v2">/);
+    assert.match(html, /<body class="c-page c-page--v2 c-l-rail-side c-l-intro-split c-l-linklist-rows c-l-split-columns c-l-notice-band c-l-cta-link">/);
     assert.match(html, /class="c-v2 c-v2--paper c-v2-intro"/);
     assert.match(html, /<figure class="c-v2-intro__media"><img src="\/images\/[^"]+\.svg"/, 'SVG passed through');
     const svgImg = html.match(/<figure class="c-v2-intro__media">(<img[^>]+>)/)[1];

@@ -56,7 +56,7 @@ test('Base v2 header/footer fields render from site.json', { timeout: 360_000 },
     assert.match(html, /<p class="c-footer-bottom__note">Pflichtangaben ergänzen<\/p>/);
 
     const css = fs.readFileSync(path.join(project, 'build', 'public_development', '_assets', 'css', 'base.full.css'), 'utf8');
-    assert.match(css, /\.c-page--v2 \.c-btn/, 'v2 CTA form ships with the base');
+    assert.match(css, /\.c-page--v2\.c-l-cta-link \.c-btn/, 'v2 CTA form (cta=link) ships with the base');
     assert.match(css, /\.c-link-arrow/);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });

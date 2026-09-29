@@ -118,7 +118,7 @@ test('Base v2 building blocks render as built-ins (v2 and classic theme)', { tim
     const ohne = fs.readFileSync(path.join(project, 'build', 'public_development', 'ohne', 'index.html'), 'utf8');
     assert.equal((ohne.match(/<h1\b/g) || []).length, 1, 'Intro without headline: fallback title h1');
     assert.match(ohne, />Fallback-Titel<\/h1>/);
-    assert.match(html, /<body class="c-page c-page--classic">/, 'usable in classic themes');
+    assert.match(html, /<body class="c-page c-page--classic c-l-rail-top c-l-intro-split c-l-linklist-cards c-l-split-columns c-l-notice-box c-l-cta-button">/, 'usable in classic themes');
     const css = fs.readFileSync(path.join(project, 'build', 'public_development', '_assets', 'css', 'base.full.css'), 'utf8');
     assert.match(css, /\.c-page--classic \.c-v2::before/, 'classic fallback keeps bands inside the box');
   } finally {

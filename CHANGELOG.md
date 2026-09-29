@@ -27,11 +27,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the margin, text links), Inter, default palette graphite + ink blue and presets `warm`, `nacht`, `salbei` (all AA).
   `init --theme=theme-editorial --starter` creates starter pages from the v2 building blocks. `init` without `--theme`
   is unchanged (classic).
+- **Theme decides the layout (`@layout`)**: v2 themes declare how the building blocks are arranged — section label
+  above the title or as a side column (`rail`), Intro image right/left/below (`intro`), LinkList as cards or rows,
+  Split in columns or stacked, Notice as box or band, CTAs as buttons or text links. Defaults for themes without
+  `@layout`: label above the title, cards, boxes, buttons. `theme-editorial` declares its current arrangement and looks
+  unchanged. Body gets `c-l-*` classes; an ejected `base.njk` needs `{{ marbasTheme.layoutClasses }}` (doctor warns).
 - Palette value **`surface`** (optional, default `#fff`) for the `tone: white` band; the contrast check now also tests
   text on it, so a dark palette without `surface` is reported instead of rendering light text on white.
 
 ### Fixed
 
+- v2 themes with multi-column page layouts (`content_2col_*`, `content_3col_*`): bands ran across the side column
+  and past the window edge, the page title sat at the window edge. The column grid now stays in the page measure,
+  bands stay in their column, and the building blocks adapt to their column width (container queries).
 - SVG images (`image.src: *.svg`) are no longer rasterised to WebP/JPEG variants — they are copied as-is and
   rendered as a single `<img src="….svg">` (sharp at any size). Projects that linked the generated
   `/images/<id>-<w>w.webp` files of an SVG directly must link the SVG instead.
