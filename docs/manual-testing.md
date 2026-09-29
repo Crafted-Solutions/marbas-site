@@ -83,7 +83,7 @@ Stop the watcher with `Ctrl+C`.
 
 ## 2. Switching themes
 
-The library ships 19 themes (18 classic, `theme-editorial` for Base v2). The theme ID is the file name without the
+The library ships 20 themes (18 classic, `theme-editorial` and `theme-product` for Base v2). The theme ID is the file name without the
 extension, e.g. `theme-bloom`, `theme-atlas`, `theme-slate`.
 
 ```bash

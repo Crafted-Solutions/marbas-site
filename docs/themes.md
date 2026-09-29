@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 19 ready-to-use themes (18 classic, 1 Base v2). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 20 ready-to-use themes (18 classic, 2 Base v2: `theme-editorial`, `theme-product`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -64,6 +64,7 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 | `theme-klinik` | Klinik | Medical practices, clinics, telehealth — clinical, calming cyan-teal |
 | `theme-lumina` | Lumina | Hotels, travel booking, hospitality — warm amber-terracotta |
 | `theme-maison` | Maison | Real estate, architecture, premium projects — warm neutrals, editorial serif |
+| `theme-product` | Product | **Base v2.** Software, platforms, marketplaces, apps — floating glass header, cards with soft shadows, pill labels, solid buttons, dark footer. Plus Jakarta Sans. Palettes: default (indigo on white), `nacht` (navy + gold), `petrol` |
 | `theme-praxis` | Praxis | Law firms, tax advisory, professional services |
 | `theme-signal` | Signal | Developer tools, CLI products, API documentation |
 | `theme-slate` | Slate | SaaS products, tech marketing — clean slate-grey, modern blue |
