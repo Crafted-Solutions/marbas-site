@@ -36,7 +36,7 @@ Placeholder_Main:
     meta: "Stand"
   - componentType: LinkList
     id: anliegen
-    label: "01 / Orientierung"
+    label: "Orientierung"
     headline: "Was möchten Sie tun?"
     items:
       - { title: "Termin", text: "Unterlagen", href: "/#termin" }
