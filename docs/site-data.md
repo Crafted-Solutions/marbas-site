@@ -170,12 +170,14 @@ Controls the logo displayed in the header.
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `show` | boolean | `true` | Whether to show the logo image. |
-| `path` | string | `/_assets/images/Logo.svg` | Path to the logo file, relative to the built output root. The default is a neutral placeholder shipped with marbas-site (also available as `Logo.png`). |
+| `path` | string | `/_assets/images/Logo.svg` | Path to the logo file, relative to the built output root. The default is a neutral placeholder shipped with marbas-site (also available as `Logo.png`). Put your own logo in the project's `_assets/images/` (copied as is) — not `_media/` (only images used by components are processed and published from there) — and do not name it `logo.svg`/`logo.png`: on case-insensitive file systems (macOS, Windows) it collides with the placeholder `Logo.svg`. |
+| `pathDark` | string | — | Optional logo for the dark scheme (since 0.18, needs `theme.scheme` `dark`/`auto` and a v2 theme). The header then renders both images and shows the matching one (system setting and switch); the second image is hidden from screen readers. |
 
 ```json
 "logo": {
   "show": true,
-  "path": "/_media/logo.svg"
+  "path": "/_assets/images/firma-logo.svg",
+  "pathDark": "/_assets/images/firma-logo-dunkel.svg"
 }
 ```
 
@@ -435,7 +437,7 @@ Default social sharing image used when a page does not define its own `seoImage`
 
   "logo": {
     "show": true,
-    "path": "/_media/logo.svg"
+    "path": "/_assets/images/firma-logo.svg"
   },
 
   "header": {

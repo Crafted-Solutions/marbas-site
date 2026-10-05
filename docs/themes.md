@@ -281,6 +281,7 @@ Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nac
 - With `auto`, a small inline script in `<head>` applies a stored choice before the first paint (no flash). Sites with a strict
   Content Security Policy need its hash in `script-src`.
 - An ejected `_includes/base.njk` without `marbasTheme.scheme` disables dark mode (build warning).
+- A logo that disappears on dark paper gets a second file: `site.json → logo.pathDark` (since 0.18, see [Site data](site-data.md#logo)).
 
 ## CSS custom properties reference
 
