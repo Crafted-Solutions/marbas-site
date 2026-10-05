@@ -63,7 +63,7 @@
 }
 
 /* Header: ruhig, Linie statt Box */
-.c-page--v2 .c-header__inner { min-height: 86px; }
+@media (min-width: 768px) { .c-page--v2 .c-header__inner { min-height: 86px; } }   /* mobil: eine kompakte Zeile (0.19) */
 .c-page--v2 .c-brand__name { font-size: 1.08rem; font-weight: 700; letter-spacing: -.035em; }
 @media (min-width: 768px) {
   .c-page--v2 .c-nav__item { font-size: .83rem; font-weight: 650; padding-inline: 0; }

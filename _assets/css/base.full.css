@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-10-05T20:42:25.734Z */
+/* Build time: 2026-10-05T21:26:02.414Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -1625,6 +1625,60 @@ hr {
     padding: var(--space-3) var(--space-5) var(--space-3) calc(var(--space-5) + var(--space-2));
     border-bottom: 1px solid var(--t-nav-mobile-border, var(--t-border));
     font-size: var(--text--1);
+  }
+}
+
+/* ---------- Header actions in the mobile menu (brand-nav-actions, marbas-site 0.19) ----------
+   Mobile: the header stays one row (brand · optional scheme toggle · menu button); header.actions are hidden there
+   and shown at the end of the menu panel instead. Desktop: only the header row shows them.
+   `:has(.c-nav__actions)`: an ejected nav slot without the buttons keeps them in the header row (never lost). */
+
+.c-nav__actions {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .c-header--actions-in-nav:has(.c-nav__actions) .c-header__inner {
+    flex-wrap: nowrap;
+  }
+
+  .c-header--actions-in-nav:has(.c-nav__actions) .c-header-actions {
+    display: none;
+  }
+
+  .c-header--actions-in-nav:has(.c-nav__actions) .c-brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .c-header--actions-in-nav:has(.c-nav__actions) .c-brand__text {
+    min-width: 0;
+  }
+
+  .c-header--actions-in-nav:has(.c-nav__actions) .c-brand__name,
+  .c-header--actions-in-nav:has(.c-nav__actions) .c-brand__tagline {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .c-nav__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  /* the legacy `.c-nav a { color: muted }` (layout/page.css, 0,1,1) would recolour the buttons in the panel;
+     same specificity, later in the bundle → wins; form rules (≥ 0,2,0) still win over this */
+  :where(.c-nav__actions) a.c-btn { color: var(--t-text, #121316); }
+  :where(.c-nav__actions) a.c-btn--primary { color: var(--t-on-accent, white); }
+
+  .c-nav__actions .c-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
   }
 }
 

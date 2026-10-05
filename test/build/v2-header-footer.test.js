@@ -62,3 +62,30 @@ test('Base v2 header/footer fields render from site.json', { timeout: 360_000 },
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('brand-nav-actions: header.actions also in the menu panel for phones, opt-out via showActionsInDrawer (Task 151)', { timeout: 360_000 }, () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-actions-'));
+  try {
+    const project = path.join(tmp, 'site');
+    assert.equal(run(['init', project, '--theme=theme-product']).status, 0);
+    const actions = [{ label: 'Termin anfragen', href: '/#kontakt', style: 'primary' }];
+
+    const none = buildWith(project, (site) => { site.header.preset = 'brand-nav-actions'; site.header.actions = []; });
+    assert.doesNotMatch(none, /c-nav__actions|c-header--actions-in-nav/);
+
+    const html = buildWith(project, (site) => { site.header.preset = 'brand-nav-actions'; site.header.actions = actions; });
+    assert.match(html, /<header role="banner" class="c-header c-header--with-actions c-header--actions-in-nav/);
+    const nav = html.slice(html.indexOf('<nav class="c-nav'), html.indexOf('</nav>'));
+    assert.match(nav, /<div class="c-nav__actions">\s*<a class="c-btn c-btn--primary" href="\/#kontakt">Termin anfragen<\/a>/);
+    assert.match(html, /<div class="c-header-actions">\s*<a class="c-btn c-btn--primary"/, 'desktop row keeps the buttons');
+
+    const optOut = buildWith(project, (site) => { site.header.mobile = { ...(site.header.mobile || {}), showActionsInDrawer: false }; });
+    assert.doesNotMatch(optOut, /c-nav__actions|c-header--actions-in-nav/);
+    assert.match(optOut, /c-header-actions/);
+
+    const otherPreset = buildWith(project, (site) => { site.header.preset = 'brand-nav'; site.header.mobile.showActionsInDrawer = true; });
+    assert.doesNotMatch(otherPreset, /c-nav__actions/, 'presets without header buttons do not add them to the menu');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
