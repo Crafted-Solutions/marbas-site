@@ -37,7 +37,7 @@ Placeholder_Main:
     meta: "Beispiel"
   - componentType: LinkList
     id: anliegen
-    label: "01 / Orientierung"
+    label: "Orientierung"
     headline: "Was möchten Sie tun?"
     text: "<p>Jede Zeile führt direkt zu dem, was jetzt wichtig ist.</p>"
     items:
@@ -47,7 +47,7 @@ Placeholder_Main:
   - componentType: Split
     id: ablauf
     tone: soft
-    label: "02 / Ablauf"
+    label: "Ablauf"
     headline: "Gut vorbereitet ins Gespräch."
     text: "<p>Beschreiben Sie hier in zwei, drei Sätzen, wie die Zusammenarbeit beginnt.</p>"
     mutedText: "<p>Ein Nebentext für Einschränkungen oder Hinweise.</p>"
@@ -59,8 +59,8 @@ Placeholder_Main:
       note: "Die Liste ist ein Beispiel — ersetzen oder löschen."
   - componentType: Contact
     id: kontakt
-    label: "03 / Kontakt"
-    headline: "Kontakt & Zeiten."
+    label: "Kontakt"
+    headline: "So erreichen Sie uns."
     text: "<p>Alles Wichtige an einem Ort.</p>"
     details:
       - { term: "Adresse", value: "<em>[Straße Hausnummer]</em><br><em>[PLZ Ort]</em>" }

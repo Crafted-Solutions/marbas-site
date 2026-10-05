@@ -18,7 +18,6 @@ eleventyNavigation:
 Placeholder_Hero:
   - componentType: Intro
     id: ueber-uns
-    label: "Über uns"
     headline: "Wer wir sind."
     lead: "Ein Satz zu Ihrer Haltung — warum Sie tun, was Sie tun."
     image:
@@ -29,13 +28,13 @@ Placeholder_Main:
   - componentType: Split
     id: haltung
     layout: title
-    label: "01 / Haltung"
+    label: "Haltung"
     headline: "Was uns wichtig ist."
     text: "<p>Beschreiben Sie hier Ihre Geschichte, Ihre Werte oder Ihr Team.</p><p>Zwei, drei kurze Absätze lesen sich besser als eine lange Wand.</p>"
     note: "Ein Satz, der hängen bleibt."
   - componentType: LinkList
     id: leistungen
-    label: "02 / Leistungen"
+    label: "Leistungen"
     headline: "Was wir anbieten."
     items:
       - { title: "Leistung eins", text: "Kurz beschrieben, für wen sie gedacht ist." }

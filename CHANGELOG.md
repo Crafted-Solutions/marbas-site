@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.2] - 2026-10-05
+
+### Changed
+- v2-Starter (`marbas init`, de/en): Abschnitts-Kennungen als Rubriken ohne Nummern („Orientierung“ statt „01 / Orientierung“),
+  Kontakt-Überschrift als Aussage („So erreichen Sie uns.“), keine Kennung im Intro der Über-uns-Seite. Nummern nur bei
+  echten Abläufen (`items[].label`). Betrifft nur neue Projekte.
+
 ## [0.17.1] - 2026-10-05
 
 ### Fixed

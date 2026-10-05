@@ -37,7 +37,7 @@ Placeholder_Main:
     meta: "Example"
   - componentType: LinkList
     id: topics
-    label: "01 / Orientation"
+    label: "Orientation"
     headline: "What would you like to do?"
     text: "<p>Each row leads straight to what matters now.</p>"
     items:
@@ -47,7 +47,7 @@ Placeholder_Main:
   - componentType: Split
     id: process
     tone: soft
-    label: "02 / Process"
+    label: "Process"
     headline: "Well prepared for the first talk."
     text: "<p>Describe in two or three sentences how working together starts.</p>"
     mutedText: "<p>A secondary text for limitations or notes.</p>"
@@ -59,8 +59,8 @@ Placeholder_Main:
       note: "The list is an example — replace or delete it."
   - componentType: Contact
     id: contact
-    label: "03 / Contact"
-    headline: "Contact & hours."
+    label: "Contact"
+    headline: "How to reach us."
     text: "<p>Everything important in one place.</p>"
     details:
       - { term: "Address", value: "<em>[Street number]</em><br><em>[Postcode city]</em>" }

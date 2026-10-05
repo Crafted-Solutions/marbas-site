@@ -385,7 +385,7 @@ in classic themes their bands stay inside the boxed page. Common fields:
 
 | Field | Meaning |
 |---|---|
-| `label` | Section label in the left rail (e.g. `01 / Orientierung`) |
+| `label` | Section label in the left rail (e.g. `Orientierung`; numbers like `01 / …` only for real sequences) |
 | `tone` | Band colour: `paper` (default), `soft` (accent tint), `white`, `alert` (warning tint) |
 
 ### Intro
