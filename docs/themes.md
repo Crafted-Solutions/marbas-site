@@ -230,7 +230,7 @@ blocks in a comment next to `@family`:
 |---|---|---|
 | `rail` | `top` · `side` | Section label as a line above the title · as a column on the left (editorial) |
 | `intro` | `split` · `reverse` · `stacked` | Text left, image right · image left · text above, image full width below |
-| `linklist` | `cards` · `rows` | Card grid · numbered rows with hairlines |
+| `linklist` | `cards` · `rows` | Card grid · rows with hairlines (entry labels only where set, `items[].label`) |
 | `split` | `columns` · `stacked` | Two columns · one below the other |
 | `notice` | `box` · `band` | Tinted box · thin band between hairlines |
 | `cta` | `button` · `link` | Buttons (also for the text links of the blocks) · text links with ↗ (also for `.c-btn`) |

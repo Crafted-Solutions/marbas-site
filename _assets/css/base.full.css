@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-09-29T12:04:24.551Z */
+/* Build time: 2026-10-05T11:49:10.106Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2821,15 +2821,19 @@ hr {
 .c-v2-notice__text { max-width: 45rem; }
 .c-v2-notice__meta { color: var(--p-muted); font-size: .78rem; white-space: nowrap; }
 
-/* LinkList — linklist=rows: nummerierte Zeilen mit Haarlinien (Editorial) */
+/* LinkList — linklist=rows: Zeilen mit Haarlinien (Editorial). Keine automatische Nummer (0.16): eine Kennungsspalte gibt es
+   nur, wenn Einträge eine Kennung haben (.c-v2-rows--labels, items[].label) — sonst Titel | Text | Pfeil. */
 .c-l-linklist-rows .c-v2-rows { border-top: 1px solid var(--p-line); }
 .c-l-linklist-rows .c-v2-rows__row {
-  display: grid; grid-template-columns: 3.2rem minmax(0, .95fr) minmax(0, 1fr) 1.4rem; gap: 1.2rem; align-items: baseline;
+  display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1fr) 1.4rem; gap: 1.2rem; align-items: baseline;
   padding: 1.55rem .4rem 1.65rem 0; border-bottom: 1px solid var(--p-line); color: var(--p-ink); text-decoration: none;
   transition: background .18s ease, padding .18s ease;
 }
+.c-l-linklist-rows .c-v2-rows--labels .c-v2-rows__row { grid-template-columns: minmax(3.2rem, max-content) minmax(0, .95fr) minmax(0, 1fr) 1.4rem; }
 .c-l-linklist-rows a.c-v2-rows__row:hover { background: var(--p-accent-soft); padding-left: .8rem; }
 .c-v2-rows__index { color: var(--p-accent); font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.c-v2-rows__index:empty { visibility: hidden; }   /* Eintrag ohne Kennung in einer Liste mit Kennungen: Spalte bleibt, nichts sichtbar */
+.c-l-linklist-cards .c-v2-rows__index:empty { display: none; }
 .c-v2-rows__title { margin: 0; font-size: var(--v2-display-3); letter-spacing: -.035em; }
 /* linklist=cards (Standard): Karten-Raster */
 .c-l-linklist-cards .c-v2-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: 1.2rem; }
@@ -2895,7 +2899,8 @@ hr {
 
 /* Spaltenbreite statt Fensterbreite: dieselben Bausteine stapeln sich in einer Seitenspalte von selbst */
 @container v2 (max-width: 1050px) {
-  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1fr) 1.1rem; gap: .9rem; }
+  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 1.1rem; gap: .9rem; }
+  .c-l-linklist-rows .c-v2-rows--labels .c-v2-rows__row { grid-template-columns: minmax(2.5rem, max-content) minmax(0, 1fr) minmax(0, 1fr) 1.1rem; }
 }
 @media (max-width: 760px) {
   .c-v2-intro { padding: 3.5rem 0 3rem; }
@@ -2906,9 +2911,12 @@ hr {
   .c-l-intro-reverse .c-v2-intro__media { order: 0; }
   .c-v2-notice__copy { display: block; }
   .c-v2-notice__meta { display: block; margin-top: .35rem; }
-  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 2rem 1fr 1.1rem; gap: .7rem; padding-block: 1.35rem; }
-  .c-l-linklist-rows .c-v2-rows__text { grid-column: 2; grid-row: 2; }
-  .c-l-linklist-rows .c-v2-rows__arrow { grid-column: 3; grid-row: 1; }
+  .c-l-linklist-rows .c-v2-rows__row { grid-template-columns: 1fr 1.1rem; gap: .7rem; padding-block: 1.35rem; }
+  .c-l-linklist-rows .c-v2-rows__text { grid-column: 1; grid-row: 2; }
+  .c-l-linklist-rows .c-v2-rows__arrow { grid-column: 2; grid-row: 1; }
+  .c-l-linklist-rows .c-v2-rows--labels .c-v2-rows__row { grid-template-columns: minmax(2rem, max-content) 1fr 1.1rem; }
+  .c-l-linklist-rows .c-v2-rows--labels .c-v2-rows__text { grid-column: 2; grid-row: 2; }
+  .c-l-linklist-rows .c-v2-rows--labels .c-v2-rows__arrow { grid-column: 3; grid-row: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .c-v2-rows__row { transition: none; }

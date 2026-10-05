@@ -1,6 +1,8 @@
 {#
-  LinkList (Base v2) — nummerierte Zeilen statt Karten: Nummer, Titel, Text, Pfeil; ganze Zeile verlinkt.
-  Felder: id, label, headline, text (html), items[] {title, text, href, tone: "" | "alert"}, tone.
+  LinkList (Base v2) — Anliegen/Wege als Zeilen oder Karten (Anordnung bestimmt die Form): Kennung, Titel, Text, Pfeil;
+  ganze Zeile verlinkt. Keine automatische Nummer: eine Kennung je Eintrag (`items[].label`, z.B. "01", "Schritt 1")
+  nur bei echten Abläufen — Alternativen bleiben ohne (seit 0.16).
+  Felder: id, label, headline, text (html), items[] {label, title, text, href, tone: "" | "alert"}, tone.
 #}
 <section id="{{ data.id }}" class="c-v2 c-v2--{{ data.tone or 'paper' }} c-v2-section c-v2-linklist">
   <div class="c-v2__wrap c-v2__frame">
@@ -12,12 +14,14 @@
         {% if data.text %}<div class="c-v2__muted">{{ data.text | safe }}</div>{% endif %}
       </div>
       {% endif %}
-      <div class="c-v2-rows">
+      {# Nunjucks: ein set in einer for-Schleife wirkt nicht nach außen — deshalb per Filter #}
+      {% set hasItemLabels = ((data.items or []) | selectattr('label') | length) > 0 %}
+      <div class="c-v2-rows{% if hasItemLabels %} c-v2-rows--labels{% endif %}">
         {% for item in data.items %}
         {# ohne Ziel keine Pseudo-Verlinkung ("#" würde in Fremdsprachen zu /en/#) #}
         {% set rowTag = 'a' if item.href else 'div' %}
         <{{ rowTag }} class="c-v2-rows__row{% if item.tone == 'alert' %} c-v2-rows__row--alert{% endif %}"{% if item.href %} href="{{ item.href | locale_url }}"{% endif %}>
-          <span class="c-v2-rows__index">{{ "0" if loop.index < 10 }}{{ loop.index }}</span>
+          {% if item.label %}<span class="c-v2-rows__index">{{ item.label }}</span>{% elif hasItemLabels %}<span class="c-v2-rows__index" aria-hidden="true"></span>{% endif %}
           <h3 class="c-v2-rows__title">{{ item.title }}</h3>
           {% if item.text %}<p class="c-v2-rows__text">{{ item.text }}</p>{% else %}<span></span>{% endif %}
           {% if item.href %}<span class="c-v2-rows__arrow" aria-hidden="true">↗</span>{% endif %}

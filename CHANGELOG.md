@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-05
+
+### Changed
+
+- **LinkList no longer numbers its entries automatically.** A number promises an order; alternatives ("Looking for a coin?" /
+  "Have one to spare?") were shown as 01 / 02. Existing v2 pages with a LinkList lose the numbers on update — where the
+  entries really are a sequence, set `items[].label` (e.g. `"01"`). Rows without any label drop the number column.
+
+### Added
+
+- LinkList `items[].label`: an optional label per entry (`"01"`, `"Step 1"`), shown where the number used to be and styled by
+  each form. A list gets `.c-v2-rows--labels` when at least one entry has a label.
+
 ## [0.15.1] - 2026-09-29
 
 ### Fixed

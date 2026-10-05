@@ -400,8 +400,13 @@ Slim notice band. Fields: `label`, `text` (html), `meta` (right-aligned, e.g. a 
 
 ### LinkList
 
-Numbered rows instead of cards (number, title, text, arrow; the whole row is the link).
-Fields: `label`, `headline`, `text` (html), `items[] {title, text, href, tone}` (`tone: alert` highlights a row), `tone`.
+Paths or concerns as rows or cards — the form decides (`@layout linklist`). Each entry: optional label, title, text, arrow;
+the whole entry is the link.
+Fields: `label`, `headline`, `text` (html), `items[] {label, title, text, href, tone}` (`tone: alert` highlights an entry), `tone`.
+
+Entries are **not numbered automatically** (since 0.16). Give entries a label (`items[].label`, e.g. `"01"`, `"Step 1"`)
+only when they are a real sequence; alternatives ("Looking for a coin?" / "Have one to spare?") stay without. Use labels
+of similar length — each row aligns its own label column.
 
 ### Split
 
