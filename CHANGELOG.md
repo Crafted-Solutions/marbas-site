@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-10-05
+
+### Added
+
+- **Dark mode for Base v2 forms** (`marbas-project.json → theme.scheme`): `mode` `light` (default, unchanged output) · `dark`
+  (dark palette only) · `auto` (follows the system, visitors can switch). `scheme.dark.palette` / `scheme.dark.colors` choose the
+  dark palette; the theme names its own with `@dark <preset>`. Build and `doctor` check it for AA.
+- Every form has a dark palette: new presets Bold `nacht`, Warm `kakao`, Druckwerk `nachtdruck`; `@dark` in all six forms.
+- Switches: footer „Hell · Dunkel · System“ (`site.json → footer.schemeToggle`, default on with `auto`) and a header icon button
+  (`header.schemeToggle`, default off), in all header presets. No cookies; only an explicit choice is kept in `localStorage`.
+- Form variables for dark footers: `--bold-foot-bg/-fg`, `--riso-foot-bg/-fg`, `--riso-overprint` (defaults = previous look).
+
 ## [0.16.0] - 2026-10-05
 
 ### Changed

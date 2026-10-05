@@ -18,13 +18,13 @@ const BIN = path.join(ROOT, 'src/cli/bin.js');
 const run = (args) => spawnSync(process.execPath, [BIN, ...args], { encoding: 'utf8', timeout: 180_000 });
 const THEME = fs.readFileSync(path.join(ROOT, 'themes', 'theme-druckwerk.css'), 'utf8');
 
-test('theme-druckwerk: v2, own layout, presets gruen-orange/gelb-violett, all palettes AA', () => {
+test('theme-druckwerk: v2, own layout, presets gruen-orange/gelb-violett + dunkel nachtdruck, all palettes AA', () => {
   assert.equal(readThemeFamily(THEME), 'v2');
   const { layout, warnings } = readThemeLayout(THEME);
   assert.deepEqual(warnings, []);
   assert.deepEqual(layout, { rail: 'side', intro: 'split', linklist: 'cards', split: 'columns', notice: 'box', cta: 'button' });
-  assert.deepEqual(readPalettePresets(THEME).sort(), ['gelb-violett', 'gruen-orange']);
-  for (const preset of [null, 'gruen-orange', 'gelb-violett']) {
+  assert.deepEqual(readPalettePresets(THEME).sort(), ['gelb-violett', 'gruen-orange', 'nachtdruck']);
+  for (const preset of [null, 'gruen-orange', 'gelb-violett', 'nachtdruck']) {
     assert.deepEqual(paletteContrastWarnings(readPaletteValues(THEME, preset)), [], `palette ${preset || 'default'}`);
   }
   for (const family of ['Jost', 'IBM Plex Sans', 'IBM Plex Mono']) assert.match(THEME, new RegExp(`font-family: '${family}'`), `${family} @font-face generated`);

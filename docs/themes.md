@@ -246,6 +246,42 @@ column stacks by itself; the column grid stays inside the page measure.
 Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2--{tone}">` with `tone` `paper`
 (default), `soft`, `white` or `alert`, a `.c-v2__label` in the left rail and `.c-v2-link` for text links with an arrow.
 
+### Dark mode (`theme.scheme`, since 0.17)
+
+Every Base v2 form ships a dark palette and names it in its header comment (`@dark <preset>`): Editorial `nacht`,
+Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`. A project decides how to use it:
+
+```json
+"theme": {
+  "id": "theme-product",
+  "colors": { "accent": "#7a5e2e" },
+  "scheme": { "mode": "auto", "dark": { "palette": "nacht", "colors": { "accent": "#d3af54" } } }
+}
+```
+
+| `scheme.mode` | Result |
+|---|---|
+| `light` (default, also without `scheme`) | light only — output exactly as before, no switch, no script |
+| `dark` | dark only — the dark palette is the page's palette, no switch |
+| `auto` | follows the visitor's system setting; visitors can switch (footer, optionally header) |
+
+- `scheme.dark.palette` — a preset of the theme (default: the theme's `@dark` preset); `scheme.dark.colors` — single values on
+  top (the 9 palette names, like `theme.colors`). The dark block takes **all** custom properties of the preset (forms set their
+  own variables there) and outranks `theme.colors`, so light brand colours never leak into the dark scheme.
+- Without a usable dark palette (theme without `@dark`, no `dark.colors`) the build warns and stays light. classic themes ignore
+  `scheme` (warning).
+- Build and `doctor` check the dark palette for AA like the light one (reported as "Dunkel: …").
+- Switch placement lives in `site.json`: `footer.schemeToggle` (default on with `auto`) and `header.schemeToggle` (default off) —
+  see [Site data](site-data.md#header).
+- **Privacy:** no cookies. Nothing is stored on page load; only a click on Light/Dark stores that one value in the browser's
+  `localStorage` (`marbas-scheme`), "System" removes it. The value is never sent anywhere. This is strictly necessary for a function
+  the visitor explicitly requested, so no consent banner is needed (assessment, not legal advice). Suggested sentence for the privacy
+  policy: *„Wenn Sie die Darstellung (hell/dunkel) umschalten, speichert Ihr Browser diese Wahl lokal (localStorage), damit sie beim
+  nächsten Seitenaufruf erhalten bleibt. Die Angabe wird nicht an uns übertragen und lässt sich über „System“ jederzeit löschen.“*
+- With `auto`, a small inline script in `<head>` applies a stored choice before the first paint (no flash). Sites with a strict
+  Content Security Policy need its hash in `script-src`.
+- An ejected `_includes/base.njk` without `marbasTheme.scheme` disables dark mode (build warning).
+
 ## CSS custom properties reference
 
 Every theme must provide the following tokens. Derived tokens (header, footer, navigation colours) can be expressed as `color-mix()` or direct values.

@@ -2,6 +2,7 @@
    theme-warm.css – "Warm"
    @family v2
    @layout rail=top intro=reverse linklist=cards split=columns notice=box cta=button
+   @dark kakao
 
    Zielgruppe  : Handwerk, Gastro, Hofläden, Wellness, Praxen mit persönlicher Note — Seiten, die nahbar wirken
    Stil        : Weich und handgemacht: Serifen-Überschriften mit Kursiv, Creme-Papier mit feinem Korn,
@@ -79,6 +80,7 @@
   --p-surface:     #fffaf3;
 }
 :root[data-palette="salbei"] { --p-paper: #f4f3ea; --p-ink: #26302a; --p-muted: #5a6559; --p-line: #d9ddcb; --p-accent: #455f47; --p-accent-soft: #e0e7d6; --p-alert: #9c3a2f; --p-alert-soft: #f4e3dc; --p-surface: #fbfaf4; }
+:root[data-palette="kakao"]  { --p-paper: #241a15; --p-ink: #f3e9e2; --p-muted: #b3a49a; --p-line: #4a3b33; --p-accent: #e88769; --p-accent-soft: #4a3026; --p-alert: #f19a8c; --p-alert-soft: #48312a; --p-surface: #2f241e; }
 :root[data-palette="beere"]  { --p-paper: #f9f0f1; --p-ink: #2d2226; --p-muted: #6d5860; --p-line: #ead6dc; --p-accent: #8e2f55; --p-accent-soft: #f1dbe3; --p-alert: #8f3a14; --p-alert-soft: #f7e4d8; --p-surface: #fffafb; }
 
 /* ── FORM ──────────────────────────────────────────────────── */

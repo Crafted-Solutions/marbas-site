@@ -88,15 +88,15 @@ export default function (eleventyConfig) {
     useLanguageSwitcher: process.env.MARBAS_USE_LANGUAGE_SWITCHER !== '0'
   });
   // Base v2: theme family (<body class="c-page--v2">) and palette preset (<html data-palette>)
-  let marbasTheme = { id: null, family: 'classic', palette: null, layoutClasses: layoutBodyClasses() };
+  let marbasTheme = { id: null, family: 'classic', palette: null, scheme: null, layoutClasses: layoutBodyClasses() };
   const themeId = projectConfig?.theme?.id || null;
   if (themeId) {
     try {
       const css = fs.readFileSync(resolveThemeFile({ projectPath: projectRoot, themeId, libRoot: LIB_ROOT }), 'utf8');
       const resolved = resolveThemePalette({ css, theme: projectConfig.theme });
-      marbasTheme = { id: themeId, family: resolved.family, palette: resolved.preset, layoutClasses: layoutBodyClasses(resolved.layout) };
+      marbasTheme = { id: themeId, family: resolved.family, palette: resolved.preset, scheme: resolved.scheme === 'light' ? null : resolved.scheme, layoutClasses: layoutBodyClasses(resolved.layout) };
     } catch {
-      marbasTheme = { id: themeId, family: 'classic', palette: null, layoutClasses: layoutBodyClasses() };
+      marbasTheme = { id: themeId, family: 'classic', palette: null, scheme: null, layoutClasses: layoutBodyClasses() };
     }
   }
   eleventyConfig.addGlobalData('marbasTheme', marbasTheme);

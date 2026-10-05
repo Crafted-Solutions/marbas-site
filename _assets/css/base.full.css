@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-10-05T11:49:10.106Z */
+/* Build time: 2026-10-05T15:48:59.230Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2920,6 +2920,30 @@ hr {
 }
 @media (prefers-reduced-motion: reduce) {
   .c-v2-rows__row { transition: none; }
+}
+
+/* Dunkelmodus-Schalter (theme.scheme.mode "auto", marbas-site 0.17) — Fußzeile: Gruppe „Hell · Dunkel · System“,
+   Kopfleiste: Symbol-Knopf (Mond = zu dunkel wechseln, Sonne = zu hell). Formen dürfen die Optik anpassen. */
+.c-scheme-switch { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .3rem; font-size: .85rem; }
+.c-scheme-switch__label { margin-right: .2rem; opacity: .8; }
+.c-scheme-switch__option {
+  appearance: none; padding: .22rem .7rem; border: 1px solid transparent; border-radius: 999px;
+  background: none; color: inherit; font: inherit; line-height: 1.3; cursor: pointer;
+}
+.c-scheme-switch__option:hover { border-color: currentColor; }
+.c-scheme-switch__option[aria-pressed="true"] { border-color: currentColor; font-weight: 600; }
+.c-scheme-switch__option:focus-visible, .c-scheme-toggle:focus-visible { outline: 2px solid var(--p-accent, currentColor); outline-offset: 2px; }
+.c-scheme-toggle {
+  appearance: none; display: inline-grid; place-items: center; flex: 0 0 auto; width: 2.4rem; height: 2.4rem; margin-left: .4rem;
+  border: 1px solid var(--p-line, currentColor); border-radius: 999px; background: none; color: var(--p-ink, currentColor); cursor: pointer;
+}
+.c-scheme-toggle:hover { border-color: var(--p-accent, currentColor); color: var(--p-accent, currentColor); }
+.c-scheme-toggle__sun { display: none; }
+[data-scheme="dark"] .c-scheme-toggle__sun { display: block; }
+[data-scheme="dark"] .c-scheme-toggle__moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  [data-scheme="auto"] .c-scheme-toggle__sun { display: block; }
+  [data-scheme="auto"] .c-scheme-toggle__moon { display: none; }
 }
 
 /* v2/links */

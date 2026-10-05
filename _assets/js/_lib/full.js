@@ -1,7 +1,7 @@
 /**
  * CMS Theme Library - Full JavaScript Bundle
- * Includes: nav-toggle.js, announcement-dismiss.js, collapse.js
- * Build date: 2026-05-05T18:23:17.188Z
+ * Includes: nav-toggle.js, announcement-dismiss.js, scheme-toggle.js, collapse.js
+ * Build date: 2026-10-05T15:48:59.994Z
  */
 
 /* ===== nav-toggle.js ===== */
@@ -420,6 +420,78 @@
       });
     });
   });
+})();
+
+
+/* ===== scheme-toggle.js ===== */
+
+/**
+ * scheme-toggle.js – Dark mode switch (marbas-site theme.scheme.mode "auto")
+ *
+ * Controls:
+ * - [data-scheme-set="light|dark|auto"]  footer group "Hell · Dunkel · System" (aria-pressed)
+ * - [data-scheme-toggle]                 header icon button: switches to the opposite of what is shown
+ *
+ * Privacy (no consent needed, no cookies): nothing is written on page load. Only a click on Light/Dark stores
+ * that one value in localStorage['marbas-scheme']; "System" removes it. The value never leaves the browser.
+ * The head script in base.njk applies a stored choice before the first paint; this file only handles clicks.
+ */
+(function () {
+  'use strict';
+
+  var root = document.documentElement;
+  var KEY = 'marbas-scheme';
+  if (!root.hasAttribute('data-scheme')) return;
+  if (!document.querySelector('[data-scheme-set], [data-scheme-toggle]')) return;
+
+  var media = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function stored() {
+    try {
+      var value = window.localStorage.getItem(KEY);
+      return value === 'light' || value === 'dark' ? value : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function choice() { return stored() || 'auto'; }
+
+  function effective() {
+    var current = root.getAttribute('data-scheme');
+    if (current === 'light' || current === 'dark') return current;
+    return media && media.matches ? 'dark' : 'light';
+  }
+
+  function sync() {
+    var selected = root.getAttribute('data-scheme') === 'auto' ? 'auto' : choice();
+    var isDark = effective() === 'dark';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-scheme-set]'), function (button) {
+      button.setAttribute('aria-pressed', String(button.getAttribute('data-scheme-set') === selected));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-scheme-toggle]'), function (button) {
+      button.setAttribute('aria-pressed', String(isDark));
+    });
+  }
+
+  function apply(value) {
+    try {
+      if (value === 'light' || value === 'dark') window.localStorage.setItem(KEY, value);
+      else window.localStorage.removeItem(KEY);
+    } catch (error) { /* storage blocked: the choice still applies to this page */ }
+    root.setAttribute('data-scheme', value === 'light' || value === 'dark' ? value : 'auto');
+    sync();
+  }
+
+  document.addEventListener('click', function (event) {
+    var set = event.target.closest && event.target.closest('[data-scheme-set]');
+    if (set) { apply(set.getAttribute('data-scheme-set')); return; }
+    var toggle = event.target.closest && event.target.closest('[data-scheme-toggle]');
+    if (toggle) apply(effective() === 'dark' ? 'light' : 'dark');
+  });
+
+  if (media && media.addEventListener) media.addEventListener('change', sync);
+  sync();
 })();
 
 

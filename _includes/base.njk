@@ -3,12 +3,13 @@
 {# @category: layout #}
 
 <!DOCTYPE html>
-<html lang="{{pageLanguage}}"{% if marbasTheme.palette %} data-palette="{{ marbasTheme.palette }}"{% endif %}>
+<html lang="{{pageLanguage}}"{% if marbasTheme.palette %} data-palette="{{ marbasTheme.palette }}"{% endif %}{% if marbasTheme.scheme %} data-scheme="{{ marbasTheme.scheme }}"{% endif %}>
 
 {% set dlang = defaultLanguage %}
 
   <head>
-    <base href="">
+    <base href="">{% if marbasTheme.scheme == 'auto' %}{# Dunkelmodus: gespeicherte Wahl vor dem ersten Zeichnen setzen — nur lesen, gespeichert wird erst nach Klick auf den Schalter #}
+    <script>(function(){try{var s=localStorage.getItem('marbas-scheme');if(s==='light'||s==='dark')document.documentElement.setAttribute('data-scheme',s)}catch(e){}})();</script>{% endif %}
     {% siteMeta %}
 
     <link rel="icon" href="/favicon.ico" sizes="32x32">

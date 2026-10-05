@@ -2,6 +2,7 @@
    theme-bold.css – "Bold"
    @family v2
    @layout rail=top intro=stacked linklist=rows split=columns notice=band cta=button
+   @dark nacht
 
    Zielgruppe  : Marken, Kampagnen, Produkte, Events — Seiten, die laut auftreten
    Stil        : Plakativ: riesige schmale Versal-Überschriften, satte Farbflächen mit heller Schrift,
@@ -66,10 +67,13 @@
   --p-surface:     #ffffff;
 }
 :root[data-palette="signal"] { --p-accent: #c01d12; --p-accent-soft: #fbe4e1; --p-alert: #5b21b6; --p-alert-soft: #efe8fb; }
+:root[data-palette="nacht"]  { --p-paper: #0e0e10; --p-ink: #f4f3ee; --p-muted: #a6a7ad; --p-line: #f4f3ee; --p-accent: #558bff; --p-accent-soft: #1d273c; --p-alert: #f19a8c; --p-alert-soft: #342626; --p-surface: #1c1c1f; --bold-foot-bg: #000000; --bold-foot-fg: #f4f3ee; }
 :root[data-palette="wald"]   { --p-paper: #f7f7f2; --p-ink: #0c120f; --p-muted: #434b46; --p-line: #0c120f; --p-accent: #0f5a3a; --p-accent-soft: #e2efe8; --p-alert: #b3261e; --p-alert-soft: #fbe9e7; }
 
 /* Kopien der Palette auf :root — in den Farbflächen wird --p-* umbelegt, die Originale bleiben greifbar */
 :root { --bold-paper: var(--p-paper); --bold-ink: var(--p-ink); --bold-accent: var(--p-accent); --bold-alert: var(--p-alert); }
+/* Fuß: hell = Tinte als Fläche; das dunkle Preset setzt eigene Werte (sonst kippt der Fuß im Dunkeln auf hell) */
+:root { --bold-foot-bg: var(--bold-ink); --bold-foot-fg: var(--bold-paper); }
 
 /* ── FORM ──────────────────────────────────────────────────── */
 .c-page--v2 {
@@ -149,11 +153,11 @@
 
 /* Fuß: schwarze Fläche */
 .c-page--v2 .c-footer {
-  --t-footer-bg: var(--bold-ink); --t-footer-border: color-mix(in oklab, var(--bold-paper) 25%, var(--bold-ink));
-  --t-footer-heading: var(--bold-paper); --t-footer-link: color-mix(in oklab, var(--bold-paper) 85%, var(--bold-ink));
-  --t-footer-link-hover: var(--bold-paper);
-  color: var(--bold-paper); border-top: 0;
+  --t-footer-bg: var(--bold-foot-bg); --t-footer-border: color-mix(in oklab, var(--bold-foot-fg) 25%, var(--bold-foot-bg));
+  --t-footer-heading: var(--bold-foot-fg); --t-footer-link: color-mix(in oklab, var(--bold-foot-fg) 85%, var(--bold-foot-bg));
+  --t-footer-link-hover: var(--bold-foot-fg);
+  color: var(--bold-foot-fg); border-top: 0;
 }
-.c-page--v2 .c-footer .c-footer-intro__name { font-family: var(--t-font-display); text-transform: uppercase; font-size: 2rem; color: var(--bold-paper); }
-.c-page--v2 .c-footer-intro__text, .c-page--v2 .c-footer-contact, .c-page--v2 .c-footer-group__text { color: color-mix(in oklab, var(--bold-paper) 85%, var(--bold-ink)); }
-.c-page--v2 .c-footer-group__title { font-family: var(--t-font-display); text-transform: uppercase; letter-spacing: .06em; color: var(--bold-paper); }
+.c-page--v2 .c-footer .c-footer-intro__name { font-family: var(--t-font-display); text-transform: uppercase; font-size: 2rem; color: var(--bold-foot-fg); }
+.c-page--v2 .c-footer-intro__text, .c-page--v2 .c-footer-contact, .c-page--v2 .c-footer-group__text { color: color-mix(in oklab, var(--bold-foot-fg) 85%, var(--bold-foot-bg)); }
+.c-page--v2 .c-footer-group__title { font-family: var(--t-font-display); text-transform: uppercase; letter-spacing: .06em; color: var(--bold-foot-fg); }

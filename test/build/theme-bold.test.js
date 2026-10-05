@@ -18,13 +18,13 @@ const BIN = path.join(ROOT, 'src/cli/bin.js');
 const run = (args) => spawnSync(process.execPath, [BIN, ...args], { encoding: 'utf8', timeout: 180_000 });
 const THEME = fs.readFileSync(path.join(ROOT, 'themes', 'theme-bold.css'), 'utf8');
 
-test('theme-bold: v2, own layout, presets signal/wald, all palettes AA', () => {
+test('theme-bold: v2, own layout, presets signal/wald + dunkel nacht, all palettes AA', () => {
   assert.equal(readThemeFamily(THEME), 'v2');
   const { layout, warnings } = readThemeLayout(THEME);
   assert.deepEqual(warnings, []);
   assert.deepEqual(layout, { rail: 'top', intro: 'stacked', linklist: 'rows', split: 'columns', notice: 'band', cta: 'button' });
-  assert.deepEqual(readPalettePresets(THEME).sort(), ['signal', 'wald']);
-  for (const preset of [null, 'signal', 'wald']) {
+  assert.deepEqual(readPalettePresets(THEME).sort(), ['nacht', 'signal', 'wald']);
+  for (const preset of [null, 'signal', 'wald', 'nacht']) {
     assert.deepEqual(paletteContrastWarnings(readPaletteValues(THEME, preset)), [], `palette ${preset || 'default'}`);
   }
   assert.match(THEME, /--t-font-display:\s*'Oswald'/, 'display font in a --t-font-* token so the font sync ships it');

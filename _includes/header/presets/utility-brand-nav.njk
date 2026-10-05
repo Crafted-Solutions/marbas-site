@@ -10,7 +10,7 @@
   <div class="c-container c-header__inner">
     {% include "header/slots/brand.njk" %}
     {% include "header/slots/nav.njk" %}
-    <button class="c-nav-toggle" type="button" aria-label="{{ "navOpen" | uiText(pageLanguage) }}" aria-expanded="false" aria-controls="main-nav">
+    {% include "header/slots/scheme-toggle.njk" %}<button class="c-nav-toggle" type="button" aria-label="{{ "navOpen" | uiText(pageLanguage) }}" aria-expanded="false" aria-controls="main-nav">
       <span class="c-nav-toggle__icon" aria-hidden="true"></span>
     </button>
   </div>
