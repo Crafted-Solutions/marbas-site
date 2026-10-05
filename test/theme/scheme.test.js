@@ -65,7 +65,7 @@ test('resolveThemePalette: no dark palette → warning and light; classic themes
 
 // ─── build: light (unchanged) / dark / auto ─────────────────────────────────
 
-function buildProject(scheme, header = {}) {
+function buildProject(scheme, header = {}, siteExtra = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-scheme-'));
   const project = path.join(tmp, 'p', 'site');
   let r = spawnSync(process.execPath, [BIN, 'init', project, '--starter', '--theme=theme-product', '--name=Scheme'], { encoding: 'utf8', timeout: 120_000 });
@@ -77,6 +77,7 @@ function buildProject(scheme, header = {}) {
   const siteFile = path.join(project, 'pages', '_data', 'site.json');
   const site = JSON.parse(fs.readFileSync(siteFile, 'utf8'));
   site.header = { ...(site.header || {}), ...header };
+  if (siteExtra.logo) site.logo = { ...(site.logo || {}), ...siteExtra.logo };
   fs.writeFileSync(siteFile, JSON.stringify(site, null, 2));
   r = spawnSync(process.execPath, [BIN, 'build', project, '--env=development'], { encoding: 'utf8', timeout: 180_000 });
   assert.equal(r.status, 0, r.stderr);
@@ -88,7 +89,7 @@ function buildProject(scheme, header = {}) {
 
 test('build: without theme.scheme nothing dark-mode related is emitted', () => {
   const { html, css } = buildProject(null);
-  assert.doesNotMatch(html, /data-scheme|marbas-scheme|c-scheme-/);
+  assert.doesNotMatch(html, /data-scheme|marbas-scheme|c-scheme-|c-brand__mark--/);
   assert.doesNotMatch(css, /data-scheme/);
 });
 
@@ -109,4 +110,10 @@ test('build: mode auto → head script (read only), footer switch, header toggle
   assert.match(plain.css, /prefers-color-scheme: dark/);
   const withHeader = buildProject({ mode: 'auto' }, { schemeToggle: true });
   assert.match(withHeader.html, /<button type="button" class="c-scheme-toggle" data-scheme-toggle aria-pressed="false" aria-label="Hell\/Dunkel umschalten">/);
+});
+
+test('build: logo.pathDark → second logo for the dark scheme, hidden from screen readers', () => {
+  const { html } = buildProject({ mode: 'auto' }, {}, { logo: { show: true, path: '/_media/logo.svg', pathDark: '/_media/logo-dark.svg' } });
+  assert.match(html, /<img class="c-brand__mark c-brand__mark--light" alt="Logo" src="\/_media\/logo\.svg" height="40"\/>/);
+  assert.match(html, /<img class="c-brand__mark c-brand__mark--dark" alt="" aria-hidden="true" src="\/_media\/logo-dark\.svg" height="40"\/>/);
 });

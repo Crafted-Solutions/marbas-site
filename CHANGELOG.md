@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.17.2] - 2026-10-05
+## [0.18.0] - 2026-10-05
+
+### Added
+- `site.json → logo.pathDark`: optional logo for the dark scheme (`theme.scheme` `dark`/`auto`). The header renders both images,
+  the base CSS shows the matching one (system setting and switch); the second image has `alt=""`/`aria-hidden`. Without
+  `pathDark` the HTML is unchanged.
 
 ### Changed
 - v2-Starter (`marbas init`, de/en): Abschnitts-Kennungen als Rubriken ohne Nummern („Orientierung“ statt „01 / Orientierung“),

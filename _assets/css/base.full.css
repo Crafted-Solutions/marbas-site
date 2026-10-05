@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-10-05T15:48:59.230Z */
+/* Build time: 2026-10-05T20:42:25.734Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2944,6 +2944,16 @@ hr {
 @media (prefers-color-scheme: dark) {
   [data-scheme="auto"] .c-scheme-toggle__sun { display: block; }
   [data-scheme="auto"] .c-scheme-toggle__moon { display: none; }
+}
+
+/* Logo für dunkle Darstellung (site.logo.pathDark, marbas-site 0.18) — zwei Bilder, je nach Schema eins sichtbar.
+   Ohne data-scheme (classic, mode "light") bleibt das helle Logo. */
+.c-brand__mark--dark { display: none; }
+[data-scheme="dark"] .c-brand__mark--light { display: none; }
+[data-scheme="dark"] .c-brand__mark--dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  [data-scheme="auto"] .c-brand__mark--light { display: none; }
+  [data-scheme="auto"] .c-brand__mark--dark { display: block; }
 }
 
 /* v2/links */

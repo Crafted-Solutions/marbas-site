@@ -1,7 +1,10 @@
 {%- set _logoPath = site.logo.path | default("/_assets/images/Logo.svg") -%}
 <a class="c-brand" href="{{ "/" | locale_url }}">
   {%- if site.logo.show %}
-  <img class="c-brand__mark" alt="Logo" src="{{ _logoPath }}" height="40"/>
+  <img class="c-brand__mark{% if site.logo.pathDark %} c-brand__mark--light{% endif %}" alt="Logo" src="{{ _logoPath }}" height="40"/>
+  {%- if site.logo.pathDark %}
+  <img class="c-brand__mark c-brand__mark--dark" alt="" aria-hidden="true" src="{{ site.logo.pathDark }}" height="40"/>
+  {%- endif %}
   {%- endif %}
   {%- if site.header.showCompanyName %}
   {%- set _tagline = site.header.tagline | t(pageLanguage) %}
