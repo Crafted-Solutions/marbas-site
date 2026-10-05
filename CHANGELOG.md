@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-10-05
+
+### Fixed
+
+- `@crafted.solutions/marbas-site/theme` also exports the dark-mode helpers (`SCHEME_MODES`, `readDarkPreset`,
+  `readPresetDeclarations`, `normalizeSchemeConfig`) — 0.17.0 left them out, so hosts using the export (marbas-cms app)
+  could not offer dark mode.
+
 ## [0.17.0] - 2026-10-05
 
 ### Added

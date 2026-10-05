@@ -6,6 +6,7 @@ export { getVariantDefaultsForTheme, applyVariantDefaultsToSiteSettings } from '
 // Base v2 palettes and layout — the same logic the build and `doctor` use (for the app's theme dialog, skills)
 export {
   PALETTE_KEYS, readThemeFamily, readPalettePresets, readPaletteValues, normalizePaletteConfig,
-  paletteContrastWarnings, contrastRatio
+  paletteContrastWarnings, contrastRatio,
+  SCHEME_MODES, readDarkPreset, readPresetDeclarations, normalizeSchemeConfig
 } from './palette.js';
 export { LAYOUT_OPTIONS, readThemeLayout } from './layout.js';
