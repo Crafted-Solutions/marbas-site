@@ -42,6 +42,13 @@ Placeholder_Main:
       - { title: "Termin", text: "Unterlagen", href: "/#termin" }
       - { title: "Akut", text: "Dringend", href: "/#akut", tone: alert }
       - { title: "Ohne Ziel", text: "Nur Info" }
+  - componentType: LinkList
+    id: ablauf
+    headline: "So läuft es ab"
+    items:
+      - { label: "Schritt 1", title: "Anmelden", text: "Online oder am Telefon" }
+      - { label: "Schritt 2", title: "Vorbereiten", text: "Unterlagen mitbringen" }
+      - { title: "Danach", text: "ohne eigene Kennung" }
   - componentType: Notice
     id: hinweis-ohne-kennung
     text: "<p>Ohne Kennung</p>"
@@ -101,10 +108,17 @@ test('Base v2 building blocks render as built-ins (v2 and classic theme)', { tim
     assert.equal((html.match(/<h1\b/g) || []).length, 1, 'Intro provides the only h1');
     assert.match(html, /<h1 class="c-v2-intro__title">Praxis<br>Dr\. Test<\/h1>/);
     assert.doesNotMatch(html, />Seitentitel<\/h1>/);
-    for (const id of ['start', 'hinweis', 'anliegen', 'termin', 'akut', 'kontakt']) assert.match(html, new RegExp(`id="${id}"`));
+    for (const id of ['start', 'hinweis', 'anliegen', 'ablauf', 'termin', 'akut', 'kontakt']) assert.match(html, new RegExp(`id="${id}"`));
     assert.match(html, /class="c-v2 c-v2--soft c-v2-section c-v2-split-section"/);
     assert.match(html, /class="c-v2-rows__row c-v2-rows__row--alert"/);
-    assert.match(html, /<span class="c-v2-rows__index">01<\/span>/);
+    // Task 146: no automatic numbers — labels only where set; the list is marked when any entry has one
+    const anliegen = html.slice(html.indexOf('id="anliegen"'), html.indexOf('id="ablauf"'));
+    assert.doesNotMatch(anliegen, /c-v2-rows__index/, 'alternatives without labels get no number');
+    assert.match(anliegen, /<div class="c-v2-rows">/);
+    const ablauf = html.slice(html.indexOf('id="ablauf"'));
+    assert.match(ablauf, /<div class="c-v2-rows c-v2-rows--labels">/);
+    assert.match(ablauf, /<span class="c-v2-rows__index">Schritt 1<\/span>/);
+    assert.match(ablauf, /<span class="c-v2-rows__index" aria-hidden="true"><\/span>\s*<h3 class="c-v2-rows__title">Danach/, 'entry without label keeps the column, empty');
     assert.match(html, /<li>Karte<\/li><li>Medikamentenliste<\/li>/, 'list items as strings and editor objects');
     assert.match(html, /href="tel:112"/);
     assert.match(html, /<p class="c-v2__note">Randnotiz<\/p>/);
