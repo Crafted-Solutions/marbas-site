@@ -1,7 +1,9 @@
 {%- set _variant = site.header.variant | default("default") -%}
+{#- mobile (< 768px): header.actions move from the header row into the menu panel (header.mobile.showActionsInDrawer, default on) #}
+{%- set _navActions = site.header.actions and (site.header.actions | length) > 0 and site.header.mobile.showActionsInDrawer != false -%}
 <a class="c-skip-link" href="#main-content">{{ "skipLink" | uiText(pageLanguage) }}</a>
 {% include "header/slots/announcement.njk" %}
-<header role="banner" class="c-header c-header--with-actions{% if _variant and _variant != 'default' %} c-header--{{ _variant }}{% endif %}{% if site.header.sticky %} c-header--sticky{% endif %}">
+<header role="banner" class="c-header c-header--with-actions{% if _navActions %} c-header--actions-in-nav{% endif %}{% if _variant and _variant != 'default' %} c-header--{{ _variant }}{% endif %}{% if site.header.sticky %} c-header--sticky{% endif %}">
   <div class="c-container c-header__inner">
     {% include "header/slots/brand.njk" %}
     {% include "header/slots/nav.njk" %}

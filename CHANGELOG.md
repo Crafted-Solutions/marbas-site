@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-10-05
+
+### Changed
+- Phones (< 768 px), header preset `brand-nav-actions`: the header stays one row (brand · optional scheme toggle · menu button);
+  the `header.actions` buttons move from the header row to the end of the menu panel (full width). Previously the header wrapped
+  into three rows (e.g. 216 px on an iPhone). `header.mobile.showActionsInDrawer: false` keeps the old behaviour. Desktop unchanged;
+  pages without `header.actions` render the same HTML.
+- Editorial and Minimal-Luxe: the header minimum height (86/92 px) applies from 768 px only — phones get a compact row.
+
+### Removed
+- Unused template `_includes/header/slots/mobile-drawer.njk` (no preset included it). `header.mobile.drawer` and
+  `header.mobile.showUtilityLinksInDrawer` are documented as without effect.
+
 ## [0.18.0] - 2026-10-05
 
 ### Added

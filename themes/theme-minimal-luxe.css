@@ -106,7 +106,7 @@
 
 /* Kopf: zentriert wirkend, feine Linie, gesperrtes Menü */
 .c-page--v2 .c-header { border-bottom: .5px solid var(--p-line); background: var(--p-paper); }
-.c-page--v2 .c-header__inner { min-height: 92px; }
+@media (min-width: 768px) { .c-page--v2 .c-header__inner { min-height: 92px; } }   /* mobil: eine kompakte Zeile (0.19) */
 .c-page--v2 .c-brand__name { font-family: var(--t-font-serif); font-size: 1.6rem; font-weight: 500; letter-spacing: .02em; }
 .c-page--v2 .c-brand__tagline { letter-spacing: .24em; text-transform: uppercase; font-size: .62rem; }
 @media (min-width: 768px) {

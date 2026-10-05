@@ -38,4 +38,11 @@
     </li>
     {%- endif %}{% endfor %}
   </ul>
+  {%- if _navActions %}
+  <div class="c-nav__actions">
+    {%- for action in site.header.actions %}
+    <a class="c-btn c-btn--{{ action.style | default('primary') }}" href="{{ action.href | t(pageLanguage) }}">{{ action.label | t(pageLanguage) }}</a>
+    {%- endfor %}
+  </div>
+  {%- endif %}
 </nav>
