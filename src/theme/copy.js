@@ -3,7 +3,7 @@ import path from 'path';
 import { resolveThemeFile } from './resolver.js';
 import { resolveBuildOutputPath } from '../env/output-paths.js';
 import { readProjectConfig } from '../project/config.js';
-import { readThemeFamily, readPalettePresets, readPaletteValues, normalizePaletteConfig, paletteOverrideCss, paletteContrastWarnings } from './palette.js';
+import { readThemeFamily, readPalettePresets, readPaletteValues, normalizePaletteConfig, paletteOverrideCss, paletteContrastWarnings, normalizeSchemeConfig, readDarkPreset, readPresetDeclarations, schemeCss } from './palette.js';
 import { readThemeLayout, LAYOUT_DEFAULTS } from './layout.js';
 
 /**
@@ -52,6 +52,8 @@ export function copyThemeToOutput({ projectRoot, libRoot, environment, config } 
     const palette = resolveThemePalette({ css, theme: resolvedConfig.theme });
     const ejectedBase = checkEjectedBaseForV2({ projectRoot, family: palette.family });
     if (ejectedBase) palette.warnings.push(ejectedBase);
+    const ejectedScheme = checkEjectedBaseForScheme({ projectRoot, scheme: palette.scheme });
+    if (ejectedScheme) palette.warnings.push(ejectedScheme);
     fs.writeFileSync(path.join(destDir, 'theme.css'), css + palette.overrideCss);
     const fonts = copyThemeFonts({ css, projectRoot, libRoot, outputPath });
     return { copied: true, themeId, fonts, family: palette.family, palette };
@@ -75,29 +77,67 @@ export function checkEjectedBaseForV2({ projectRoot, family }) {
     + 'Ergänzen: <html … {% if marbasTheme.palette %}data-palette="{{ marbasTheme.palette }}"{% endif %}> und <body class="c-page c-page--{{ marbasTheme.family }} {{ marbasTheme.layoutClasses }}">, oder marbas-site reset <p> _includes/base.njk';
 }
 
+/** Dark mode needs `data-scheme` (and for "auto" the head script) from the library base.njk. */
+export function checkEjectedBaseForScheme({ projectRoot, scheme }) {
+  if (!scheme || scheme === 'light' || !projectRoot) return null;
+  const ejected = path.join(projectRoot, '_includes', 'base.njk');
+  if (!fs.existsSync(ejected)) return null;
+  if (fs.readFileSync(ejected, 'utf8').includes('marbasTheme.scheme')) return null;
+  return 'Projekt hat eine ge-ejectete _includes/base.njk ohne data-scheme — der Dunkelmodus (theme.scheme) wirkt nicht. '
+    + 'Aus der Lib-base.njk übernehmen (data-scheme am <html>, Skript im <head>) oder marbas-site reset <p> _includes/base.njk';
+}
+
 /**
- * Base v2 palette for a theme + the project's `theme.palette` / `theme.colors`.
- * classic themes ignore both (their colours are not palette-driven) — reported as a warning.
+ * Base v2 palette for a theme + the project's `theme.palette` / `theme.colors` and `theme.scheme` (dark mode).
+ * classic themes ignore all of it (their colours are not palette-driven) — reported as a warning.
  *
- * @returns {{ family, preset, overrideCss, errors: string[], warnings: string[], contrast: Array, layout: object }}
+ * @returns {{ family, preset, overrideCss, errors: string[], warnings: string[], contrast: Array, layout: object,
+ *   scheme: 'light'|'dark'|'auto', darkPreset: string|null }}
  */
 export function resolveThemePalette({ css, theme = {} }) {
   const family = readThemeFamily(css);
   const { preset, colors, errors } = normalizePaletteConfig(theme);
+  const schemeConfig = normalizeSchemeConfig(theme);
+  errors.push(...schemeConfig.errors);
   const warnings = [];
   if (family !== 'v2') {
     if (preset || Object.keys(colors).length) warnings.push('theme.palette/theme.colors wirken nur bei Themes der Familie v2 — ignoriert');
-    return { family, preset: null, overrideCss: '', errors, warnings, contrast: [], layout: { ...LAYOUT_DEFAULTS } };
+    if (schemeConfig.mode !== 'light') warnings.push('theme.scheme (Dunkelmodus) wirkt nur bei Themes der Familie v2 — ignoriert');
+    return { family, preset: null, overrideCss: '', errors, warnings, contrast: [], layout: { ...LAYOUT_DEFAULTS }, scheme: 'light', darkPreset: null };
   }
   const themeLayout = readThemeLayout(css);
   warnings.push(...themeLayout.warnings);
+  const presets = readPalettePresets(css);
   let activePreset = preset;
-  if (preset && !readPalettePresets(css).includes(preset)) {
-    warnings.push(`theme.palette "${preset}" gibt es in diesem Theme nicht (vorhanden: ${readPalettePresets(css).join(', ') || 'keine'}) — Standard-Palette aktiv`);
+  if (preset && !presets.includes(preset)) {
+    warnings.push(`theme.palette "${preset}" gibt es in diesem Theme nicht (vorhanden: ${presets.join(', ') || 'keine'}) — Standard-Palette aktiv`);
     activePreset = null;
   }
   const values = { ...readPaletteValues(css, activePreset), ...colors };
-  return { family, preset: activePreset, overrideCss: paletteOverrideCss(colors), errors, warnings, contrast: paletteContrastWarnings(values), layout: themeLayout.layout };
+
+  // dark scheme: preset from theme.scheme.dark.palette, else the theme's `@dark` marker; then dark.colors
+  let scheme = schemeConfig.mode;
+  let darkPreset = null;
+  let darkCss = '';
+  let contrast = scheme === 'dark' ? [] : paletteContrastWarnings(values);
+  if (scheme !== 'light') {
+    darkPreset = schemeConfig.darkPalette || readDarkPreset(css);
+    if (darkPreset && !presets.includes(darkPreset)) {
+      warnings.push(`theme.scheme.dark.palette "${darkPreset}" gibt es in diesem Theme nicht (vorhanden: ${presets.join(', ') || 'keine'})`);
+      darkPreset = null;
+    }
+    const hasDarkColors = Object.keys(schemeConfig.darkColors).length > 0;
+    if (!darkPreset && !hasDarkColors) {
+      warnings.push('Dunkelmodus: dieses Theme hat keine dunkle Palette (@dark) und theme.scheme.dark.colors fehlt — Dunkelmodus aus');
+      scheme = 'light';
+      contrast = paletteContrastWarnings(values);
+    } else {
+      const darkValues = { ...readPaletteValues(css, darkPreset), ...schemeConfig.darkColors };
+      contrast = [...contrast, ...paletteContrastWarnings(darkValues).map((w) => ({ ...w, label: `Dunkel: ${w.label}` }))];
+      darkCss = schemeCss({ mode: scheme, declarations: darkPreset ? readPresetDeclarations(css, darkPreset) : [], colors: schemeConfig.darkColors });
+    }
+  }
+  return { family, preset: activePreset, overrideCss: paletteOverrideCss(colors) + darkCss, errors, warnings, contrast, layout: themeLayout.layout, scheme, darkPreset };
 }
 
 /**

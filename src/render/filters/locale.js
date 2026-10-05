@@ -18,7 +18,12 @@ const UI_TEXTS = {
     submenu: 'Unterseiten von {name} anzeigen',
     announcement: 'Ankündigung',
     announcementClose: 'Ankündigung schließen',
-    legal: 'Rechtliches'
+    legal: 'Rechtliches',
+    scheme: 'Darstellung',
+    schemeLight: 'Hell',
+    schemeDark: 'Dunkel',
+    schemeSystem: 'System',
+    schemeToggle: 'Hell/Dunkel umschalten'
   },
   en: {
     skipLink: 'Skip to content',
@@ -30,7 +35,12 @@ const UI_TEXTS = {
     submenu: 'Show subpages of {name}',
     announcement: 'Announcement',
     announcementClose: 'Dismiss announcement',
-    legal: 'Legal'
+    legal: 'Legal',
+    scheme: 'Appearance',
+    schemeLight: 'Light',
+    schemeDark: 'Dark',
+    schemeSystem: 'System',
+    schemeToggle: 'Toggle light/dark'
   }
 };
 

@@ -18,14 +18,14 @@ const BIN = path.join(ROOT, 'src/cli/bin.js');
 const run = (args) => spawnSync(process.execPath, [BIN, ...args], { encoding: 'utf8', timeout: 180_000 });
 const THEME = fs.readFileSync(path.join(ROOT, 'themes', 'theme-warm.css'), 'utf8');
 
-test('theme-warm: v2, own layout, presets salbei/beere, all palettes AA', () => {
+test('theme-warm: v2, own layout, presets salbei/beere + dunkel kakao, all palettes AA', () => {
   assert.equal(readThemeFamily(THEME), 'v2');
   const { layout, warnings } = readThemeLayout(THEME);
   assert.deepEqual(warnings, []);
   assert.deepEqual(layout, { rail: 'top', intro: 'reverse', linklist: 'cards', split: 'columns', notice: 'box', cta: 'button' });
   assert.match(THEME, /\.c-l-linklist-cards \.c-v2-rows__row\.c-v2-rows__row--alert \{ background: var\(--p-alert-soft\)/, 'alert card keeps its tint over the theme card rules');
-  assert.deepEqual(readPalettePresets(THEME).sort(), ['beere', 'salbei']);
-  for (const preset of [null, 'salbei', 'beere']) {
+  assert.deepEqual(readPalettePresets(THEME).sort(), ['beere', 'kakao', 'salbei']);
+  for (const preset of [null, 'salbei', 'beere', 'kakao']) {
     assert.deepEqual(paletteContrastWarnings(readPaletteValues(THEME, preset)), [], `palette ${preset || 'default'}`);
   }
   assert.match(THEME, /--t-font-serif:\s*'Source Serif 4'/, 'serif in a --t-font-* token so the font sync ships it');

@@ -191,6 +191,7 @@ Controls the logo displayed in the header.
 | `navigationVariant` | string | `"default"` | Nav item style: `"default"`, `"compact"`, `"pill"`, `"underline"`. |
 | `sticky` | boolean | `false` | Fix the header to the top of the viewport while scrolling. |
 | `tagline` | string | — | Optional second line under the company name (e.g. "Internistische Rheumatologie · Berlin"). Shown when `showCompanyName` is on. |
+| `schemeToggle` | boolean | `false` | Light/dark icon button in the header (also visible on mobile). Only with `theme.scheme.mode: "auto"` (0.17), see [Dark mode](themes.md#dark-mode-themescheme-since-017). |
 | `navLinks` | array | — | Optional extra menu entries after the page menu — see [`header.navLinks`](#headernavlinks). |
 
 ### `header.navLinks`
@@ -297,6 +298,7 @@ Up to two call-to-action buttons shown on the right side of the header (only in 
 | `copyright` | string | `"© <year> <title>"` | Copyright line at the bottom of the footer. |
 | `intro` | string | `""` | Short intro text below the company name (used in `editorial` preset). |
 | `bottomNote` | string | — | Optional short note on the right of the bottom bar (e.g. "Rechtliche Pflichtangaben ergänzen"). HTML allowed. |
+| `schemeToggle` | boolean | `true` | „Hell · Dunkel · System“ in the bottom bar. Only with `theme.scheme.mode: "auto"` (0.17); `false` hides it. |
 
 ### `footer.contact`
 

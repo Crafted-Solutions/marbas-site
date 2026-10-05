@@ -37,5 +37,13 @@
     {%- if _bottomNote %}
     <p class="c-footer-bottom__note">{{ _bottomNote | safe }}</p>
     {%- endif %}
+    {%- if marbasTheme.scheme == 'auto' and site.footer.schemeToggle != false %}
+    <div class="c-scheme-switch" role="group" aria-label="{{ "scheme" | uiText(pageLanguage) }}">
+      <span class="c-scheme-switch__label" aria-hidden="true">{{ "scheme" | uiText(pageLanguage) }}</span>
+      <button type="button" class="c-scheme-switch__option" data-scheme-set="light" aria-pressed="false">{{ "schemeLight" | uiText(pageLanguage) }}</button>
+      <button type="button" class="c-scheme-switch__option" data-scheme-set="dark" aria-pressed="false">{{ "schemeDark" | uiText(pageLanguage) }}</button>
+      <button type="button" class="c-scheme-switch__option" data-scheme-set="auto" aria-pressed="true">{{ "schemeSystem" | uiText(pageLanguage) }}</button>
+    </div>
+    {%- endif %}
   </div>
 </div>

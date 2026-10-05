@@ -139,3 +139,81 @@ export function paletteContrastWarnings(values) {
   }
   return warnings;
 }
+
+// ─── colour scheme (dark mode, 0.17) ──────────────────────────────────────────
+//
+// A v2 theme names its dark palette in the header comment (`@dark <preset>`). A project chooses
+// `theme.scheme = { mode: "light" | "dark" | "auto", dark: { palette, colors } }`:
+//   light — today's behaviour, nothing is emitted (no attribute, no CSS, no script)
+//   dark  — the dark palette is the only palette (no switcher)
+//   auto  — follows the system; visitors may switch (footer/header controls, choice kept in localStorage)
+// The dark block copies ALL custom properties of the dark preset (forms set their own variables there, e.g.
+// --product-foot-*), then `dark.colors`. `:root:root:root[data-scheme="dark"]` (0,4,0) outranks theme.colors
+// (`:root:root[data-palette]`, 0,3,0) so light brand colours never leak into the dark scheme.
+
+export const SCHEME_MODES = ['light', 'dark', 'auto'];
+const DARK_MARKER = /@dark\s+([a-z0-9][a-z0-9-]{0,31})\b/;
+
+/** `@dark <preset>` from the theme header, or null. */
+export function readDarkPreset(css) {
+  const comments = String(css || '').match(/\/\*[\s\S]*?\*\//g) || [];
+  for (const comment of comments) {
+    const match = DARK_MARKER.exec(comment);
+    if (match) return match[1];
+  }
+  return null;
+}
+
+/** All custom-property declarations of a preset block (`:root[data-palette="name"] { --x: …; }`), in order. */
+export function readPresetDeclarations(css, preset) {
+  const source = String(css || '').replace(/\/\*[\s\S]*?\*\//g, '');
+  const out = [];
+  for (const [, selector, body] of source.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    const parts = selector.split(',').map((s) => s.trim());
+    if (!parts.includes(`:root[data-palette="${preset}"]`)) continue;
+    for (const [, name, value] of body.matchAll(/(--[a-z0-9-]+)\s*:\s*([^;]+);/gi)) out.push([name, value.trim()]);
+  }
+  return out;
+}
+
+/**
+ * Validate `theme.scheme`. Missing block → mode "light" (unchanged output).
+ * @returns {{ mode: 'light'|'dark'|'auto', darkPalette: string|null, darkColors: Record<string,string>, errors: string[] }}
+ */
+export function normalizeSchemeConfig(theme = {}) {
+  const errors = [];
+  const scheme = theme?.scheme;
+  if (scheme == null) return { mode: 'light', darkPalette: null, darkColors: {}, errors };
+  if (typeof scheme !== 'object' || Array.isArray(scheme)) {
+    return { mode: 'light', darkPalette: null, darkColors: {}, errors: ['theme.scheme muss ein Objekt sein, z.B. { "mode": "auto" }'] };
+  }
+  let mode = 'light';
+  if (scheme.mode != null && scheme.mode !== '') {
+    if (SCHEME_MODES.includes(scheme.mode)) mode = scheme.mode;
+    else errors.push(`theme.scheme.mode "${scheme.mode}" unbekannt (erlaubt: ${SCHEME_MODES.join(', ')})`);
+  }
+  const dark = scheme.dark && typeof scheme.dark === 'object' && !Array.isArray(scheme.dark) ? scheme.dark : {};
+  if (scheme.dark != null && dark !== scheme.dark) errors.push('theme.scheme.dark muss ein Objekt sein, z.B. { "palette": "nacht" }');
+  const normalized = normalizePaletteConfig({ palette: dark.palette, colors: dark.colors });
+  errors.push(...normalized.errors.map((e) => e.replace(/^theme\./, 'theme.scheme.dark.')));
+  return { mode, darkPalette: normalized.preset, darkColors: normalized.colors, errors };
+}
+
+/**
+ * CSS for the dark scheme (empty for mode "light").
+ * @param {{ mode, declarations: Array<[string,string]>, colors: Record<string,string> }} input
+ */
+export function schemeCss({ mode, declarations = [], colors = {} }) {
+  if (mode !== 'dark' && mode !== 'auto') return '';
+  const lines = [...declarations.map(([k, v]) => `  ${k}: ${v};`),
+    ...Object.entries(colors).filter(([k]) => PALETTE_KEYS.includes(k)).map(([k, v]) => `  --p-${k}: ${v};`),
+    '  color-scheme: dark;'];
+  const block = lines.join('\n');
+  let out = '\n/* marbas-project.json → theme.scheme (dark) */\n';
+  out += `:root:root:root[data-scheme="dark"] {\n${block}\n}\n`;
+  if (mode === 'auto') {
+    out += `:root[data-scheme="auto"] { color-scheme: light dark; }\n`;
+    out += `@media (prefers-color-scheme: dark) {\n  :root:root:root[data-scheme="auto"] {\n${block.replace(/^/gm, '  ')}\n  }\n}\n`;
+  }
+  return out;
+}

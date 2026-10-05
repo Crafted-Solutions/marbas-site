@@ -2,6 +2,7 @@
    theme-druckwerk.css – "Druckwerk"
    @family v2
    @layout rail=side intro=split linklist=cards split=columns notice=box cta=button
+   @dark nachtdruck
 
    Zielgruppe  : Kultur, Kreativ-Studios, Cafés, Buchläden, Festivals, Vereine mit Haltung
    Stil        : Gedrucktes Handwerk (Risografie/Zine): zwei Druckfarben auf Naturpapier, Überdruck hinter
@@ -100,10 +101,18 @@
   --riso-2: #0078bf;   /* Riso-Blau */
   /* Fläche hinter Text: volle Leuchtfarbe verfehlt AA mit Tinte (Pink 4.36:1) → 75 % über Papier */
   --riso-fill: color-mix(in oklab, var(--riso-1) 75%, var(--p-paper));
+  --riso-overprint: 70%;                         /* Anteil Leuchtfarbe im Überdruck hinter Titeln */
+  --riso-foot-bg: var(--p-ink); --riso-foot-fg: var(--p-paper);   /* Fuß: hell = Tinte als Fläche */
 }
 :root[data-palette="gruen-orange"] {
   --p-paper: #f1efe6; --p-ink: #123a2c; --p-muted: #3f5a4f; --p-line: #123a2c; --p-accent: #a33a0b; --p-accent-soft: #fbe0d2;
   --p-alert: #8f1f3a; --p-alert-soft: #f5dde3; --p-surface: #f8f6ef; --riso-1: #ff6c2f; --riso-2: #00a95c;
+}
+:root[data-palette="nachtdruck"] {
+  --p-paper: #15182b; --p-ink: #f2ede2; --p-muted: #aaa6b5; --p-line: #f2ede2; --p-accent: #ff669d; --p-accent-soft: #432a42;
+  --p-alert: #f19a8c; --p-alert-soft: #3b303e; --p-surface: #1f2338; --riso-1: #ff48b0; --riso-2: #3d9be9;
+  --riso-fill: color-mix(in oklab, var(--riso-1) 42%, var(--p-paper)); --riso-overprint: 42%;
+  --riso-foot-bg: #0b0d1a; --riso-foot-fg: #f2ede2;
 }
 :root[data-palette="gelb-violett"] {
   --p-paper: #f4f0e2; --p-ink: #3a1f5c; --p-muted: #5c4a70; --p-line: #3a1f5c; --p-accent: #6a2fb0; --p-accent-soft: #fbefb3;
@@ -133,7 +142,7 @@
 /* Überdruck: Leuchtfarbe hinter jeder Zeile der Überschrift (line-height 1 → 1em-Raster, Streifen je Zeile) */
 .c-page--v2 .c-v2-intro__title, .c-page--v2 .c-v2__title {
   width: fit-content; max-width: 100%; padding-inline: .1em;
-  background: repeating-linear-gradient(transparent 0 .56em, color-mix(in oklab, var(--riso-1) 70%, transparent) .56em .93em, transparent .93em 1em);
+  background: repeating-linear-gradient(transparent 0 .56em, color-mix(in oklab, var(--riso-1) var(--riso-overprint, 70%), transparent) .56em .93em, transparent .93em 1em);
 }
 
 /* Stempel-Kennung im Rand */
@@ -202,13 +211,13 @@
 
 /* Fuß: Tinte als Fläche */
 .c-page--v2 .c-footer {
-  --t-footer-bg: var(--p-ink); --t-footer-border: color-mix(in oklab, var(--p-paper) 25%, var(--p-ink));
-  --t-footer-heading: var(--p-paper); --t-footer-link: color-mix(in oklab, var(--p-paper) 88%, var(--p-ink)); --t-footer-link-hover: var(--p-paper);
-  color: var(--p-paper); border-top: 0; box-shadow: inset 0 6px 0 var(--riso-1);
+  --t-footer-bg: var(--riso-foot-bg); --t-footer-border: color-mix(in oklab, var(--riso-foot-fg) 25%, var(--riso-foot-bg));
+  --t-footer-heading: var(--riso-foot-fg); --t-footer-link: color-mix(in oklab, var(--riso-foot-fg) 88%, var(--riso-foot-bg)); --t-footer-link-hover: var(--riso-foot-fg);
+  color: var(--riso-foot-fg); border-top: 0; box-shadow: inset 0 6px 0 var(--riso-1);
 }
-.c-page--v2 .c-footer .c-footer-intro__name { font-family: var(--t-font-display); font-weight: 800; text-transform: uppercase; font-size: 1.8rem; color: var(--p-paper); }
-.c-page--v2 .c-footer-group__title { font-family: var(--t-font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--p-paper); }
-.c-page--v2 .c-footer-intro__text, .c-page--v2 .c-footer-contact, .c-page--v2 .c-footer-group__text { color: color-mix(in oklab, var(--p-paper) 85%, var(--p-ink)); }
+.c-page--v2 .c-footer .c-footer-intro__name { font-family: var(--t-font-display); font-weight: 800; text-transform: uppercase; font-size: 1.8rem; color: var(--riso-foot-fg); }
+.c-page--v2 .c-footer-group__title { font-family: var(--t-font-mono); text-transform: uppercase; letter-spacing: .06em; color: var(--riso-foot-fg); }
+.c-page--v2 .c-footer-intro__text, .c-page--v2 .c-footer-contact, .c-page--v2 .c-footer-group__text { color: color-mix(in oklab, var(--riso-foot-fg) 85%, var(--riso-foot-bg)); }
 
 /* Mobil: weniger Drehung, damit nichts über den Rand ragt */
 @media (max-width: 760px) {
