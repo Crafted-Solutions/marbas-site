@@ -120,7 +120,7 @@ export default function (eleventyConfig) {
   // Layout aliases with project-first override (layout: base → resolves to correct file)
   registerLayoutAliases(eleventyConfig, { projectRoot, libRoot: LIB_ROOT });
 
-  addLibAssetsPassthrough(eleventyConfig, { libRoot: LIB_ROOT });
+  addLibAssetsPassthrough(eleventyConfig, { libRoot: LIB_ROOT, projectRoot });
   addComponentApiPassthrough(eleventyConfig, { projectRoot, libRoot: LIB_ROOT });
 
   return {

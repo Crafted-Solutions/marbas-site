@@ -145,6 +145,17 @@ export function configureLocaleFilters(eleventyConfig, localeConfig) {
       if (targetLang === defaultLang) {
         return url;
       }
+
+      // Only site paths get a language prefix: external URLs and other schemes (https:, tel:, mailto:, …),
+      // protocol-relative URLs, anchors and empty values pass through unchanged (Task 160: was /en/https://…)
+      if (typeof url !== 'string' || url === '' || /^[a-z][a-z0-9+.-]*:/i.test(url) || url.startsWith('//') || url.startsWith('#') || url.startsWith('?')) {
+        return url;
+      }
+
+      // already in the target language (e.g. a link a template prefixed itself)
+      if (url === `/${targetLang}` || url.startsWith(`/${targetLang}/`)) {
+        return url;
+      }
       
       // For non-default languages, prepend language code
       if (url === '/') {
