@@ -93,10 +93,20 @@ my-site/
 ├── pages/                # your pages (Markdown + front matter)
 ├── _components/          # your custom components
 ├── _theme/               # your theme CSS
-└── _media/               # your media files
+├── _media/               # your images and videos (processed by the build)
+└── _assets/images/       # optional: logo and small static files (copied as is)
 ```
 
 The build output lands in `my-site/build/public_development/` (or `public_<env>/` for other environments).
+
+### Where images go
+
+| Folder | For | What the build does | Size |
+|---|---|---|---|
+| `_media/` | every image used in a component (hero, cards, tiles …) — reference it as `/_media/<file>` | creates the sizes the layout needs (WebP + JPEG); the original is not published | any — large originals are fine |
+| `_assets/images/` | logo (`site.json → logo.path`), favicons, small graphics | copies the file **unchanged** | **max. 200 KB per file** — a larger file makes the production build fail (webpack `maxAssetSize`); development does not warn |
+
+So drop large photos into `_media/`, never into `_assets/`. The page validator of the marbas skills reports both cases.
 
 ---
 
