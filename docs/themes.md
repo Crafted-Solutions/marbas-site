@@ -114,6 +114,19 @@ This means you can customise any built-in theme without touching the library.
 
 ---
 
+## Maintaining the library themes (contributors)
+
+`themes/theme-*.css`, `themes/fonts/` and `_assets/css/base.full(.min).css` are **generated** — the single source is the
+cms-theme repository (`css/src` for the base, `css/themes/` for themes and fonts). Do not edit them here.
+
+1. Change the theme (or base) in cms-theme; for a new web font add the family to `FONTS` in `build/sync-theme-fonts.mjs`
+   (Fontsource package as devDependency, token name `--t-font-<name>`) and run `npm run fonts:sync` there; `npm run build:presets`
+   rebuilds the base.
+2. Here: `npm run sync:theme` copies everything over (an exact mirror — files removed in cms-theme are removed here).
+   `npm run sync:theme:check` reports drift (CI/tests); the cms-theme checkout is taken from `$CMS_THEME_ROOT` or `--source`.
+
+---
+
 ## Ejecting a built-in theme
 
 Ejecting copies the library's CSS file into your project so you can edit it freely:

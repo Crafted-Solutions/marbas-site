@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Library themes, web fonts and `base.full(.min).css` are now generated from the cms-theme repository (single source for
+  everything visual): `npm run sync:theme` copies them, `npm run sync:theme:check` finds drift. `scripts/sync-theme-fonts.mjs`,
+  `fonts:sync`/`fonts:check` and the Fontsource devDependencies moved to cms-theme. The shipped files are unchanged except for the
+  generator note in each theme's `@fonts` marker comment.
+
 ## [0.21.1] - 2026-10-06
 
 ### Fixed
