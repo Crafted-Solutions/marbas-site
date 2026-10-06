@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-10-06
+
+### Fixed
+- `locale_url` on non-default-language pages no longer prefixes external URLs and other schemes (`https:`, `tel:`, `mailto:` …),
+  protocol-relative URLs, `#anchors` or paths already in that language — links like `/en/https://…` or `/en/tel:…` were broken
+  in every component. Site paths are prefixed as before.
+- Project images win over the lib's images: a project `_assets/images/logo.svg` was overwritten by the placeholder `Logo.svg`
+  (Eleventy copies lib images after webpack; case-insensitive file systems). Colliding lib images are no longer copied.
+- Phones: the closed menu panel no longer casts a shadow strip at the right edge, and its links are out of the tab order.
+- Tablets (768–1023 px), header with buttons: tagline hidden and buttons do not wrap — the header stays one row.
+
 ## [0.19.0] - 2026-10-05
 
 ### Changed

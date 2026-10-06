@@ -84,3 +84,47 @@ test('de+en site: language switcher and prefixes use site.json locale', { timeou
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('de+en site: external, tel:, mailto: and # links stay unchanged on /en/; project logo.svg wins over the placeholder (Task 160)', { timeout: 360_000 }, () => {
+  const { tmp, projectPath, out } = setup({ defaultLanguage: 'de', languages: [{ code: 'de', label: 'Deutsch' }, { code: 'en', label: 'English' }] });
+  try {
+    const links = (lang) => `  - componentType: TextMedia
+    id: ext
+    title: Ext
+    text: "<p>x</p>"
+    link: https://example.org/a
+  - componentType: TextMedia
+    id: tel
+    title: Tel
+    text: "<p>x</p>"
+    link: "tel:+4930123"
+  - componentType: TextMedia
+    id: mail
+    title: Mail
+    text: "<p>x</p>"
+    link: "mailto:info@example.org"
+  - componentType: TextMedia
+    id: anchor
+    title: Anker
+    text: "<p>x</p>"
+    link: "#kontakt"
+`;
+    fs.writeFileSync(path.join(projectPath, 'pages', 'index.md'), page('de', ''));
+    fs.mkdirSync(path.join(projectPath, 'pages', 'en'));
+    fs.writeFileSync(path.join(projectPath, 'pages', 'en', 'index.md'), page('en').replace('---\n', '').replace(/^/, '---\n').replace(/\n---\n$/, `\n${links('en')}---\n`));
+    fs.mkdirSync(path.join(projectPath, '_assets', 'images'), { recursive: true });
+    fs.writeFileSync(path.join(projectPath, '_assets', 'images', 'logo.svg'), '<svg id="project-logo"/>');
+    const build = run(['build', projectPath, '--env=development']);
+    assert.equal(build.status, 0, `build failed:\n${build.stdout}\n${build.stderr}`);
+    const en = fs.readFileSync(path.join(out, 'en', 'index.html'), 'utf8');
+    assert.ok(en.includes('href="/en/contact/"'), 'site paths still prefixed');
+    for (const href of ['https://example.org/a', 'tel:+4930123', 'mailto:info@example.org', '#kontakt']) {
+      assert.ok(en.includes(`href="${href}"`), `${href} unchanged`);
+      assert.ok(!en.includes(`href="/en/${href}`), `${href} not prefixed`);
+    }
+    const logoFile = fs.readdirSync(path.join(out, '_assets', 'images')).find((n) => n.toLowerCase() === 'logo.svg');
+    assert.equal(fs.readFileSync(path.join(out, '_assets', 'images', logoFile), 'utf8'), '<svg id="project-logo"/>', 'project logo wins');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

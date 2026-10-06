@@ -170,7 +170,7 @@ Controls the logo displayed in the header.
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `show` | boolean | `true` | Whether to show the logo image. |
-| `path` | string | `/_assets/images/Logo.svg` | Path to the logo file, relative to the built output root. The default is a neutral placeholder shipped with marbas-site (also available as `Logo.png`). Put your own logo in the project's `_assets/images/` (copied as is) — not `_media/` (only images used by components are processed and published from there) — and do not name it `logo.svg`/`logo.png`: on case-insensitive file systems (macOS, Windows) it collides with the placeholder `Logo.svg`. |
+| `path` | string | `/_assets/images/Logo.svg` | Path to the logo file, relative to the built output root. The default is a neutral placeholder shipped with marbas-site (also available as `Logo.png`). Put your own logo in the project's `_assets/images/` (copied as is) — not `_media/` (only images used by components are processed and published from there). Before 0.20 do not name it `logo.svg`/`logo.png`: on case-insensitive file systems (macOS, Windows) the placeholder `Logo.svg` overwrote it; since 0.20 project images always win. |
 | `pathDark` | string | — | Optional logo for the dark scheme (since 0.18, needs `theme.scheme` `dark`/`auto` and a v2 theme). The header then renders both images and shows the matching one (system setting and switch); the second image is hidden from screen readers. |
 
 ```json

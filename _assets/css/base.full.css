@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-10-05T21:26:02.414Z */
+/* Build time: 2026-10-06T07:18:57.979Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -1546,13 +1546,19 @@ hr {
     border-left: 1px solid var(--t-nav-mobile-border, var(--t-border));
     padding: 5rem var(--space-4) var(--space-4);
     transform: translateX(100%);
-    transition: transform 0.3s ease-in-out;
+    /* closed: no shadow strip at the right edge and its links out of the tab order (Task 160);
+       visibility switches off only after the slide-out */
+    visibility: hidden;
+    transition: transform 0.3s ease-in-out, visibility 0s linear 0.3s;
     overflow-y: auto;
-    box-shadow: var(--t-nav-mobile-shadow, -4px 0 12px rgba(0, 0, 0, 0.1));
+    box-shadow: none;
   }
 
   .c-nav[data-open="true"] {
     transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.3s ease-in-out, visibility 0s;
+    box-shadow: var(--t-nav-mobile-shadow, -4px 0 12px rgba(0, 0, 0, 0.1));
   }
 
   .c-nav__list {
@@ -1685,6 +1691,19 @@ hr {
 /* ---------- Tablet (optional refinement) ---------- */
 
 @media (min-width: 768px) and (max-width: 1023px) {
+  /* header with buttons (brand-nav-actions): keep one row — no tagline, buttons do not wrap (Task 160) */
+  .c-header--with-actions .c-brand__tagline {
+    display: none;
+  }
+
+  .c-header--with-actions .c-header-actions .c-btn {
+    white-space: nowrap;
+  }
+
+  .c-header--with-actions .c-header__inner {
+    gap: var(--space-3);
+  }
+
   .c-nav,
   .c-nav__list {
     gap: var(--space-3);

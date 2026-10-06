@@ -78,3 +78,21 @@ test('addLibAssetsPassthrough works with default libRoot', () => {
   assert.equal(keys.length, 4, 'Should register 4 patterns with default libRoot');
   assert.ok(keys.every((k) => path.isAbsolute(k)), 'All keys should be absolute');
 });
+
+test('libImageCopies: project images win over lib images of the same name, also case-insensitively (Task 160)', async () => {
+  const { libImageCopies } = await import('../../src/eleventy/passthrough.js');
+  const os = await import('os');
+  const project = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-img-'));
+  try {
+    assert.deepEqual(libImageCopies(LIB_ROOT, project), { [path.join(LIB_ROOT, '_assets/images')]: '_assets/images' }, 'no collision → folder');
+    fs.mkdirSync(path.join(project, '_assets/images'), { recursive: true });
+    fs.writeFileSync(path.join(project, '_assets/images/logo.svg'), '<svg/>');
+    const copies = libImageCopies(LIB_ROOT, project);
+    const targets = Object.values(copies);
+    assert.ok(!targets.includes('_assets/images/Logo.svg'), 'placeholder Logo.svg left out');
+    assert.ok(targets.includes('_assets/images/Logo.png'), 'other lib images still copied');
+    assert.ok(targets.includes('_assets/images/examples'), 'folders too');
+  } finally {
+    fs.rmSync(project, { recursive: true, force: true });
+  }
+});
