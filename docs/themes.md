@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 9 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`, `theme-blueprint`, `theme-nocturne`, `theme-craft`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 10 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`, `theme-blueprint`, `theme-nocturne`, `theme-craft`, `theme-retro`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -65,6 +65,7 @@ A form fixes layout, typography and details; colours come from its palettes (`th
 | `theme-blueprint` | Blueprint | Developer tools, open source, engineering firms, technical services — technical data sheet: a grid of hairlines across the page with registration marks on the band edges, flush cells with shared borders instead of cards, the intro as a framed spec block (text \| figure), mono labels, numbers, menu and buttons (IBM Plex Sans, JetBrains Mono). Palettes: default (cool paper + signal orange), `graphit` (signal green), `blaupause` (white and yellow on Prussian blue) |
 | `theme-nocturne` | Nocturne | Magazines, photography, culture, theatre, bars and evening dining — magazine cover: the heading sits on the full-bleed intro image (the text block carries its own scrim, so text stays AA on any photo; on small screens the image sits above the text), high-contrast display serif with italics (Playfair Display, DM Sans), drop cap, rubric labels between rules, the first of three or more tiles as a wide cover story, "No. 01" numbering. Palettes: default (paper + vermilion), `bordeaux` (dark), `nacht` (dark) |
 | `theme-craft` | Craft | Workshops, potteries, manufactories, joiners, natural cosmetics — a workshop notebook: labels as kraft-paper hang tags in handwriting (Caveat, only for labels and side notes), photos in a passe-partout with photo corners, hand-drawn rules under the header, bands and headings, index cards, buttons with a hand-drawn outline, laid paper texture, Merriweather for text and headings. Softer and more familiar → Warm. Palettes: default (laid paper + olive), `ton` (rust), `indigo` |
+| `theme-retro` | Retro | Record shops, vintage and second-hand, cafés with an attitude, barbers, diners — 1970s "sunset stripes": three colour stripes (mustard, orange, brown) under the header, above the footer and as a cap on cards; the intro image as an arch with a rainbow frame, arched tile images, Fraunces Black with the soft axis and an offset mustard shadow, sun badges, chunky pill buttons with an offset shadow (DM Sans for text). Softer without a decade → Warm. Palettes: default (cream + sunset), `avocado`, `disco` |
 
 ### classic themes (v1) — deprecated, removed in 0.50
 
@@ -301,7 +302,7 @@ Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2-
 ### Dark mode (`theme.scheme`, since 0.17)
 
 Every Base v2 form ships a dark palette and names it in its header comment (`@dark <preset>`): Editorial `nacht`,
-Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`, Blueprint `terminal`, Nocturne `nacht`, Craft `kohle`. A project decides how to use it:
+Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`, Blueprint `terminal`, Nocturne `nacht`, Craft `kohle`, Retro `espresso`. A project decides how to use it:
 
 ```json
 "theme": {
