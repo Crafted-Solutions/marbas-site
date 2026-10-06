@@ -95,8 +95,8 @@ print a hint for projects that use one. New projects get a form (`init` without 
    `marbas-project.json` — e.g. `marbas-site theme my-project theme-product`.
 2. **Colours:** carry the brand colours over with `theme.colors` (`paper`, `ink`, `accent` …, see [palettes](#theme-families-and-palettes-base-v2));
    build and `doctor` check the contrast.
-3. **Header/footer variants** (`header.variant`, `header.navigationVariant`, `footer.variant`) have no meaning for forms — remove
-   them from `site.json`. Header/footer presets (`header.preset`, `footer.preset`) and all content stay.
+3. **Header/footer variants** (`header.variant`, `header.navigationVariant`, `footer.variant`) have no meaning for forms — set
+   them to `default` or remove them from `site.json` (`doctor` and the skills validator warn when a form project keeps one). Header/footer presets (`header.preset`, `footer.preset`) and all content stay.
 4. **Pages:** classic components (Hero, TextMedia, Cards …) keep working in a form, but do not take on its look. Rebuild the pages
    with the Base v2 blocks (Intro, Split, LinkList, Notice, Contact) — the marbas skills do that with **marbas-build** in extension mode.
 
@@ -192,6 +192,19 @@ The **built-in themes ship their fonts** (self-hosted woff2, SIL Open Font Licen
 `_assets/fonts/`; a file with the same path in your project's `_assets/fonts/` takes precedence.
 
 ---
+
+## Terms: design, form, colours, appearance
+
+The app and the skills use the same words for what "theme" used to mean as one lump:
+
+| Term | What it is | Where it is set |
+|---|---|---|
+| **Design** | the whole look of a site: form + colours + appearance | the *Design* dialog in the app |
+| **Form** | arrangement, typography and header/footer design — one of the six Base v2 themes | `theme.id` |
+| **Colours** | the palette (preset and single colours) | `theme.palette`, `theme.colors` |
+| **Appearance** | light, dark or "by system" | `theme.scheme` |
+
+Logo and brand name live under *Logo* in the site settings (`logo`), the AI context under *Markenstimme* (`brand`) — not part of the design.
 
 ## Theme families and palettes (Base v2)
 
