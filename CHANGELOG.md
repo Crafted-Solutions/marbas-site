@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-10-06
+
 ### Added
 - **`theme-blueprint`** — seventh Base v2 library theme (form), a technical data sheet: a grid of hairlines across the page
   with registration marks on the band edges, flush cells with shared borders for LinkList/Tiles, the intro as a framed spec
