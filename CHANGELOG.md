@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`Tiles`** (Base v2 building block): tiles with an image, title, text and link. The form decides via `@layout linklist` — a card with
+  the image on top (Product, Warm, Druckwerk) or a row with the image on the left (Editorial, Bold, Minimal-Luxe); stacked on small
+  screens. A project component `_components/Tiles` still takes precedence over the built-in one.
+
 ### Changed
 - Library themes, web fonts and `base.full(.min).css` are now generated from the cms-theme repository (single source for
   everything visual): `npm run sync:theme` copies them, `npm run sync:theme:check` finds drift. `scripts/sync-theme-fonts.mjs`,
