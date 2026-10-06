@@ -1,0 +1,45 @@
+{#
+  Tiles (Base v2) — Kacheln mit Bild, Kennung, Titel, Text, Link. Die Form bestimmt über `linklist` (cards | rows), wie eine Kachel
+  aussieht: Karte mit Bild oben oder Zeile mit Bild links; Schatten, Radius, Hover und Linien kommen aus der Form (gleiche Klassen
+  wie LinkList: c-v2-rows__row). Felder: id, label, headline, text (html), columns (2|3|4, nur Karten), items[] {label, image {src,
+  alt, originalId}, title, text, href, linkText}, tone. Keine automatische Nummer: `items[].label` nur bei echten Abläufen.
+#}
+{% set items = data.items or [] %}
+{% set n = items | length %}
+{% set cols = (data.columns | int) or (n if n < 3 else 3) %}
+{% set cols = 4 if cols > 4 else (2 if cols < 2 else cols) %}
+{% set hasItemLabels = (items | selectattr('label') | length) > 0 %}
+<section id="{{ data.id }}" class="c-v2 c-v2--{{ data.tone or 'paper' }} c-v2-section c-v2-linklist c-v2-tiles">
+  <div class="c-v2__wrap c-v2__frame">
+    {% if data.label %}<p class="c-v2__label">{{ data.label }}</p>{% else %}<span></span>{% endif %}
+    <div>
+      {% if data.headline or data.text %}
+      <div class="c-v2__intro">
+        {% if data.headline %}<h2 class="c-v2__title c-v2__title--narrow">{{ data.headline | safe }}</h2>{% endif %}
+        {% if data.text %}<div class="c-v2__muted">{{ data.text | safe }}</div>{% endif %}
+      </div>
+      {% endif %}
+      <div class="c-v2-rows c-v2-tiles__grid{% if hasItemLabels %} c-v2-rows--labels{% endif %}" style="--tiles-cols: {{ cols }}">
+        {% for item in items %}
+        {# ohne Ziel keine Pseudo-Verlinkung ("#" würde in Fremdsprachen zu /en/#) #}
+        {% set tag = 'a' if item.href else 'div' %}
+        <{{ tag }} class="c-v2-rows__row c-v2-tiles__item"{% if item.href %} href="{{ item.href | locale_url }}"{% endif %}>
+          {% if item.image and item.image.src %}
+          {% set img = item.image | processLocalImage({"sizes": [12,12,6,6,6,6], "placeholder_sizes": placeholder_sizes}) %}
+          <figure class="c-v2-tiles__media">{{ img.html | safe }}</figure>
+          {% endif %}
+          <div class="c-v2-tiles__head">
+            {% if item.label %}<span class="c-v2-rows__index">{{ item.label }}</span>{% endif %}
+            <h3 class="c-v2-rows__title">{{ item.title }}</h3>
+          </div>
+          {% if item.text %}<p class="c-v2-rows__text">{{ item.text }}</p>{% else %}<span></span>{% endif %}
+          {% if item.href %}
+            {% if item.linkText %}<span class="c-v2-tiles__link">{{ item.linkText }} <span aria-hidden="true">↗</span></span>
+            {% else %}<span class="c-v2-rows__arrow" aria-hidden="true">↗</span>{% endif %}
+          {% endif %}
+        </{{ tag }}>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
