@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-10-06
+
+### Added
+- **`Tiles`** (Base v2 building block): tiles with an image, title, text and link. The form decides via `@layout linklist` — a card with
+  the image on top (Product, Warm, Druckwerk) or a row with the image on the left (Editorial, Bold, Minimal-Luxe); stacked on small
+  screens. A project component `_components/Tiles` still takes precedence over the built-in one.
+
+- `doctor` warns when a project with a form (Base v2) sets `header.variant`, `header.navigationVariant` or `footer.variant` to something other than `default`
+  — variants belong to the classic themes; a form designs header and footer itself and a variant can change them unintentionally (e.g. a dark footer).
+
+### Changed
+- Docs: `docs/themes.md` names the terms **design** (form + colours + appearance), **form**, **colours**, **appearance** and describes maintaining the library
+  themes; `docs/site-data.md` marks the variants as classic-only and lists the app names of the header/footer presets.
+- Library themes, web fonts and `base.full(.min).css` are now generated from the cms-theme repository (single source for
+  everything visual): `npm run sync:theme` copies them, `npm run sync:theme:check` finds drift. `scripts/sync-theme-fonts.mjs`,
+  `fonts:sync`/`fonts:check` and the Fontsource devDependencies moved to cms-theme. The shipped files are unchanged except for the
+  generator note in each theme's `@fonts` marker comment.
+
 ## [0.21.1] - 2026-10-06
 
 ### Fixed

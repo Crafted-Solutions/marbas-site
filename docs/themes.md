@@ -95,8 +95,8 @@ print a hint for projects that use one. New projects get a form (`init` without 
    `marbas-project.json` — e.g. `marbas-site theme my-project theme-product`.
 2. **Colours:** carry the brand colours over with `theme.colors` (`paper`, `ink`, `accent` …, see [palettes](#theme-families-and-palettes-base-v2));
    build and `doctor` check the contrast.
-3. **Header/footer variants** (`header.variant`, `header.navigationVariant`, `footer.variant`) have no meaning for forms — remove
-   them from `site.json`. Header/footer presets (`header.preset`, `footer.preset`) and all content stay.
+3. **Header/footer variants** (`header.variant`, `header.navigationVariant`, `footer.variant`) have no meaning for forms — set
+   them to `default` or remove them from `site.json` (`doctor` and the skills validator warn when a form project keeps one). Header/footer presets (`header.preset`, `footer.preset`) and all content stay.
 4. **Pages:** classic components (Hero, TextMedia, Cards …) keep working in a form, but do not take on its look. Rebuild the pages
    with the Base v2 blocks (Intro, Split, LinkList, Notice, Contact) — the marbas skills do that with **marbas-build** in extension mode.
 
@@ -111,6 +111,19 @@ The build pipeline resolves a theme file in this order:
 3. **Error** — if neither exists the build fails with a clear message
 
 This means you can customise any built-in theme without touching the library.
+
+---
+
+## Maintaining the library themes (contributors)
+
+`themes/theme-*.css`, `themes/fonts/` and `_assets/css/base.full(.min).css` are **generated** — the single source is the
+cms-theme repository (`css/src` for the base, `css/themes/` for themes and fonts). Do not edit them here.
+
+1. Change the theme (or base) in cms-theme; for a new web font add the family to `FONTS` in `build/sync-theme-fonts.mjs`
+   (Fontsource package as devDependency, token name `--t-font-<name>`) and run `npm run fonts:sync` there; `npm run build:presets`
+   rebuilds the base.
+2. Here: `npm run sync:theme` copies everything over (an exact mirror — files removed in cms-theme are removed here).
+   `npm run sync:theme:check` reports drift (CI/tests); the cms-theme checkout is taken from `$CMS_THEME_ROOT` or `--source`.
 
 ---
 
@@ -192,6 +205,19 @@ The **built-in themes ship their fonts** (self-hosted woff2, SIL Open Font Licen
 `_assets/fonts/`; a file with the same path in your project's `_assets/fonts/` takes precedence.
 
 ---
+
+## Terms: design, form, colours, appearance
+
+The app and the skills use the same words for what "theme" used to mean as one lump:
+
+| Term | What it is | Where it is set |
+|---|---|---|
+| **Design** | the whole look of a site: form + colours + appearance | the *Design* dialog in the app |
+| **Form** | arrangement, typography and header/footer design — one of the six Base v2 themes | `theme.id` |
+| **Colours** | the palette (preset and single colours) | `theme.palette`, `theme.colors` |
+| **Appearance** | light, dark or "by system" | `theme.scheme` |
+
+Logo and brand name live under *Logo* in the site settings (`logo`), the AI context under *Markenstimme* (`brand`) — not part of the design.
 
 ## Theme families and palettes (Base v2)
 

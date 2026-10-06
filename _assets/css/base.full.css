@@ -1,5 +1,5 @@
 /* Generated CSS - Built from modular sources */
-/* Build time: 2026-10-06T07:18:57.979Z */
+/* Build time: 2026-10-06T17:19:30.377Z */
 
 /* core/tokens */
 /* Global tokens (non-brand defaults) */
@@ -2993,6 +2993,45 @@ hr {
 }
 @media (prefers-reduced-motion: reduce) {
   .c-v2-rows__row { transition: none; }
+}
+
+/* Tiles (Task 171) — Kacheln mit Bild. Die Form bestimmt über `linklist` (cards | rows), wie eine Kachel aussieht: Karte mit Bild
+   oben (Product, Warm, Druckwerk — die Form liefert Schatten, Radius, Hover) oder Zeile mit Bild links (Editorial, Bold,
+   Minimal-Luxe). Aufbau: .c-v2-rows__row.c-v2-tiles__item > __media (optional), __head (Kennung + Titel), Text, __link | Pfeil. */
+.c-v2-tiles__head { display: flex; flex-direction: column; gap: .35rem; min-width: 0; }
+.c-v2-tiles__media { margin: 0; overflow: hidden; }
+.c-v2-tiles__media img,
+.c-v2-tiles__media picture { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.c-v2-tiles__link { color: var(--p-accent); font-weight: 600; font-size: .92rem; }
+/* cards */
+.c-l-linklist-cards .c-v2-tiles .c-v2-tiles__grid { grid-template-columns: repeat(var(--tiles-cols, 3), minmax(0, 1fr)); }
+.c-l-linklist-cards .c-v2-tiles .c-v2-tiles__item { overflow: hidden; }
+.c-l-linklist-cards .c-v2-tiles .c-v2-tiles__media { margin: -1.5rem -1.5rem .6rem; }
+.c-l-linklist-cards .c-v2-tiles .c-v2-tiles__link { margin-top: auto; padding-top: .4rem; }
+.c-l-linklist-cards .c-v2-tiles .c-v2-tiles__item:has(.c-v2-tiles__link) { padding-bottom: 1.5rem; }
+/* rows: Bild | Kopf | Text | Pfeil bzw. Link-Text */
+.c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item {
+  grid-template-columns: minmax(6rem, 13rem) minmax(0, .95fr) minmax(0, 1fr) auto; gap: 1.2rem 2rem; align-items: center;
+}
+.c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item:not(:has(.c-v2-tiles__media)) { grid-template-columns: minmax(0, .95fr) minmax(0, 1fr) auto; }
+.c-l-linklist-rows .c-v2-tiles .c-v2-tiles__media img,
+.c-l-linklist-rows .c-v2-tiles .c-v2-tiles__media picture { aspect-ratio: 4 / 3; }
+.c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item .c-v2-rows__index:empty { display: none; }
+@container v2 (min-width: 761px) and (max-width: 1050px) {
+  .c-l-linklist-cards .c-v2-tiles .c-v2-tiles__grid { grid-template-columns: repeat(min(var(--tiles-cols, 3), 2), minmax(0, 1fr)); }
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item { grid-template-columns: minmax(5rem, 10rem) minmax(0, 1fr) minmax(0, 1fr) auto; gap: .9rem 1.4rem; }
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item:not(:has(.c-v2-tiles__media)) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+}
+@container v2 (max-width: 760px) {
+  .c-l-linklist-cards .c-v2-tiles .c-v2-tiles__grid { grid-template-columns: minmax(0, 1fr); }
+  /* Zeile mobil: Bild über die ganze Breite, darunter Kopf + Pfeil, dann der Text */
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item,
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__item:not(:has(.c-v2-tiles__media)) { grid-template-columns: minmax(0, 1fr) auto; gap: .7rem; align-items: start; padding-block: 1.35rem; }
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__media { grid-column: 1 / -1; }
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__head { grid-column: 1; }
+  .c-l-linklist-rows .c-v2-tiles .c-v2-rows__arrow,
+  .c-l-linklist-rows .c-v2-tiles .c-v2-tiles__link { grid-column: 2; grid-row: auto; }
+  .c-l-linklist-rows .c-v2-tiles .c-v2-rows__text { grid-column: 1 / -1; grid-row: auto; }
 }
 
 /* Dunkelmodus-Schalter (theme.scheme.mode "auto", marbas-site 0.17) — Fußzeile: Gruppe „Hell · Dunkel · System“,

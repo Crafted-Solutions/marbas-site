@@ -16,7 +16,7 @@ The library themes ship their web fonts as self-hosted woff2 files in `themes/fo
 `_assets/fonts/`. The files are taken from the [Fontsource](https://fontsource.org) packages listed
 below; each family is licensed under the [SIL Open Font License 1.1](https://openfontlicense.org),
 the full licence text including the copyright notice is in `themes/fonts/<family>/LICENSE`.
-Regenerate with `node scripts/sync-theme-fonts.mjs`.
+The files are generated in the cms-theme repository (`npm run fonts:sync` there) and copied here with `npm run sync:theme` — do not edit them in this repo.
 
 | Family | Files | Licence | Source package |
 |---|---|---|---|

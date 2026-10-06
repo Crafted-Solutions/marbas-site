@@ -188,9 +188,9 @@ Controls the logo displayed in the header.
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `preset` | string | `"brand-nav"` | Layout preset. See [Header presets](#header-presets). |
-| `variant` | string | `"default"` | Visual style variant: `"default"`, `"compact"`, `"accent"`, `"line"`, `"glass"`. |
+| `variant` | string | `"default"` | Visual style variant: `"default"`, `"compact"`, `"accent"`, `"line"`, `"glass"`. **classic themes only** — forms (Base v2) design the header themselves; `doctor` warns when a form project sets one. |
 | `showCompanyName` | boolean | `true` | Display the site title next to the logo. |
-| `navigationVariant` | string | `"default"` | Nav item style: `"default"`, `"compact"`, `"pill"`, `"underline"`. |
+| `navigationVariant` | string | `"default"` | Nav item style: `"default"`, `"compact"`, `"pill"`, `"underline"`. **classic themes only** (no effect in forms). |
 | `sticky` | boolean | `false` | Fix the header to the top of the viewport while scrolling. |
 | `tagline` | string | — | Optional second line under the company name (e.g. "Internistische Rheumatologie · Berlin"). Shown when `showCompanyName` is on. |
 | `schemeToggle` | boolean | `false` | Light/dark icon button in the header (also visible on mobile). Only with `theme.scheme.mode: "auto"` (0.17), see [Dark mode](themes.md#dark-mode-themescheme-since-017). |
@@ -281,12 +281,14 @@ Up to two call-to-action buttons shown on the right side of the header (only in 
 
 ## Header presets
 
-| Preset | Description |
-|---|---|
-| `brand-nav` | Logo + company name on the left, navigation on the right. The standard layout for most sites. |
-| `brand-nav-actions` | Like `brand-nav` with up to two CTA buttons added to the right. |
-| `centered-nav` | Logo centered above a horizontal navigation bar — common for editorial and portfolio sites. |
-| `utility-brand-nav` | A slim utility link bar above the main header. Main header shows logo, name, navigation, and actions. |
+The app shows the presets as **"Elements of the header"** with the names in the second column (the values in `site.json` stay as written here).
+
+| Preset | App name (de) | Description |
+|---|---|---|
+| `brand-nav` | Logo + Menü | Logo + company name on the left, navigation on the right. The standard layout for most sites. |
+| `brand-nav-actions` | Logo + Menü + Buttons | Like `brand-nav` with up to two CTA buttons added to the right. |
+| `centered-nav` | Zentriert | Logo centered above a horizontal navigation bar — common for editorial and portfolio sites. |
+| `utility-brand-nav` | Mit Leiste oben | A slim utility link bar above the main header. Main header shows logo, name, navigation, and actions. |
 
 ---
 
@@ -295,7 +297,7 @@ Up to two call-to-action buttons shown on the right side of the header (only in 
 | Field | Type | Default | Description |
 |---|---|---|---|
 | `preset` | string | `"simple"` | Layout preset. See [Footer presets](#footer-presets). |
-| `variant` | string | `"default"` | Visual style: `"default"`, `"compact"`, `"accent"`, `"contrast"`. |
+| `variant` | string | `"default"` | Visual style: `"default"`, `"compact"`, `"accent"`, `"contrast"`. **classic themes only** — in a form `contrast` can turn the footer dark without the form having designed it; `doctor` warns. |
 | `companyName` | string | value of `title` | Company name shown in the footer. |
 | `copyright` | string | `"© <year> <title>"` | Copyright line at the bottom of the footer. |
 | `intro` | string | `""` | Short intro text below the company name (used in `editorial` preset). |
@@ -379,13 +381,15 @@ Links in the thin bar at the very bottom of the footer (imprint, privacy, etc.).
 
 ## Footer presets
 
-| Preset | Description |
-|---|---|
-| `simple` | Company name/intro and contact details in one row, plus bottom links. |
-| `columns` | Brand column (company name, intro, contact) next to the link groups. |
-| `columns-social` | Like `columns` with social icons in the brand column. |
-| `columns-cta` | Like `columns` with a CTA panel above the columns. |
-| `editorial` | Rich layout: intro, social icons, contact, link groups and a full bottom bar. |
+The app shows the presets as **"Elements of the footer"** with the names in the second column.
+
+| Preset | App name (de) | Description |
+|---|---|---|
+| `simple` | Einzeilig | Company name/intro and contact details in one row, plus bottom links. |
+| `columns` | Spalten | Brand column (company name, intro, contact) next to the link groups. |
+| `columns-social` | Spalten + Social | Like `columns` with social icons in the brand column. |
+| `columns-cta` | Spalten + Aktionsfläche | Like `columns` with a CTA panel above the columns. |
+| `editorial` | Redaktionell | Rich layout: intro, social icons, contact, link groups and a full bottom bar. |
 
 Which `footer` data each preset shows:
 

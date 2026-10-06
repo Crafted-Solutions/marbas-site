@@ -86,3 +86,37 @@ test('checkTheme: unknown theme-id → error', () => {
 
   fs.rmSync(tmp, { recursive: true });
 });
+
+const V2_CSS = '/* @family v2 */ :root { --p-paper: #ffffff; --p-ink: #111111; --p-accent: #005a9c; }';
+
+function v2Project(tmp, site) {
+  const libRoot = path.join(tmp, 'lib');
+  fs.mkdirSync(path.join(libRoot, 'themes'), { recursive: true });
+  fs.writeFileSync(path.join(libRoot, 'themes', 'theme-editorial.css'), V2_CSS);
+  const projectPath = makeProject(tmp, { theme: { id: 'theme-editorial' } }, { 'pages/_data/site.json': JSON.stringify(site) });
+  return { projectPath, libRoot };
+}
+
+test('checkTheme: form with variants other than default → warn naming the fields', () => {
+  const tmp = makeTmpDir();
+  const { projectPath, libRoot } = v2Project(tmp, { header: { variant: 'accent', navigationVariant: 'pill' }, footer: { variant: 'contrast' } });
+  const warn = checkTheme({ projectPath, libRoot }).find((r) => r.id === 'theme-variants');
+  assert.equal(warn.status, 'warn');
+  for (const field of ['header.variant=accent', 'header.navigationVariant=pill', 'footer.variant=contrast']) assert.ok(warn.message.includes(field), field);
+  fs.rmSync(tmp, { recursive: true });
+});
+
+test('checkTheme: form with default or missing variants → no variant warning', () => {
+  const tmp = makeTmpDir();
+  const { projectPath, libRoot } = v2Project(tmp, { header: { variant: 'default' }, footer: {} });
+  assert.equal(checkTheme({ projectPath, libRoot }).some((r) => r.id === 'theme-variants'), false);
+  fs.rmSync(tmp, { recursive: true });
+});
+
+test('checkTheme: classic theme with variants → no variant warning (variants are meaningful there)', () => {
+  const tmp = makeTmpDir();
+  const libRoot = makeFakeLib(tmp);
+  const projectPath = makeProject(tmp, { theme: { id: 'theme-bloom' } }, { 'pages/_data/site.json': JSON.stringify({ header: { variant: 'glass' } }) });
+  assert.equal(checkTheme({ projectPath, libRoot }).some((r) => r.id === 'theme-variants'), false);
+  fs.rmSync(tmp, { recursive: true });
+});
