@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`theme-craft`** — ninth Base v2 library theme (form), a workshop notebook: hang-tag labels in handwriting (Caveat, new
   shipped font), photos in a passe-partout with photo corners, hand-drawn rules, index cards, buttons with a hand-drawn
   outline, laid paper texture, Merriweather. Palettes: default (olive), `ton`, `indigo`; dark: `kohle`.
+- **`theme-retro`** — tenth Base v2 library theme (form), 1970s sunset stripes: colour stripes under the header, above the
+  footer and on cards, the intro image as an arch with a rainbow frame, Fraunces Black with the soft axis (new shipped font)
+  and an offset shadow, chunky pill buttons. Palettes: default (cream + sunset), `avocado`, `disco`; dark: `espresso`.
 
 ## [0.22.0] - 2026-10-06
 

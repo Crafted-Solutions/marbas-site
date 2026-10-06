@@ -24,6 +24,7 @@ export const THEME_DEFAULTS_BY_ID = Object.freeze({
   'theme-nocturne': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-praxis': { headerVariant: 'accent', navigationVariant: 'default', footerVariant: 'default' },
   'theme-product': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
+  'theme-retro': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-signal': { headerVariant: 'default', navigationVariant: 'pill', footerVariant: 'default' },
   'theme-slate': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'contrast' },
   'theme-studio': { headerVariant: 'line', navigationVariant: 'underline', footerVariant: 'contrast' },
