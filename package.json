@@ -45,7 +45,7 @@
     "./package.json": "./package.json"
   },
   "bin": {
-    "marbas-site": "./src/cli/bin.js"
+    "marbas-site": "src/cli/bin.js"
   },
   "files": [
     "src",
