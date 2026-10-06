@@ -17,7 +17,7 @@ const BIN = path.join(ROOT, 'src/cli/bin.js');
 const themeCss = (id) => fs.readFileSync(path.join(ROOT, 'themes', `${id}.css`), 'utf8');
 
 test('every Base v2 form names a dark preset that exists', () => {
-  for (const id of ['theme-editorial', 'theme-product', 'theme-bold', 'theme-warm', 'theme-minimal-luxe', 'theme-druckwerk', 'theme-blueprint']) {
+  for (const id of ['theme-editorial', 'theme-product', 'theme-bold', 'theme-warm', 'theme-minimal-luxe', 'theme-druckwerk', 'theme-blueprint', 'theme-nocturne']) {
     const css = themeCss(id);
     const dark = readDarkPreset(css);
     assert.ok(dark, `${id} has @dark`);
