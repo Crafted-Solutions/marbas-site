@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`theme-blueprint`** — seventh Base v2 library theme (form), a technical data sheet: a grid of hairlines across the page
+  with registration marks on the band edges, flush cells with shared borders for LinkList/Tiles, the intro as a framed spec
+  block, mono labels, numbers, menu and buttons (IBM Plex Sans, JetBrains Mono). Palettes: default (cool paper + signal
+  orange), `graphit`, `blaupause` (white and yellow on Prussian blue); dark: `terminal`. Works in one-, two- and
+  three-column page layouts.
+
 ## [0.22.0] - 2026-10-06
 
 ### Added
