@@ -1,7 +1,7 @@
 ---
 layout: content_1col.njk
 title: Home
-seoDescription: Home — overview of services, process and contact.
+seoDescription: Short description of the home page for search engines.
 pageLanguage: en
 templateEngineOverride: njk,md
 topNavigation: true
@@ -18,12 +18,12 @@ eleventyNavigation:
 Placeholder_Hero:
   - componentType: Intro
     id: start
-    label: "Your offer in one line"
-    headline: "Your name<br>or company"
-    lead: "One sentence that says what you do and for whom."
-    text: "<p>A short secondary text with the essentials: location, focus, availability. Adjust content, building blocks and colours as you like.</p>"
+    label: "Short context"
+    headline: "Home page<br>headline"
+    lead: "An introductory sentence."
+    text: "<p>A short paragraph with further information. Content, blocks and colours can be adapted freely.</p>"
     links:
-      - { label: "How can we help?", href: "#topics" }
+      - { label: "Learn more", href: "#areas" }
       - { label: "Contact", href: "#contact" }
     image:
       src: /_assets/images/starter-hero.jpg
@@ -31,43 +31,42 @@ Placeholder_Hero:
       originalId: starter-v2-hero
 Placeholder_Main:
   - componentType: Notice
-    id: news
-    label: "News"
-    text: "<p><strong>Good to know:</strong> short notices go here — holidays, new hours, dates.</p>"
+    id: notice
+    label: "Notice"
+    text: "<p>A short message goes here.</p>"
     meta: "Example"
   - componentType: LinkList
-    id: topics
-    label: "Orientation"
-    headline: "What would you like to do?"
-    text: "<p>Each row leads straight to what matters now.</p>"
+    id: areas
+    label: "Areas"
+    headline: "List headline"
+    text: "<p>A short introduction.</p>"
     items:
-      - { title: "Book a first meeting", text: "How a first appointment works and how to prepare.", href: "#process" }
-      - { title: "See our services", text: "What we offer and for whom.", href: "/about-us/" }
-      - { title: "Get in touch", text: "Phone, email and hours at a glance.", href: "#contact" }
+      - { title: "Item one", text: "Short description of the item.", href: "#section" }
+      - { title: "Item two", text: "Short description of the item.", href: "/about-us/" }
+      - { title: "Item three", text: "Short description of the item.", href: "#contact" }
   - componentType: Split
-    id: process
+    id: section
     tone: soft
-    label: "Process"
-    headline: "Well prepared for the first talk."
-    text: "<p>Describe in two or three sentences how working together starts.</p>"
-    mutedText: "<p>A secondary text for limitations or notes.</p>"
+    label: "Section"
+    headline: "A headline that makes a point."
+    text: "<p>A paragraph with the content of this section.</p>"
+    mutedText: "<p>A supplementary note.</p>"
     link: "#contact"
-    linkText: "Request an appointment"
+    linkText: "Learn more"
     list:
-      title: "Please bring"
-      items: ["Documents on your topic", "Open questions", "Preferred dates"]
+      title: "List"
+      items: ["Point one", "Point two", "Point three"]
       note: "The list is an example — replace or delete it."
   - componentType: Contact
     id: contact
     label: "Contact"
     headline: "How to reach us."
-    text: "<p>Everything important in one place.</p>"
+    text: "<p>Contact details in one place.</p>"
     details:
       - { term: "Address", value: "<em>[Street number]</em><br><em>[Postcode city]</em>" }
       - { term: "Phone", value: "<em>[Phone number]</em>" }
       - { term: "Email", value: "<em>[Email address]</em>" }
-    hoursTitle: "Opening hours"
+    hoursTitle: "Hours"
     hours:
-      - { day: "Monday – Thursday", time: "9 am – 5 pm" }
-      - { day: "Friday", time: "9 am – 1 pm" }
+      - { day: "<em>[Days]</em>", time: "<em>[Time]</em>" }
 ---

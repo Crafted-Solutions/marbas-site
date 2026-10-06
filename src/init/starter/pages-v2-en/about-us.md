@@ -18,26 +18,26 @@ eleventyNavigation:
 Placeholder_Hero:
   - componentType: Intro
     id: about-us
-    headline: "Who we are."
-    lead: "One sentence about your attitude — why you do what you do."
+    headline: "About us"
+    lead: "An introductory sentence."
     image:
       src: /_assets/images/starter-feature-left.jpg
-      alt: Example image team
+      alt: Example image
       originalId: starter-v2-about
 Placeholder_Main:
   - componentType: Split
-    id: values
+    id: section
     layout: title
-    label: "Values"
-    headline: "What matters to us."
-    text: "<p>Describe your story, your values or your team here.</p><p>Two or three short paragraphs read better than one long wall.</p>"
-    note: "One sentence that sticks."
+    label: "Section"
+    headline: "A headline that makes a point."
+    text: "<p>A first paragraph.</p><p>A second paragraph.</p>"
+    note: "A short side note."
   - componentType: LinkList
-    id: services
-    label: "Services"
-    headline: "What we offer."
+    id: list
+    label: "Overview"
+    headline: "List headline"
     items:
-      - { title: "Service one", text: "Briefly described, and who it is for." }
-      - { title: "Service two", text: "Briefly described, and who it is for." }
-      - { title: "Service three", text: "Briefly described, and who it is for." }
+      - { title: "Item one", text: "Short description of the item." }
+      - { title: "Item two", text: "Short description of the item." }
+      - { title: "Item three", text: "Short description of the item." }
 ---

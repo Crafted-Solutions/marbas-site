@@ -1,7 +1,7 @@
 ---
 layout: content_1col.njk
 title: Startseite
-seoDescription: Startseite — Überblick über Angebot, Ablauf und Kontakt.
+seoDescription: Kurze Beschreibung der Startseite für Suchmaschinen.
 pageLanguage: de
 templateEngineOverride: njk,md
 topNavigation: true
@@ -18,12 +18,12 @@ eleventyNavigation:
 Placeholder_Hero:
   - componentType: Intro
     id: start
-    label: "Ihr Angebot in einem Satz"
-    headline: "Ihr Name<br>oder Ihre Firma"
-    lead: "Ein Satz, der sagt, wofür Sie da sind und für wen."
-    text: "<p>Ein kurzer Nebentext mit dem Wichtigsten: Ort, Schwerpunkt, Erreichbarkeit. Passen Sie Inhalte, Bausteine und Farben nach Ihren Wünschen an.</p>"
+    label: "Kurze Einordnung"
+    headline: "Überschrift<br>der Startseite"
+    lead: "Ein einleitender Satz."
+    text: "<p>Ein kurzer Absatz mit weiteren Informationen. Inhalte, Bausteine und Farben lassen sich frei anpassen.</p>"
     links:
-      - { label: "Zu den Anliegen", href: "#anliegen" }
+      - { label: "Mehr erfahren", href: "#bereiche" }
       - { label: "Kontakt", href: "#kontakt" }
     image:
       src: /_assets/images/starter-hero.jpg
@@ -31,43 +31,42 @@ Placeholder_Hero:
       originalId: starter-v2-hero
 Placeholder_Main:
   - componentType: Notice
-    id: aktuelles
-    label: "Aktuelles"
-    text: "<p><strong>Gut zu wissen:</strong> Hier stehen kurze Hinweise — Urlaub, neue Zeiten, Termine.</p>"
+    id: hinweis
+    label: "Hinweis"
+    text: "<p>Hier steht eine kurze Mitteilung.</p>"
     meta: "Beispiel"
   - componentType: LinkList
-    id: anliegen
-    label: "Orientierung"
-    headline: "Was möchten Sie tun?"
-    text: "<p>Jede Zeile führt direkt zu dem, was jetzt wichtig ist.</p>"
+    id: bereiche
+    label: "Bereiche"
+    headline: "Überschrift der Liste"
+    text: "<p>Ein kurzer Einleitungstext.</p>"
     items:
-      - { title: "Erstgespräch vereinbaren", text: "Wie ein erster Termin abläuft und was Sie vorbereiten können.", href: "#ablauf" }
-      - { title: "Leistungen ansehen", text: "Was wir anbieten und für wen.", href: "/ueber-uns/" }
-      - { title: "Kontakt aufnehmen", text: "Telefon, E-Mail und Zeiten auf einen Blick.", href: "#kontakt" }
+      - { title: "Eintrag eins", text: "Kurze Beschreibung des Eintrags.", href: "#abschnitt" }
+      - { title: "Eintrag zwei", text: "Kurze Beschreibung des Eintrags.", href: "/ueber-uns/" }
+      - { title: "Eintrag drei", text: "Kurze Beschreibung des Eintrags.", href: "#kontakt" }
   - componentType: Split
-    id: ablauf
+    id: abschnitt
     tone: soft
-    label: "Ablauf"
-    headline: "Gut vorbereitet ins Gespräch."
-    text: "<p>Beschreiben Sie hier in zwei, drei Sätzen, wie die Zusammenarbeit beginnt.</p>"
-    mutedText: "<p>Ein Nebentext für Einschränkungen oder Hinweise.</p>"
+    label: "Abschnitt"
+    headline: "Eine Überschrift mit einer Aussage."
+    text: "<p>Ein Absatz mit dem Inhalt dieses Abschnitts.</p>"
+    mutedText: "<p>Ein ergänzender Nebentext.</p>"
     link: "#kontakt"
-    linkText: "Termin anfragen"
+    linkText: "Mehr erfahren"
     list:
-      title: "Bitte mitbringen"
-      items: ["Unterlagen zum Anliegen", "Offene Fragen", "Wunschtermine"]
+      title: "Liste"
+      items: ["Punkt eins", "Punkt zwei", "Punkt drei"]
       note: "Die Liste ist ein Beispiel — ersetzen oder löschen."
   - componentType: Contact
     id: kontakt
     label: "Kontakt"
     headline: "So erreichen Sie uns."
-    text: "<p>Alles Wichtige an einem Ort.</p>"
+    text: "<p>Kontaktangaben an einem Ort.</p>"
     details:
       - { term: "Adresse", value: "<em>[Straße Hausnummer]</em><br><em>[PLZ Ort]</em>" }
       - { term: "Telefon", value: "<em>[Telefonnummer]</em>" }
       - { term: "E-Mail", value: "<em>[E-Mail-Adresse]</em>" }
-    hoursTitle: "Öffnungszeiten"
+    hoursTitle: "Zeiten"
     hours:
-      - { day: "Montag – Donnerstag", time: "9–17 Uhr" }
-      - { day: "Freitag", time: "9–13 Uhr" }
+      - { day: "<em>[Tage]</em>", time: "<em>[Uhrzeit]</em>" }
 ---
