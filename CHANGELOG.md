@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   block, mono labels, numbers, menu and buttons (IBM Plex Sans, JetBrains Mono). Palettes: default (cool paper + signal
   orange), `graphit`, `blaupause` (white and yellow on Prussian blue); dark: `terminal`. Works in one-, two- and
   three-column page layouts.
+- **`theme-nocturne`** — eighth Base v2 library theme (form), a magazine cover: the heading sits on the full-bleed intro
+  image (scrim on the text block, AA on any photo; stacked on small screens), Playfair Display with italics, drop cap,
+  rubric labels between rules, the first of three or more tiles as a wide cover story, "No. 01" numbering (DM Sans for
+  text). Palettes: default (paper + vermilion), `bordeaux` (dark); dark: `nacht`.
 
 ## [0.22.0] - 2026-10-06
 
