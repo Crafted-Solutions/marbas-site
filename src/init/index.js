@@ -252,7 +252,7 @@ export function initProject({
   if (theme) siteSettings = applyVariantDefaultsToSiteSettings(siteSettings, theme);
   // v2 starter: show the header tagline (example text, only for new starter projects)
   if (starter && themeFamily === 'v2') {
-    siteSettings.header.tagline = language.startsWith('de') ? 'Ihr Schwerpunkt · Ihr Ort' : 'Your focus · Your city';
+    siteSettings.header.tagline = language.startsWith('de') ? 'Kurze Unterzeile' : 'Short tagline';
   }
   fs.writeFileSync(
     path.join(absPath, 'pages', '_data', 'site.json'),
