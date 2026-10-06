@@ -11,6 +11,7 @@ export const THEME_DEFAULTS_BY_ID = Object.freeze({
   'theme-bold': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-campus': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-civic': { headerVariant: 'accent', navigationVariant: 'default', footerVariant: 'contrast' },
+  'theme-craft': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-druckwerk': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-editorial': { headerVariant: 'default', navigationVariant: 'default', footerVariant: 'default' },
   'theme-fjord': { headerVariant: 'line', navigationVariant: 'underline', footerVariant: 'contrast' },

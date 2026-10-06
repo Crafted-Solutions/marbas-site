@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 8 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`, `theme-blueprint`, `theme-nocturne`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 9 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`, `theme-blueprint`, `theme-nocturne`, `theme-craft`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -64,6 +64,7 @@ A form fixes layout, typography and details; colours come from its palettes (`th
 | `theme-druckwerk` | Druckwerk | Culture, studios, cafés, bookshops, festivals — risograph look: two print colours on natural paper with grain, overprint bars behind headings, duotone intro image with misregistration offset, stamp labels in the margin, sticker cards, tape notes, label buttons (Jost, IBM Plex Sans/Mono). The duotone recolours every intro image. Palettes: default (pink + blue), `gruen-orange`, `gelb-violett` |
 | `theme-blueprint` | Blueprint | Developer tools, open source, engineering firms, technical services — technical data sheet: a grid of hairlines across the page with registration marks on the band edges, flush cells with shared borders instead of cards, the intro as a framed spec block (text \| figure), mono labels, numbers, menu and buttons (IBM Plex Sans, JetBrains Mono). Palettes: default (cool paper + signal orange), `graphit` (signal green), `blaupause` (white and yellow on Prussian blue) |
 | `theme-nocturne` | Nocturne | Magazines, photography, culture, theatre, bars and evening dining — magazine cover: the heading sits on the full-bleed intro image (the text block carries its own scrim, so text stays AA on any photo; on small screens the image sits above the text), high-contrast display serif with italics (Playfair Display, DM Sans), drop cap, rubric labels between rules, the first of three or more tiles as a wide cover story, "No. 01" numbering. Palettes: default (paper + vermilion), `bordeaux` (dark), `nacht` (dark) |
+| `theme-craft` | Craft | Workshops, potteries, manufactories, joiners, natural cosmetics — a workshop notebook: labels as kraft-paper hang tags in handwriting (Caveat, only for labels and side notes), photos in a passe-partout with photo corners, hand-drawn rules under the header, bands and headings, index cards, buttons with a hand-drawn outline, laid paper texture, Merriweather for text and headings. Softer and more familiar → Warm. Palettes: default (laid paper + olive), `ton` (rust), `indigo` |
 
 ### classic themes (v1) — deprecated, removed in 0.50
 
@@ -300,7 +301,7 @@ Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2-
 ### Dark mode (`theme.scheme`, since 0.17)
 
 Every Base v2 form ships a dark palette and names it in its header comment (`@dark <preset>`): Editorial `nacht`,
-Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`, Blueprint `terminal`, Nocturne `nacht`. A project decides how to use it:
+Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`, Blueprint `terminal`, Nocturne `nacht`, Craft `kohle`. A project decides how to use it:
 
 ```json
 "theme": {

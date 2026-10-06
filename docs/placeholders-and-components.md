@@ -411,7 +411,7 @@ of similar length — each row aligns its own label column.
 ### Tiles
 
 Tiles with an image (since 0.22): the same idea as `LinkList`, but every entry carries a picture. The form decides how a tile looks
-(`@layout linklist`): a **card** with the image on top (Product, Warm, Druckwerk, Blueprint, Nocturne) or a **row** with the image on the left
+(`@layout linklist`): a **card** with the image on top (Product, Warm, Druckwerk, Blueprint, Nocturne, Craft) or a **row** with the image on the left
 (Editorial, Bold, Minimal-Luxe). The whole entry is the link when it has an `href`.
 Fields: `label`, `headline`, `text` (html), `columns` (2–4, cards only), `items[] {label, image {src, alt, originalId}, title, text, href, linkText}`
 (without `linkText` a link shows an arrow only; `label` only for real sequences), `tone`. Images belong in `_media/` (processed like all
