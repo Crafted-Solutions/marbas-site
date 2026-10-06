@@ -100,7 +100,7 @@ describe('THEME_DEFAULTS_BY_ID', () => {
     assert.ok(Object.isFrozen(THEME_DEFAULTS_BY_ID));
   });
 
-  it('contains the 24 known themes', () => {
-    assert.equal(Object.keys(THEME_DEFAULTS_BY_ID).length, 24);
+  it('contains the 25 known themes', () => {
+    assert.equal(Object.keys(THEME_DEFAULTS_BY_ID).length, 25);
   });
 });

@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 6 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 7 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`, `theme-blueprint`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -62,6 +62,7 @@ A form fixes layout, typography and details; colours come from its palettes (`th
 | `theme-warm` | Warm | Crafts, food, farm shops, wellness — serif headings with italics (Source Serif 4 + Nunito Sans), cream paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy band edges, pill buttons. Palettes: default (terracotta), `salbei` (herbs), `beere` (berry) |
 | `theme-minimal-luxe` | Minimal-Luxe | Architecture, design, fashion, manufactories, hotels — strong reduction, hairlines, light serif in large sizes (Cormorant Garamond + Jost), centred section heads, full-bleed intro image, letter-spaced caps for labels/menu/links. Palettes: default (ivory + bronze), `noir`, `stein` |
 | `theme-druckwerk` | Druckwerk | Culture, studios, cafés, bookshops, festivals — risograph look: two print colours on natural paper with grain, overprint bars behind headings, duotone intro image with misregistration offset, stamp labels in the margin, sticker cards, tape notes, label buttons (Jost, IBM Plex Sans/Mono). The duotone recolours every intro image. Palettes: default (pink + blue), `gruen-orange`, `gelb-violett` |
+| `theme-blueprint` | Blueprint | Developer tools, open source, engineering firms, technical services — technical data sheet: a grid of hairlines across the page with registration marks on the band edges, flush cells with shared borders instead of cards, the intro as a framed spec block (text \| figure), mono labels, numbers, menu and buttons (IBM Plex Sans, JetBrains Mono). Palettes: default (cool paper + signal orange), `graphit` (signal green), `blaupause` (white and yellow on Prussian blue) |
 
 ### classic themes (v1) — deprecated, removed in 0.50
 
@@ -82,7 +83,7 @@ print a hint for projects that use one. New projects get a form (`init` without 
 | `theme-lumina` | Lumina | Hotels, travel booking, hospitality — warm amber-terracotta | Minimal-Luxe |
 | `theme-maison` | Maison | Real estate, architecture, premium projects — warm neutrals, editorial serif | Minimal-Luxe |
 | `theme-praxis` | Praxis | Law firms, tax advisory, professional services | Editorial |
-| `theme-signal` | Signal | Developer tools, CLI products, API documentation | Product |
+| `theme-signal` | Signal | Developer tools, CLI products, API documentation | Blueprint (dark-first: `theme.scheme.mode: "dark"` → `terminal`) |
 | `theme-slate` | Slate | SaaS products, tech marketing — clean slate-grey, modern blue | Product |
 | `theme-studio` | Studio | Creative agencies, design studios, portfolios — maximum reduction, black on off-white | Editorial |
 | `theme-tempo` | Tempo | Sports clubs, fitness brands — dark-first, high contrast, orange energy | Bold |
@@ -298,7 +299,7 @@ Base v2 building blocks use the section frame markup `<section class="c-v2 c-v2-
 ### Dark mode (`theme.scheme`, since 0.17)
 
 Every Base v2 form ships a dark palette and names it in its header comment (`@dark <preset>`): Editorial `nacht`,
-Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`. A project decides how to use it:
+Product `nacht`, Bold `nacht`, Warm `kakao`, Minimal-Luxe `noir`, Druckwerk `nachtdruck`, Blueprint `terminal`. A project decides how to use it:
 
 ```json
 "theme": {
