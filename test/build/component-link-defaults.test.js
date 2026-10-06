@@ -43,7 +43,8 @@ test('component links: language defaults, aria-label, images without originalId'
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-link-defaults-'));
   const projectPath = path.join(tmp, 'site');
   try {
-    assert.equal(run(['init', projectPath, '--starter']).status, 0, 'init failed');
+    // classic components on a classic theme (deprecated, removed in 0.50 — Task 167)
+    assert.equal(run(['init', projectPath, '--starter', '--theme=theme-slate']).status, 0, 'init failed');
 
     const siteJsonPath = path.join(projectPath, 'pages', '_data', 'site.json');
     const siteJson = JSON.parse(fs.readFileSync(siteJsonPath, 'utf8'));

@@ -5,12 +5,16 @@ import { getDefaultSiteSettings } from '../site-settings/defaults.js';
 import { resolveThemeFile } from '../theme/resolver.js';
 import { applyVariantDefaultsToSiteSettings } from '../theme/variant-defaults.js';
 import { readThemeFamily } from '../theme/palette.js';
+import { classicDeprecationMessage } from '../theme/copy.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const LIB_PKG = JSON.parse(
   fs.readFileSync(path.resolve(__dirname, '../../package.json'), 'utf8')
 );
+
+// Theme of a new project without --theme: a Base v2 form (classic themes are deprecated, Task 167).
+export const DEFAULT_THEME = 'theme-editorial';
 
 // Built-in environments seeded into every project. Legacy projects that carried
 // local_test/staging keep those (they are merged in from the legacy config below)
@@ -168,7 +172,7 @@ export function initProject({
   force = false,
   starter = false,
   lang = 'de',
-  theme = null,
+  theme = DEFAULT_THEME,
   libRoot = path.resolve(__dirname, '../..')
 } = {}) {
   const absPath = path.resolve(projectPath);
@@ -182,6 +186,7 @@ export function initProject({
     // Throws with a helpful message when the theme does not exist.
     const themeFile = resolveThemeFile({ projectPath: absPath, themeId: theme, libRoot });
     themeFamily = readThemeFamily(fs.readFileSync(themeFile, 'utf8'));
+    if (themeFamily !== 'v2') console.warn(`[init] ${classicDeprecationMessage(theme)}`);
   }
 
   const alreadyInitialised = fs.existsSync(path.join(absPath, 'marbas-project.json'));

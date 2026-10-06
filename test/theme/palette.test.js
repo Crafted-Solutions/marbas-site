@@ -57,7 +57,9 @@ test('resolveThemePalette: v2 applies preset + colours, classic ignores them wit
   const classic = resolveThemePalette({ css: ':root{}', theme: { colors: { accent: '#000000' } } });
   assert.equal(classic.family, 'classic');
   assert.equal(classic.overrideCss, '');
-  assert.match(classic.warnings[0], /nur bei Themes der Familie v2/);
+  assert.ok(classic.warnings.some((w) => /nur bei Themes der Familie v2/.test(w)));
+  assert.ok(classic.warnings.some((w) => /classic-Theme \(v1\).*0\.50/.test(w)), 'deprecation hint (Task 167)');
+  assert.ok(!v2.warnings.some((w) => /classic-Theme/.test(w)), 'no hint for v2');
 });
 
 test('ejected base.njk without Base v2 classes is reported for v2 themes only', async () => {

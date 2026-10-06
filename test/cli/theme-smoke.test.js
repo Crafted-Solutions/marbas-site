@@ -41,6 +41,11 @@ test('theme CLI smoke — init → build → set theme → build → switch → 
     // 1. Init
     const init = run(['init', projectPath, '--env=development']);
     assert.equal(init.status, 0, `init failed:\n${init.stderr}`);
+    // init now defaults to a v2 form (Task 167) — this smoke test starts from a project without theme
+    const cfgPath = path.join(projectPath, 'marbas-project.json');
+    const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+    cfg.theme.id = null;
+    fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2));
 
     // 2. Build without theme → theme.css must NOT exist
     const build1 = run(['build', projectPath, '--env=development']);

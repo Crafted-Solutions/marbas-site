@@ -87,6 +87,14 @@ export function checkEjectedBaseForScheme({ projectRoot, scheme }) {
     + 'Aus der Lib-base.njk übernehmen (data-scheme am <html>, Skript im <head>) oder marbas-site reset <p> _includes/base.njk';
 }
 
+// classic themes (v1) are deprecated (Task 167) — they stay until this version, then they are removed
+export const CLASSIC_REMOVAL_VERSION = '0.50';
+
+export function classicDeprecationMessage(themeId) {
+  return `${themeId || 'Dieses Theme'} ist ein classic-Theme (v1) — classic wird mit marbas-site ${CLASSIC_REMOVAL_VERSION} entfernt. `
+    + 'Auf eine Form umstellen: docs/themes.md → „Von classic umsteigen“';
+}
+
 /**
  * Base v2 palette for a theme + the project's `theme.palette` / `theme.colors` and `theme.scheme` (dark mode).
  * classic themes ignore all of it (their colours are not palette-driven) — reported as a warning.
@@ -101,6 +109,7 @@ export function resolveThemePalette({ css, theme = {} }) {
   errors.push(...schemeConfig.errors);
   const warnings = [];
   if (family !== 'v2') {
+    warnings.push(classicDeprecationMessage(theme?.id));
     if (preset || Object.keys(colors).length) warnings.push('theme.palette/theme.colors wirken nur bei Themes der Familie v2 — ignoriert');
     if (schemeConfig.mode !== 'light') warnings.push('theme.scheme (Dunkelmodus) wirkt nur bei Themes der Familie v2 — ignoriert');
     return { family, preset: null, overrideCss: '', errors, warnings, contrast: [], layout: { ...LAYOUT_DEFAULTS }, scheme: 'light', darkPreset: null };
