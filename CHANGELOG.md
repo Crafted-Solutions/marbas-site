@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   image (scrim on the text block, AA on any photo; stacked on small screens), Playfair Display with italics, drop cap,
   rubric labels between rules, the first of three or more tiles as a wide cover story, "No. 01" numbering (DM Sans for
   text). Palettes: default (paper + vermilion), `bordeaux` (dark); dark: `nacht`.
+- **`theme-craft`** — ninth Base v2 library theme (form), a workshop notebook: hang-tag labels in handwriting (Caveat, new
+  shipped font), photos in a passe-partout with photo corners, hand-drawn rules, index cards, buttons with a hand-drawn
+  outline, laid paper texture, Merriweather. Palettes: default (olive), `ton`, `indigo`; dark: `kohle`.
 
 ## [0.22.0] - 2026-10-06
 
