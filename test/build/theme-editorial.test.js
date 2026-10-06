@@ -26,7 +26,7 @@ test('theme-editorial: v2 family, presets warm/nacht/salbei, all palettes AA', (
   assert.doesNotMatch(THEME.match(/:root \{[^}]*\}/)[0], /#234b45/, 'default palette is not the Hagen sage (only preset salbei)');
 });
 
-test('init --theme=theme-editorial --starter builds v2 starter pages; init without theme stays classic', { timeout: 360_000 }, () => {
+test('init --theme=theme-editorial --starter builds v2 starter pages; init without theme uses Editorial (Task 167)', { timeout: 360_000 }, () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-editorial-'));
   try {
     const project = path.join(tmp, 'site');
@@ -62,8 +62,8 @@ test('init --theme=theme-editorial --starter builds v2 starter pages; init witho
     const plain = path.join(tmp, 'plain');
     assert.equal(run(['init', plain, '--starter']).status, 0);
     const plainConfig = JSON.parse(fs.readFileSync(path.join(plain, 'marbas-project.json'), 'utf8'));
-    assert.equal(plainConfig.theme.id, null, 'init default unchanged');
-    assert.match(fs.readFileSync(path.join(plain, 'pages', 'index.md'), 'utf8'), /componentType: Hero/, 'classic starter');
+    assert.equal(plainConfig.theme.id, 'theme-editorial', 'init default is a v2 form (Task 167)');
+    assert.match(fs.readFileSync(path.join(plain, 'pages', 'index.md'), 'utf8'), /componentType: Intro/, 'v2 starter');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }

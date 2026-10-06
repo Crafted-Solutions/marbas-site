@@ -34,7 +34,7 @@ export const COMMANDS = [
           force: Boolean(flags.force),
           starter: Boolean(flags.starter),
           lang: flags.lang || 'de',
-          theme: flags.theme || null
+          theme: flags.theme || undefined
         });
         const mode = flags.starter ? 'starter project' : 'project';
         process.stdout.write(`Project initialised at ${projectPath} (${mode})\n`);

@@ -50,10 +50,11 @@ test('checkTheme: valid lib theme → ok', () => {
   const projectPath = makeProject(tmp, { theme: { id: 'theme-bloom' } });
 
   const results = checkTheme({ projectPath, libRoot });
-  assert.equal(results.length, 1);
   assert.equal(results[0].status, 'ok');
   assert.ok(results[0].message.includes('theme-bloom'));
   assert.ok(results[0].message.includes('library'));
+  // theme-bloom is classic → deprecation hint (Task 167)
+  assert.ok(results.some((r) => r.status === 'warn' && /classic wird mit marbas-site 0\.50 entfernt/.test(r.message)), JSON.stringify(results));
 
   fs.rmSync(tmp, { recursive: true });
 });

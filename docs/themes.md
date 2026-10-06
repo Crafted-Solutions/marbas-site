@@ -1,6 +1,6 @@
 # Themes
 
-Marbas ships 24 ready-to-use themes (18 classic, 6 Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
+Marbas ships 6 forms (Base v2: `theme-editorial`, `theme-product`, `theme-bold`, `theme-warm`, `theme-minimal-luxe`, `theme-druckwerk`) and 18 classic themes, which are **deprecated and removed in 0.50** ([switching from classic](#von-classic-umsteigen-switching-from-classic)). Every theme is a single CSS file that defines a palette, typography scale, border radii, shadows, and all component tokens through CSS custom properties. No JavaScript, no configuration beyond a single field (`theme.id`) in `marbas-project.json`.
 
 ---
 
@@ -9,7 +9,7 @@ Marbas ships 24 ready-to-use themes (18 classic, 6 Base v2: `theme-editorial`, `
 ### Via CLI (recommended)
 
 ```bash
-marbas-site theme my-project theme-bloom
+marbas-site theme my-project theme-editorial
 ```
 
 This writes `theme.id` to `marbas-project.json`, validates that the theme exists and — like the Marbas editor — applies the theme's recommended header, navigation and footer variants to `site.json` wherever they are still `default` (variants you set yourself are kept). Run `marbas-site build` afterwards to apply it. `marbas-site init --theme=<id>` does the same for a new project.
@@ -50,32 +50,55 @@ If you have an ejected version of the old theme in `_theme/`, it is not removed 
 
 ## Built-in themes
 
+### Forms (Base v2)
+
+A form fixes layout, typography and details; colours come from its palettes (`theme.palette`, `theme.colors`), dark mode from `theme.scheme`. See [Theme families and palettes](#theme-families-and-palettes-base-v2).
+
 | ID | Name | Best suited for |
 |---|---|---|
-| `theme-atelier` | Atelier | Fashion, luxury retail, haute couture — extreme reduction, black/white with gold accent |
-| `theme-atlas` | Atlas | B2B enterprise software, data platforms, ERP — IBM Carbon-inspired, precise, functional |
-| `theme-bold` | Bold | **Base v2.** Brands, campaigns, products, events — huge condensed uppercase headings (Oswald), full colour fields with light text (`tone: soft`/`alert`), thick black rules, square uppercase buttons, black footer. Palettes: default (cobalt), `signal` (red), `wald` (deep green) |
-| `theme-bloom` | Bloom | Wellness, beauty, spa — soft rose + sage, generous radii |
-| `theme-campus` | Campus | Universities, research institutes, academic journals |
-| `theme-druckwerk` | Druckwerk | **Base v2.** Culture, studios, cafés, bookshops, festivals — risograph look: two print colours on natural paper with grain, overprint bars behind headings, duotone intro image with misregistration offset, stamp labels in the margin, sticker cards, tape notes, label buttons (Jost, IBM Plex Sans/Mono). The duotone recolours every intro image. Palettes: default (pink + blue), `gruen-orange`, `gelb-violett` |
-| `theme-editorial` | Editorial | **Base v2.** Practices, law firms, consulting, culture — large grotesque type, hairlines instead of boxes, labels in the margin, text links with ↗. Palettes: default (graphite + ink blue), `warm`, `nacht`, `salbei` — see [Theme families and palettes](#theme-families-and-palettes-base-v2) |
-| `theme-civic` | Civic | Government agencies, public institutions — USWDS-inspired, accessible, neutral |
-| `theme-fjord` | Fjord | Scandinavian SaaS products, engineering firms — minimal, cool blue-grey |
-| `theme-forum` | Forum | eLearning platforms, online courses — friendly violet, generous radii |
-| `theme-gazette` | Gazette | News portals, magazines, journalism — editorial, amber-brown, serif headlines |
-| `theme-klinik` | Klinik | Medical practices, clinics, telehealth — clinical, calming cyan-teal |
-| `theme-lumina` | Lumina | Hotels, travel booking, hospitality — warm amber-terracotta |
-| `theme-maison` | Maison | Real estate, architecture, premium projects — warm neutrals, editorial serif |
-| `theme-product` | Product | **Base v2.** Software, platforms, marketplaces, apps — floating glass header, cards with soft shadows, pill labels, solid buttons, dark footer. Plus Jakarta Sans. Palettes: default (indigo on white), `nacht` (navy + gold), `petrol` |
-| `theme-minimal-luxe` | Minimal-Luxe | **Base v2.** Architecture, design, fashion, manufactories, hotels — strong reduction, hairlines, light serif in large sizes (Cormorant Garamond + Jost), centred section heads, full-bleed intro image, letter-spaced caps for labels/menu/links. Palettes: default (ivory + bronze), `noir`, `stein` |
-| `theme-praxis` | Praxis | Law firms, tax advisory, professional services |
-| `theme-signal` | Signal | Developer tools, CLI products, API documentation |
-| `theme-slate` | Slate | SaaS products, tech marketing — clean slate-grey, modern blue |
-| `theme-studio` | Studio | Creative agencies, design studios, portfolios — maximum reduction, black on off-white |
-| `theme-tempo` | Tempo | Sports clubs, fitness brands — dark-first, high contrast, orange energy |
-| `theme-terra` | Terra | Restaurants, farm-to-table, artisan food — earthy sienna tones |
-| `theme-warm` | Warm | **Base v2.** Crafts, food, farm shops, wellness — serif headings with italics (Source Serif 4 + Nunito Sans), cream paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy band edges, pill buttons. Palettes: default (terracotta), `salbei` (herbs), `beere` (berry) |
-| `theme-verdant` | Verdant | NGOs, environmental organisations, sustainability — forest green, organic |
+| `theme-editorial` | Editorial | Practices, law firms, consulting, culture — large grotesque type, hairlines instead of boxes, labels in the margin, text links with ↗. Palettes: default (graphite + ink blue), `warm`, `nacht`, `salbei` — see [Theme families and palettes](#theme-families-and-palettes-base-v2) |
+| `theme-product` | Product | Software, platforms, marketplaces, apps — floating glass header, cards with soft shadows, pill labels, solid buttons, dark footer. Plus Jakarta Sans. Palettes: default (indigo on white), `nacht` (navy + gold), `petrol` |
+| `theme-bold` | Bold | Brands, campaigns, products, events — huge condensed uppercase headings (Oswald), full colour fields with light text (`tone: soft`/`alert`), thick black rules, square uppercase buttons, black footer. Palettes: default (cobalt), `signal` (red), `wald` (deep green) |
+| `theme-warm` | Warm | Crafts, food, farm shops, wellness — serif headings with italics (Source Serif 4 + Nunito Sans), cream paper with a fine grain, rounded tinted cards, organically cropped intro image, wavy band edges, pill buttons. Palettes: default (terracotta), `salbei` (herbs), `beere` (berry) |
+| `theme-minimal-luxe` | Minimal-Luxe | Architecture, design, fashion, manufactories, hotels — strong reduction, hairlines, light serif in large sizes (Cormorant Garamond + Jost), centred section heads, full-bleed intro image, letter-spaced caps for labels/menu/links. Palettes: default (ivory + bronze), `noir`, `stein` |
+| `theme-druckwerk` | Druckwerk | Culture, studios, cafés, bookshops, festivals — risograph look: two print colours on natural paper with grain, overprint bars behind headings, duotone intro image with misregistration offset, stamp labels in the margin, sticker cards, tape notes, label buttons (Jost, IBM Plex Sans/Mono). The duotone recolours every intro image. Palettes: default (pink + blue), `gruen-orange`, `gelb-violett` |
+
+### classic themes (v1) — deprecated, removed in 0.50
+
+The 18 classic themes still build, but they are **deprecated and will be removed with marbas-site 0.50**. Build and `doctor`
+print a hint for projects that use one. New projects get a form (`init` without `--theme` uses `theme-editorial`).
+
+| ID | Name | Was suited for | Switch to |
+|---|---|---|---|
+| `theme-atelier` | Atelier | Fashion, luxury retail, haute couture — extreme reduction, black/white with gold accent | Minimal-Luxe |
+| `theme-atlas` | Atlas | B2B enterprise software, data platforms, ERP — IBM Carbon-inspired, precise, functional | Product |
+| `theme-bloom` | Bloom | Wellness, beauty, spa — soft rose + sage, generous radii | Warm |
+| `theme-campus` | Campus | Universities, research institutes, academic journals | Editorial |
+| `theme-civic` | Civic | Government agencies, public institutions — USWDS-inspired, accessible, neutral | Editorial |
+| `theme-fjord` | Fjord | Scandinavian SaaS products, engineering firms — minimal, cool blue-grey | Product |
+| `theme-forum` | Forum | eLearning platforms, online courses — friendly violet, generous radii | Product |
+| `theme-gazette` | Gazette | News portals, magazines, journalism — editorial, amber-brown, serif headlines | Editorial |
+| `theme-klinik` | Klinik | Medical practices, clinics, telehealth — clinical, calming cyan-teal | Editorial |
+| `theme-lumina` | Lumina | Hotels, travel booking, hospitality — warm amber-terracotta | Minimal-Luxe |
+| `theme-maison` | Maison | Real estate, architecture, premium projects — warm neutrals, editorial serif | Minimal-Luxe |
+| `theme-praxis` | Praxis | Law firms, tax advisory, professional services | Editorial |
+| `theme-signal` | Signal | Developer tools, CLI products, API documentation | Product |
+| `theme-slate` | Slate | SaaS products, tech marketing — clean slate-grey, modern blue | Product |
+| `theme-studio` | Studio | Creative agencies, design studios, portfolios — maximum reduction, black on off-white | Editorial |
+| `theme-tempo` | Tempo | Sports clubs, fitness brands — dark-first, high contrast, orange energy | Bold |
+| `theme-terra` | Terra | Restaurants, farm-to-table, artisan food — earthy sienna tones | Warm |
+| `theme-verdant` | Verdant | NGOs, environmental organisations, sustainability — forest green, organic | Warm |
+
+### Von classic umsteigen (switching from classic)
+
+1. **Pick the form** from the table above (or compare with `form-preview.mjs` from the marbas skills) and set `theme.id` in
+   `marbas-project.json` — e.g. `marbas-site theme my-project theme-product`.
+2. **Colours:** carry the brand colours over with `theme.colors` (`paper`, `ink`, `accent` …, see [palettes](#theme-families-and-palettes-base-v2));
+   build and `doctor` check the contrast.
+3. **Header/footer variants** (`header.variant`, `header.navigationVariant`, `footer.variant`) have no meaning for forms — remove
+   them from `site.json`. Header/footer presets (`header.preset`, `footer.preset`) and all content stay.
+4. **Pages:** classic components (Hero, TextMedia, Cards …) keep working in a form, but do not take on its look. Rebuild the pages
+   with the Base v2 blocks (Intro, Split, LinkList, Notice, Contact) — the marbas skills do that with **marbas-build** in extension mode.
 
 ---
 

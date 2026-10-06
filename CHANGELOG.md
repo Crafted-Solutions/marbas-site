@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-10-06
+
+### Deprecated
+- **classic themes (v1)** — the 18 classic themes (atelier, atlas, bloom, campus, civic, fjord, forum, gazette, klinik, lumina,
+  maison, praxis, signal, slate, studio, tempo, terra, verdant) are deprecated and **will be removed in 0.50**. They still build;
+  build and `doctor` print a hint (also for project themes without `@family v2`). Switching guide incl. a classic → form table:
+  `docs/themes.md` → “Von classic umsteigen”. classic *components* (Hero, TextMedia, Cards …) are not affected.
+
+### Changed
+- `marbas-site init` without `--theme` now creates a project with the form `theme-editorial` (Base v2 starter pages) instead of a
+  classic project; `--theme=<classic>` still works and prints the deprecation hint.
+
+### Docs
+- README: where images go (`_media/` processed, any size · `_assets/images/` copied as is, max. 200 KB per file); forms instead
+  of “18 themes”; deprecation notice.
+
 ## [0.20.0] - 2026-10-06
 
 ### Fixed

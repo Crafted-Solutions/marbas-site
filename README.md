@@ -18,7 +18,9 @@ marbas-site adds a complete, opinionated layer on top:
 
 **A ready-to-use component library.** Eight built-in components cover the most common content patterns. Drop them into any page immediately. Build custom components by adding a single `.njk` file — no registration, no config.
 
-**18 production-ready themes.** Switch themes with one line in `marbas-project.json` (or `marbas-site theme <project> <id>`). Every theme is a CSS custom properties file — eject it, tweak it, or build your own from scratch.
+**Six forms, free colours, dark mode.** A form (Editorial, Product, Bold, Warm, Minimal-Luxe, Druckwerk) fixes layout and typography; colours come from palettes or your brand colours, with contrast checks and an optional dark mode. Switch with one line in `marbas-project.json` (or `marbas-site theme <project> <id>`).
+
+> **classic themes (v1) are deprecated.** The 18 classic themes (Slate, Bloom, Fjord …) still build but will be **removed in marbas-site 0.50**. Build and `doctor` show a hint; see [switching from classic](docs/themes.md#von-classic-umsteigen-switching-from-classic).
 
 **Multi-environment builds out of the box.** Define named environments (`development`, `staging`, `production`) with separate output directories and per-environment variables. No custom Eleventy config needed.
 
@@ -76,7 +78,7 @@ marbas-site init my-site
 marbas-site init my-site --starter
 
 # English site with a name and a theme
-marbas-site init my-site --starter --name="Acme Inc" --lang=en --theme=theme-slate
+marbas-site init my-site --starter --name="Acme Inc" --lang=en --theme=theme-product
 
 # Build it
 marbas-site build my-site --env=development
@@ -114,7 +116,7 @@ So drop large photos into `_media/`, never into `_assets/`. The page validator o
 
 | Command | Description |
 |---------|-------------|
-| `marbas-site init <path>` | Create a new project at `<path>`. Options: `--starter` (example pages and components), `--name="<Site name>"` (title, company name, copyright), `--lang=<code>` (default language, default `de`; non-German languages get the English starter), `--theme=<id>` (activate a theme incl. its header/nav/footer variants). |
+| `marbas-site init <path>` | Create a new project at `<path>`. Options: `--starter` (example pages and components), `--name="<Site name>"` (title, company name, copyright), `--lang=<code>` (default language, default `de`; non-German languages get the English starter), `--theme=<id>` (activate a form; default `theme-editorial` — classic themes are deprecated). |
 | `marbas-site build <path> --env=<name>` | Build the project for the given environment |
 | `marbas-site preview <path> --env=<name>` | Start a live-preview server (Eleventy + Webpack watch) |
 | `marbas-site deploy <path> --env=<name>` | Deploy to the configured target for the given environment |
