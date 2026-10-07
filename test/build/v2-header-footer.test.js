@@ -89,3 +89,35 @@ test('brand-nav-actions: header.actions also in the menu panel for phones, opt-o
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('utility-brand-nav: header.actions in the header row and the menu panel, unchanged without them (Task 181)', { timeout: 360_000 }, () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'marbas-utility-actions-'));
+  try {
+    const project = path.join(tmp, 'site');
+    assert.equal(run(['init', project, '--theme=theme-product']).status, 0);
+    const actions = [
+      { label: 'Termin anfragen', href: '/#kontakt', style: 'primary' },
+      { label: 'Preise', href: '/#preise', style: 'outline' },
+    ];
+
+    const none = buildWith(project, (site) => { site.header.preset = 'utility-brand-nav'; site.header.actions = []; });
+    assert.match(none, /<header role="banner" class="c-header">/, 'no actions → header classes as before');
+    assert.doesNotMatch(none, /c-header-actions|c-nav__actions|c-header--with-actions|c-header--actions-in-nav/);
+    assert.match(none, /<\/nav>\n\n {4}<button class="c-nav-toggle"/, 'the inline actions include adds no whitespace');
+
+    const html = buildWith(project, (site) => { site.header.preset = 'utility-brand-nav'; site.header.actions = actions; });
+    assert.match(html, /<header role="banner" class="c-header c-header--with-actions c-header--actions-in-nav/);
+    assert.ok(html.indexOf('c-header-utility-bar') < html.indexOf('<header role="banner"'), 'utility bar stays above the header');
+    const row = html.slice(html.indexOf('<div class="c-header-actions">'), html.indexOf('</header>'));
+    assert.match(row, /<a class="c-btn c-btn--primary" href="\/#kontakt">Termin anfragen<\/a>\s*<a class="c-btn c-btn--outline" href="\/#preise">Preise<\/a>/);
+    const nav = html.slice(html.indexOf('<nav class="c-nav'), html.indexOf('</nav>'));
+    assert.match(nav, /<div class="c-nav__actions">\s*<a class="c-btn c-btn--primary" href="\/#kontakt">Termin anfragen<\/a>\s*<a class="c-btn c-btn--outline"/);
+
+    const optOut = buildWith(project, (site) => { site.header.mobile = { ...(site.header.mobile || {}), showActionsInDrawer: false }; });
+    assert.match(optOut, /<header role="banner" class="c-header c-header--with-actions">/);
+    assert.doesNotMatch(optOut, /c-nav__actions|c-header--actions-in-nav/);
+    assert.match(optOut, /<div class="c-header-actions">/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

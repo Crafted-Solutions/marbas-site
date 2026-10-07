@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Header preset **`utility-brand-nav`** now shows `header.actions` as documented: the buttons sit right of the menu on
+  desktop and move into the menu panel on phones (`header.mobile.showActionsInDrawer`, like `brand-nav-actions`). Without
+  `header.actions` the header markup is unchanged. Projects that ejected this preset keep their copy
+  (`marbas-site reset` picks up the fix).
+
 ## [0.23.0] - 2026-10-06
 
 ### Added
