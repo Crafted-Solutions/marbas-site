@@ -273,7 +273,7 @@ Up to two call-to-action buttons shown on the right side of the header (only in 
 
 | Field | Type | Default | Description |
 |---|---|---|---|
-| `showActionsInDrawer` | boolean | `true` | Preset `brand-nav-actions`: on phones (< 768 px) the `header.actions` buttons leave the header row and appear at the end of the menu panel (the header stays one row: brand · menu button). `false` keeps them in the header row (it may wrap). Desktop is unaffected (since 0.19). |
+| `showActionsInDrawer` | boolean | `true` | Presets `brand-nav-actions` and `utility-brand-nav`: on phones (< 768 px) the `header.actions` buttons leave the header row and appear at the end of the menu panel (the header stays one row: brand · menu button). `false` keeps them in the header row (it may wrap). Desktop is unaffected (since 0.19; `utility-brand-nav` since 0.23.1). |
 | `drawer` | boolean | `true` | No effect (legacy; the menu panel is always used on phones). |
 | `showUtilityLinksInDrawer` | boolean | `true` | No effect (legacy). |
 

@@ -1,4 +1,8 @@
 {%- set _variant = site.header.variant | default("default") -%}
+{#- header.actions: classes only when buttons are set, so the markup without them stays as before (Task 181);
+    mobile (< 768px) they move into the menu panel like in brand-nav-actions (header.mobile.showActionsInDrawer) #}
+{%- set _hasActions = site.header.actions and (site.header.actions | length) > 0 -%}
+{%- set _navActions = _hasActions and site.header.mobile.showActionsInDrawer != false -%}
 <a class="c-skip-link" href="#main-content">{{ "skipLink" | uiText(pageLanguage) }}</a>
 {% include "header/slots/announcement.njk" %}
 <div class="c-header-utility-bar">
@@ -6,10 +10,10 @@
     {% include "header/slots/utility-links.njk" %}
   </div>
 </div>
-<header role="banner" class="c-header{% if _variant and _variant != 'default' %} c-header--{{ _variant }}{% endif %}{% if site.header.sticky %} c-header--sticky{% endif %}">
+<header role="banner" class="c-header{% if _hasActions %} c-header--with-actions{% endif %}{% if _navActions %} c-header--actions-in-nav{% endif %}{% if _variant and _variant != 'default' %} c-header--{{ _variant }}{% endif %}{% if site.header.sticky %} c-header--sticky{% endif %}">
   <div class="c-container c-header__inner">
     {% include "header/slots/brand.njk" %}
-    {% include "header/slots/nav.njk" %}
+    {% include "header/slots/nav.njk" %}{% include "header/slots/actions.njk" %}
     {% include "header/slots/scheme-toggle.njk" %}<button class="c-nav-toggle" type="button" aria-label="{{ "navOpen" | uiText(pageLanguage) }}" aria-expanded="false" aria-controls="main-nav">
       <span class="c-nav-toggle__icon" aria-hidden="true"></span>
     </button>
