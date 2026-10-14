@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Live preview shows page changes again** when the library lives outside the project (desktop app, monorepo). Eleventy
+  3.1.2+ moves the file watcher to the common parent folder as soon as a watched path starts with `../` (the lib's
+  `_includes/`) and then reports changes relative to that folder — the page was rebuilt, but with the old content. Watch
+  runs (`--serve`, `--watch`) now keep the watcher on the project folder (`src/preview/eleventy-watch-fix.js`); builds are
+  untouched. The fix applies to Eleventy 3.1.2 up to 4.0 and logs a warning if a later Eleventy changes the internals it
+  relies on. Projects with the library in their own `node_modules` were never affected.
 - Header preset **`utility-brand-nav`** now shows `header.actions` as documented: the buttons sit right of the menu on
   desktop and move into the menu panel on phones (`header.mobile.showActionsInDrawer`, like `brand-nav-actions`). Without
   `header.actions` the header markup is unchanged. Projects that ejected this preset keep their copy
