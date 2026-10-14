@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- **Preview starts on Windows again.** `startPreview` detects progress from the output of webpack and Eleventy
+  ("compiled successfully", "Server at http"). On Windows webpack-cli colours its output even into a pipe, so colour
+  codes sat between the words and the preview waited forever. The children now run with `NO_COLOR=1` (overridable via
+  `extraEnv`), and every line is cleaned of ANSI sequences before it is matched or passed to `onLog` — the log no
+  longer shows raw colour codes either.
+- **Eleventy ending before it is ready no longer hangs the preview.** `startEleventyWatch().waitForReady()` now rejects
+  with `Eleventy exited (code N) before server was ready`, and `startPreview` stops the webpack watcher it already
+  started instead of leaving it running.
+
+## [0.23.1] - 2026-10-14
+
+### Fixed
 - **Live preview shows page changes again** when the library lives outside the project (desktop app, monorepo). Eleventy
   3.1.2+ moves the file watcher to the common parent folder as soon as a watched path starts with `../` (the lib's
   `_includes/`) and then reports changes relative to that folder — the page was rebuilt, but with the old content. Watch
