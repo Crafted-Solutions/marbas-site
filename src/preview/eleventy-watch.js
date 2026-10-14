@@ -1,22 +1,8 @@
 import { spawn } from 'child_process';
 import { resolvePackageBin } from '../build/resolve-bin.js';
+import { forwardLines } from './output-lines.js';
 
 const SERVER_READY_RE = /server at http/i;
-
-function forwardLines(stream, onLine) {
-  let buffer = '';
-  stream.on('data', (chunk) => {
-    buffer += chunk.toString('utf8');
-    const lines = buffer.split(/\r?\n/);
-    buffer = lines.pop() ?? '';
-    for (const line of lines) {
-      if (line.trim()) onLine(line);
-    }
-  });
-  stream.on('end', () => {
-    if (buffer.trim()) onLine(buffer.trim());
-  });
-}
 
 /**
  * Start Eleventy in serve+watch mode.
@@ -41,6 +27,8 @@ export function startEleventyWatch({ projectRoot, environment, port, binPath, co
     cwd: projectRoot,
     env: {
       ...process.env,
+      // No colours (Task 204) — the ready line is matched as text. The caller's extraEnv may override.
+      NO_COLOR: '1',
       ...extraEnv,
       MARBAS_PUBLISH_ENVIRONMENT: environment,
       NODE_ENV: 'development'
@@ -50,7 +38,9 @@ export function startEleventyWatch({ projectRoot, environment, port, binPath, co
   });
 
   let ready = false;
+  let exitCode = null;
   const readyCallbacks = [];
+  const rejectCallbacks = [];
 
   function onLine(line) {
     onLog(line);
@@ -58,6 +48,7 @@ export function startEleventyWatch({ projectRoot, environment, port, binPath, co
       ready = true;
       for (const cb of readyCallbacks) cb();
       readyCallbacks.length = 0;
+      rejectCallbacks.length = 0;
     }
   }
 
@@ -66,11 +57,29 @@ export function startEleventyWatch({ projectRoot, environment, port, binPath, co
 
   child.on('error', (err) => onLog(`[eleventy error] ${err.message}`));
 
+  // Eleventy ending before "Server at http" must reject waitForReady() — otherwise startPreview waits forever
+  // (same pattern as webpack-watch.js).
+  let exitReason = null;
+  child.on('close', (code, signal) => {
+    exitCode = code ?? -1;
+    exitReason = signal ? `signal ${signal}` : `code ${code}`;
+    if (!ready) {
+      const err = new Error(`Eleventy exited (${exitReason}) before server was ready`);
+      for (const cb of rejectCallbacks) cb(err);
+      readyCallbacks.length = 0;
+      rejectCallbacks.length = 0;
+    }
+  });
+
   return {
     child,
     waitForReady() {
       if (ready) return Promise.resolve();
-      return new Promise((resolve) => readyCallbacks.push(resolve));
+      if (exitCode !== null) return Promise.reject(new Error(`Eleventy exited (${exitReason}) before server was ready`));
+      return new Promise((resolve, reject) => {
+        readyCallbacks.push(resolve);
+        rejectCallbacks.push(reject);
+      });
     },
     stop() {
       child.kill('SIGTERM');

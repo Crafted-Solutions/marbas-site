@@ -1,23 +1,9 @@
 import { spawn } from 'child_process';
 import fs from 'fs';
 import { resolvePackageBin } from '../build/resolve-bin.js';
+import { forwardLines } from './output-lines.js';
 
 const COMPILED_RE = /compiled (successfully|with \d+ (warning|error))/i;
-
-function forwardLines(stream, onLine) {
-  let buffer = '';
-  stream.on('data', (chunk) => {
-    buffer += chunk.toString('utf8');
-    const lines = buffer.split(/\r?\n/);
-    buffer = lines.pop() ?? '';
-    for (const line of lines) {
-      if (line.trim()) onLine(line);
-    }
-  });
-  stream.on('end', () => {
-    if (buffer.trim()) onLine(buffer.trim());
-  });
-}
 
 /**
  * Start webpack in watch mode.
@@ -44,6 +30,8 @@ export function startWebpackWatch({ projectRoot, configPath, environment, binPat
     cwd: projectRoot,
     env: {
       ...process.env,
+      // No colours: on Windows webpack-cli colours even into a pipe (Task 204). The caller's extraEnv may override.
+      NO_COLOR: '1',
       ...extraEnv,
       MARBAS_PUBLISH_ENVIRONMENT: environment,
       MARBAS_DISABLE_WEBPACK_CACHE: '1',

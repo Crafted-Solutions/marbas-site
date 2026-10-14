@@ -93,7 +93,14 @@ export async function startPreview({
     onLog: (line) => onLog(`[eleventy] ${line}`)
   });
 
-  await eleventyHandle.waitForReady();
+  try {
+    await eleventyHandle.waitForReady();
+  } catch (err) {
+    // Eleventy never became ready — do not leave the webpack watcher running (Task 204).
+    onLog(`[preview] ${err.message}`);
+    webpackHandle.stop();
+    throw err;
+  }
   onLog(`[preview] Ready at http://localhost:${port}/`);
 
   return {
