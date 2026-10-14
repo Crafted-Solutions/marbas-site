@@ -15,10 +15,15 @@ import { registerLayoutAliases } from './src/render/layout-aliases.js';
 import { resolveThemeFile } from './src/theme/resolver.js';
 import { resolveThemePalette } from './src/theme/copy.js';
 import { layoutBodyClasses } from './src/theme/layout.js';
+import { applyEleventyWatchFix } from './src/preview/eleventy-watch-fix.js';
 
 const LIB_ROOT = getLibRoot();
 
-export default function (eleventyConfig) {
+export default async function (eleventyConfig) {
+  // Eleventy 3.1.2+ rebuilds with stale page content when the lib lives outside the project (watch runs only).
+  // Not as top-level await: Eleventy also require()s this file to collect its watch dependencies.
+  await applyEleventyWatchFix();
+
   const projectRoot = process.cwd();
   const environment = process.env.MARBAS_PUBLISH_ENVIRONMENT || 'development';
 
