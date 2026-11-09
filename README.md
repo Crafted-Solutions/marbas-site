@@ -106,7 +106,8 @@ The build output lands in `my-site/build/public_development/` (or `public_<env>/
 | Folder | For | What the build does | Size |
 |---|---|---|---|
 | `_media/` | every image used in a component (hero, cards, tiles …) — reference it as `/_media/<file>` | creates the sizes the layout needs (WebP + JPEG); the original is not published | any — large originals are fine |
-| `_assets/images/` | logo (`site.json → logo.path`), favicons, small graphics | copies the file **unchanged** | **max. 200 KB per file** — a larger file makes the production build fail (webpack `maxAssetSize`); development does not warn |
+| `_assets/images/` | logo (`site.json → logo.path`), small graphics | copies the file **unchanged** | **max. 200 KB per file** — a larger file makes the production build fail (webpack `maxAssetSize`); development does not warn |
+| `_static/` | files for the site root: favicons, `robots.txt`, `.well-known/`, `.htaccess`, downloads | copies everything **unchanged into the root** (`_static/robots.txt` → `/robots.txt`) | any — see [Files in the site root](docs/site-data.md#files-in-the-site-root-_static) |
 
 So drop large photos into `_media/`, never into `_assets/`. The page validator of the marbas skills reports both cases.
 

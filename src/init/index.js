@@ -6,6 +6,7 @@ import { resolveThemeFile } from '../theme/resolver.js';
 import { applyVariantDefaultsToSiteSettings } from '../theme/variant-defaults.js';
 import { readThemeFamily } from '../theme/palette.js';
 import { classicDeprecationMessage } from '../theme/copy.js';
+import { STATIC_DIR } from '../build/static-dir.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -203,6 +204,8 @@ export function initProject({
     path.join(absPath, '_components'),
     path.join(absPath, '_theme'),
     path.join(absPath, '_media'),
+    // _assets/ stays even without favicons (Task 212): the desktop app requires it as a content directory
+    path.join(absPath, '_assets'),
     path.join(absPath, '.marbas')
   ];
   for (const dir of dirs) {
@@ -210,8 +213,9 @@ export function initProject({
   }
 
   // .gitkeep placeholders for empty dirs
-  for (const dir of ['_components', '_theme', '_media']) {
-    fs.writeFileSync(path.join(absPath, dir, '.gitkeep'), '');
+  for (const dir of ['_components', '_theme', '_media', '_assets']) {
+    const keep = path.join(absPath, dir, '.gitkeep');
+    if (!fs.existsSync(keep)) fs.writeFileSync(keep, '');
   }
 
   // marbas-project.json
@@ -266,8 +270,8 @@ export function initProject({
     fs.writeFileSync(path.join(absPath, 'pages', 'index.md'), indexPage(language));
   }
 
-  // _assets/favicons → copied to the web root by the build (favicon.ico, apple-touch-icon.png)
-  const faviconDest = path.join(absPath, '_assets', 'favicons');
+  // _static/ → copied unchanged to the web root by the build (favicon.ico, apple-touch-icon.png; Task 212)
+  const faviconDest = path.join(absPath, STATIC_DIR);
   fs.mkdirSync(faviconDest, { recursive: true });
   for (const file of fs.readdirSync(FAVICONS_DIR)) {
     const dest = path.join(faviconDest, file);
