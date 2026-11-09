@@ -4,6 +4,7 @@ import { EleventyRenderPlugin, EleventyHtmlBasePlugin } from '@11ty/eleventy';
 import eleventyNavigationPlugin from '@11ty/eleventy-navigation';
 import metagen from 'eleventy-plugin-metagen';
 import { addLibAssetsPassthrough, addComponentApiPassthrough } from './src/eleventy/passthrough.js';
+import { addActiveComponentsPreprocessor } from './src/eleventy/active-components.js';
 import { registerWithEleventy, configureLocaleFilters } from './src/render/index.js';
 import { readProjectConfig } from './src/project/config.js';
 import { resolveBuildOutputPath } from './src/env/output-paths.js';
@@ -124,6 +125,9 @@ export default async function (eleventyConfig) {
 
   // Layout aliases with project-first override (layout: base → resolves to correct file)
   registerLayoutAliases(eleventyConfig, { projectRoot, libRoot: LIB_ROOT });
+
+  // Components with `active: false` stay in the page file but are never rendered (Task 211)
+  addActiveComponentsPreprocessor(eleventyConfig);
 
   addLibAssetsPassthrough(eleventyConfig, { libRoot: LIB_ROOT, projectRoot });
   addComponentApiPassthrough(eleventyConfig, { projectRoot, libRoot: LIB_ROOT });

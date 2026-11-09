@@ -25,6 +25,27 @@ All other fields are component-specific (see below).
 |---|---|
 | `classes` | CSS classes appended to the component's root element — this is where the **style variant** goes (see below). |
 | `titleCulture` / `textCulture` | Language code of the content (e.g. `de`, `en`). Set automatically by the CMS editor; safe to omit when editing files manually. |
+| `active` | `false` switches the component off: it stays in the page file but is **not rendered** — in no environment (development, production, custom) and not in the preview. Omit the field (or set `true`) for an active component. See [Inactive components](#inactive-components). |
+
+### Inactive components
+
+Set `active: false` to keep a component in the page without publishing it — a prepared promotion, a paused notice:
+
+```yaml
+Placeholder_Main:
+  - componentType: TitleText
+    id: summer-sale
+    active: false
+    title: "Summer sale"
+```
+
+- Only the boolean `false` switches a component off; a missing field means active. The string `"false"` does not count.
+- Inactive components are removed before any template runs. A page whose only Hero is inactive therefore gets the page
+  title as its `<h1>`, and a Hero placeholder with only inactive entries renders no hero section.
+- A sidebar placeholder (`Placeholder_Aside_1` …) with only inactive entries leaves its column empty — the layout
+  keeps its columns.
+- Links to the anchor (`#id`) of an inactive component point nowhere.
+- The CMS editor shows inactive components dimmed with an "Inactive" badge and a switch to turn them on again.
 
 ### Style variants
 
