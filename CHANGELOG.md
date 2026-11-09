@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-11-09
+
+### Added
+- **Inactive components.** A component entry in a placeholder can carry `active: false`: it stays in the page file
+  (the CMS editor keeps showing it) but is not rendered — in no environment and not in the preview. A missing field
+  means active, so existing pages build unchanged. The filter runs as an Eleventy preprocessor before any template
+  sees the page data, so the page-title `<h1>` (an inactive Hero no longer suppresses it), the layouts' Hero checks
+  and ejected layouts all see only active components.
+
+## [0.23.2] - 2026-10-14
+
 ### Fixed
 - **Preview starts on Windows again.** `startPreview` detects progress from the output of webpack and Eleventy
   ("compiled successfully", "Server at http"). On Windows webpack-cli colours its output even into a pipe, so colour
