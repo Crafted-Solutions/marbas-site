@@ -7,6 +7,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import { glob } from 'glob';
 import { logger } from '../../logger.js';
+import { getRootCopyPatterns, LEGACY_ROOT_DIR } from '../static-dir.js';
 
 const libRequire = createRequire(import.meta.url);
 
@@ -169,7 +170,8 @@ export function getWebpackCacheConfig(configUrl) {
 }
 
 /**
- * Static asset copy patterns for CopyPlugin.
+ * Static asset copy patterns for CopyPlugin: project images and fonts into `_assets/`, and `_static/` (plus the
+ * legacy `_assets/favicons/`) into the site root (Task 212).
  *
  * @param {string} outputPath  Absolute path to the build output directory
  * @param {string} [pRoot]     Project root (defaults to process.cwd())
@@ -186,23 +188,21 @@ export function getStaticAssetCopyPatterns(outputPath, pRoot = projectRoot) {
       to: path.join(outputPath, '_assets/fonts'),
       noErrorOnMissing: true
     },
-    {
-      from: path.resolve(pRoot, '_assets/favicons'),
-      to: outputPath,
-      noErrorOnMissing: true
-    }
+    ...getRootCopyPatterns(outputPath, pRoot)
   ];
 }
 
 /**
  * Favicon copy config entry for CopyPlugin.
  *
+ * @deprecated since 0.25.0 — the site root is copied by getStaticAssetCopyPatterns (`_static/` + this legacy folder).
+ *   Kept for configs that still import it; the built-in development/production configs no longer use it.
  * @param {string} outputPath  Absolute path to the build output directory
  * @param {string} [pRoot]     Project root (defaults to process.cwd())
  */
 export function getFaviconCopyConfig(outputPath, pRoot = projectRoot) {
   return {
-    from: path.resolve(pRoot, '_assets/favicons'),
+    from: path.resolve(pRoot, LEGACY_ROOT_DIR),
     to: outputPath,
     noErrorOnMissing: true
   };

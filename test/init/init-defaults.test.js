@@ -71,7 +71,7 @@ test('--theme sets theme.id and the theme variant defaults', () => {
   } finally { fs.rmSync(tmp, { recursive: true }); }
 });
 
-test('.gitignore covers build artefacts; favicons are seeded', () => {
+test('.gitignore covers build artefacts; favicons are seeded in _static/', () => {
   const { tmp, projectPath } = tmpProject();
   try {
     initProject({ projectPath });
@@ -80,8 +80,10 @@ test('.gitignore covers build artefacts; favicons are seeded', () => {
       assert.ok(gitignore.includes(entry), `.gitignore contains ${entry}`);
     }
     for (const file of ['favicon.ico', 'apple-touch-icon.png']) {
-      assert.ok(fs.existsSync(path.join(projectPath, '_assets', 'favicons', file)), `${file} seeded`);
+      assert.ok(fs.existsSync(path.join(projectPath, '_static', file)), `${file} seeded in _static/ (Task 212)`);
     }
+    assert.equal(fs.existsSync(path.join(projectPath, '_assets', 'favicons')), false, 'no legacy favicon folder');
+    assert.ok(fs.existsSync(path.join(projectPath, '_assets', '.gitkeep')), '_assets/ kept (the app requires it)');
   } finally { fs.rmSync(tmp, { recursive: true }); }
 });
 

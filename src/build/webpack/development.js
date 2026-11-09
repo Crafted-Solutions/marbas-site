@@ -1,9 +1,8 @@
 import path from 'path';
 import { merge } from 'webpack-merge';
-import { getBaseConfig, getFaviconCopyConfig, getWebpackCacheConfig, projectRoot } from './base.js';
+import { getBaseConfig, getWebpackCacheConfig, projectRoot } from './base.js';
 import { resolveBuildOutputPath } from '../../env/output-paths.js';
 import { readProjectConfig } from '../../project/config.js';
-import CopyPlugin from 'copy-webpack-plugin';
 import { logger } from '../../logger.js';
 
 logger.verbose('Loading webpack development configuration');
@@ -49,9 +48,7 @@ const developmentConfig = {
     hot: true,
     open: false
   },
-  plugins: [
-    new CopyPlugin({ patterns: [getFaviconCopyConfig(outputPath)] })
-  ],
+  // the site root (_static/, legacy _assets/favicons/) is copied by the base config (Task 212)
   performance: { hints: false },
   cache: getWebpackCacheConfig(import.meta.url)
 };

@@ -1,9 +1,8 @@
 import path from 'path';
 import { merge } from 'webpack-merge';
-import { getBaseConfig, getFaviconCopyConfig, getWebpackCacheConfig, projectRoot } from './base.js';
+import { getBaseConfig, getWebpackCacheConfig, projectRoot } from './base.js';
 import { resolveBuildOutputPath } from '../../env/output-paths.js';
 import { readProjectConfig } from '../../project/config.js';
-import CopyPlugin from 'copy-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
@@ -81,10 +80,15 @@ const productionConfig = {
     moduleIds: 'deterministic',
     chunkIds: 'deterministic'
   },
-  plugins: [
-    new CopyPlugin({ patterns: [getFaviconCopyConfig(outputPath)] })
-  ],
-  performance: { hints: 'error', maxEntrypointSize: 200000, maxAssetSize: 200000 },
+  // the site root (_static/, legacy _assets/favicons/) is copied by the base config (Task 212)
+  performance: {
+    hints: 'error',
+    maxEntrypointSize: 200000,
+    maxAssetSize: 200000,
+    // Files copied to the site root (`../robots.txt`, a PDF in _static/) are delivered as they are — the size limit
+    // guards the bundles and _assets/ (images, fonts), not downloads (Task 212). Source maps as by webpack default.
+    assetFilter: (assetFilename) => !/^\.\.[\\/]/.test(assetFilename) && !/\.map$/.test(assetFilename)
+  },
   cache: getWebpackCacheConfig(import.meta.url),
   output: { clean: true, pathinfo: false }
 };

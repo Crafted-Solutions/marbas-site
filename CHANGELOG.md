@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-11-09
+
+### Added
+- **`_static/` for files in the site root.** Everything in `<project>/_static/` is copied unchanged into the root of
+  the built site — subfolders and dotfiles included (`robots.txt`, `.well-known/`, `.htaccess`, verification files,
+  downloads). System files (`.DS_Store`, `Thumbs.db`, `desktop.ini`, `.gitkeep`) are skipped. Files copied to the
+  root are exempt from the 200 KB production limit, which keeps guarding bundles and `_assets/`. `init` puts the
+  starter favicons into `_static/` (and still creates `_assets/`, which the desktop app requires).
+
+### Deprecated
+- **`_assets/favicons/`** — still copied to the site root as before, but `_static/` wins on a name clash and build and
+  preview log a hint while the folder holds files. `getFaviconCopyConfig()` is deprecated; the built-in webpack configs
+  no longer add a second copy of the site root.
+
 ## [0.24.0] - 2026-11-09
 
 ### Added

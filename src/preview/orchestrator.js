@@ -4,6 +4,7 @@ import { startEleventyWatch } from './eleventy-watch.js';
 import { getLibRoot } from '../eject/index.js';
 import { resolveWebpackConfigPath } from '../build/webpack/resolve-config.js';
 import { copyThemeToOutput } from '../theme/copy.js';
+import { legacyRootDirNotice } from '../build/static-dir.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -52,6 +53,8 @@ export async function startPreview({
 
   await webpackHandle.waitForFirstCompile();
   onLog('[preview] Webpack compiled.');
+  const rootDirNotice = legacyRootDirNotice(projectRoot);
+  if (rootDirNotice) onLog(`[preview] Warning: ${rootDirNotice}`);
 
   // webpack-watch runs with clean:false and never copies the theme — unlike the
   // production build's copyTheme(). Mirror that step here so the dev preview

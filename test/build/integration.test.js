@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import path from 'path';
 import { CONFIG_MAP } from '../../src/build/webpack/config-loader.js';
 import { getBaseConfig, getWebpackCacheConfig, getStatsConfig, getStaticAssetCopyPatterns, getFaviconCopyConfig } from '../../src/build/webpack/base.js';
 
@@ -74,13 +75,20 @@ test('getStatsConfig — returns valid stats string', () => {
   assert.ok(valid.includes(result), `Expected one of ${valid.join(', ')}, got ${result}`);
 });
 
-test('getStaticAssetCopyPatterns — returns array with image/font/favicon entries', () => {
-  const patterns = getStaticAssetCopyPatterns('/tmp/project/build/public_development', '/tmp/project');
+test('getStaticAssetCopyPatterns — images, fonts, and the site root from _static/ (wins) + legacy favicons', () => {
+  const out = '/tmp/project/build/public_development';
+  const patterns = getStaticAssetCopyPatterns(out, '/tmp/project');
   assert.ok(Array.isArray(patterns));
-  assert.equal(patterns.length, 3);
+  assert.equal(patterns.length, 4);
   assert.ok(patterns.some((p) => String(p.from).includes('images')));
   assert.ok(patterns.some((p) => String(p.from).includes('fonts')));
-  assert.ok(patterns.some((p) => String(p.from).includes('favicons')));
+  const legacy = patterns.find((p) => String(p.from).endsWith(path.join('_assets', 'favicons')));
+  const staticDir = patterns.find((p) => String(p.from).endsWith('_static'));
+  assert.ok(legacy && staticDir, 'both root sources present');
+  assert.equal(staticDir.to, out);
+  assert.equal(legacy.to, out);
+  assert.ok(staticDir.priority > legacy.priority && staticDir.force === true, '_static/ is copied last and overwrites');
+  assert.ok(staticDir.globOptions.ignore.includes('**/.DS_Store'));
 });
 
 test('getFaviconCopyConfig — returns object with from/to/noErrorOnMissing', () => {

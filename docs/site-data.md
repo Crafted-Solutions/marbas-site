@@ -125,11 +125,36 @@ Set `pageLanguage` in each page's front matter to match its language code. See [
 
 ---
 
-## Favicons
+## Files in the site root (`_static/`)
 
-Files in `<project>/_assets/favicons/` are copied to the root of the built site. New projects get a
-neutral `favicon.ico` and `apple-touch-icon.png` (referenced by the base layout) — replace them with
-your own files under the same names.
+Everything in `<project>/_static/` is copied **unchanged** into the root of the built site — in every
+environment and in the preview, subfolders and dotfiles included:
+
+```
+_static/
+  favicon.ico              → /favicon.ico
+  apple-touch-icon.png     → /apple-touch-icon.png
+  robots.txt               → /robots.txt
+  .well-known/security.txt → /.well-known/security.txt
+  .htaccess                → /.htaccess
+  downloads/flyer.pdf      → /downloads/flyer.pdf
+```
+
+New projects get a neutral `favicon.ico` and `apple-touch-icon.png` (referenced by the base layout) —
+replace them with your own files under the same names.
+
+- **No size limit.** The 200 KB limit of the production build applies to `_assets/` (images, fonts),
+  not to `_static/` — a PDF for download is fine here.
+- **System files are skipped:** `.DS_Store`, `Thumbs.db`, `desktop.ini`, `.gitkeep`.
+- **No page paths.** Do not put files into `_static/` whose path is also a page URL (e.g. `index.html`,
+  `about/index.html`): the build overwrites them with the generated page, the live preview may show either.
+- **Images used in components belong in `_media/`**, not here — only `_media/` gets responsive sizes.
+
+### Legacy folder `_assets/favicons/`
+
+Before 0.25.0 the site root was filled from `<project>/_assets/favicons/`. That folder is still copied, so
+existing projects keep working; the build and the preview log a hint while it holds files. On a name clash
+the file from `_static/` wins. Move the files to `_static/` and delete the old folder.
 
 ---
 

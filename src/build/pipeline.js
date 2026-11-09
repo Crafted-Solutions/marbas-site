@@ -10,6 +10,7 @@ import { copyThemeToOutput } from '../theme/copy.js';
 import { buildEnvVars } from '../env/build-env.js';
 import { resolveEnvironment } from '../env/resolve.js';
 import { resolveWebpackConfigPath } from './webpack/resolve-config.js';
+import { legacyRootDirNotice } from './static-dir.js';
 
 const LIB_ROOT = getLibRoot();
 
@@ -118,6 +119,9 @@ export async function runPipeline({
     MARBAS_PUBLISH_ENVIRONMENT: env,
     NODE_ENV: optimize ? 'production' : 'development'
   };
+
+  const rootDirNotice = legacyRootDirNotice(absProject);
+  if (rootDirNotice) onLog(`[build] Warning: ${rootDirNotice}`);
 
   onLog('[build] Running webpack…');
   hooks.webpackStart?.();
